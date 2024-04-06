@@ -7,17 +7,17 @@ typedef struct {
 LuaCEmbedReturn *private_LuaCEmbedReturn_raw();
 
 
-LuaCEmbedReturn * LuaCEmbedReturn_text(const char *text);
+LuaCEmbedReturn * LuaCEmbed_return_text(const char *text);
 
-LuaCEmbedReturn  * LuaCEmbedReturn_double(double value);
+LuaCEmbedReturn  * LuaCEmbed_return_double(double value);
 
-LuaCEmbedReturn  * LuaCEmbedReturn_long(long value);
+LuaCEmbedReturn  * LuaCEmbed_return_long(long value);
 
-LuaCEmbedReturn  * LuaCEmbedReturn_xpath(CxpathJson *value);
+LuaCEmbedReturn  * LuaCEmbed_return_xpath(CxpathJson *value);
 
-LuaCEmbedReturn  * LuaCEmbedReturn_cJSON(cJSON *value);
+LuaCEmbedReturn  * LuaCEmbed_return_cJSON(cJSON *value);
 
-LuaCEmbedReturn  * LuaCEmbedReturn_error(const char *errror);
+LuaCEmbedReturn  * LuaCEmbed_return_error(const char *errror);
 
 
 void private_LuaCEmbedReturn_free(LuaCEmbedReturn  *self);

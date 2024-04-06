@@ -8,24 +8,24 @@ LuaCEmbedReturn *private_LuaCEmbedReturn_raw(){
 }
 
 
-LuaCEmbedReturn * LuaCEmbedReturn_text(const char *text){
+LuaCEmbedReturn * LuaCEmbed_return_text(const char *text){
     LuaCEmbedReturn * self= private_LuaCEmbedReturn_raw();
     self->value = cJSON_CreateString(text);
     return self;
 }
 
-LuaCEmbedReturn  * LuaCEmbedReturn_double(double value){
+LuaCEmbedReturn  * LuaCEmbed_return_double(double value){
     LuaCEmbedReturn * self= private_LuaCEmbedReturn_raw();
     self->value = cJSON_CreateNumber(value);
     return self;
 }
 
-LuaCEmbedReturn  * LuaCEmbedReturn_long(long value){
+LuaCEmbedReturn  * LuaCEmbed_return_long(long value){
     LuaCEmbedReturn * self= private_LuaCEmbedReturn_raw();
     self->value = cJSON_CreateNumber((double )value);
     return self;
 }
-LuaCEmbedReturn  * LuaCEmbedReturn_xpath(CxpathJson *value){
+LuaCEmbedReturn  * LuaCEmbed_return_xpath(CxpathJson *value){
     LuaCEmbedReturn * self= private_LuaCEmbedReturn_raw();
     self->value =value->element;
     value->element_reference = true;
@@ -33,14 +33,14 @@ LuaCEmbedReturn  * LuaCEmbedReturn_xpath(CxpathJson *value){
     return self;
 }
 
-LuaCEmbedReturn  * LuaCEmbedReturn_cJSON(cJSON *value){
+LuaCEmbedReturn  * LuaCEmbed_return_cJSON(cJSON *value){
     LuaCEmbedReturn * self= private_LuaCEmbedReturn_raw();
     self->value = value;
     return self;
 
 }
 
-LuaCEmbedReturn  * LuaCEmbedReturn_error(const char *errror){
+LuaCEmbedReturn  * LuaCEmbed_return_error(const char *errror){
     LuaCEmbedReturn * self= private_LuaCEmbedReturn_raw();
     self->is_error = true;
     self->value = cJSON_CreateString(errror);
