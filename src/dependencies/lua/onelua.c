@@ -110,12 +110,3 @@
 #include "linit.c"
 #endif
 
-/* lua */
-#ifdef MAKE_LUA
-#include "lua.c"
-#endif
-
-/* luac */
-#ifdef MAKE_LUAC
-#include "luac.c"
-#endif

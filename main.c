@@ -1,5 +1,5 @@
 
-#include "src/one.c"
+#include "LuaCEmbed.h"
 
 int main(){
     
