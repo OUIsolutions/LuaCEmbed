@@ -97,7 +97,6 @@
 #include <float.h>
 #include <limits.h>
 #include <locale.h>
-#include <math.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -8778,7 +8777,6 @@ int luaX_lookahead (LexState *ls) {
 
 #include <float.h>
 #include <limits.h>
-#include <math.h>
 #include <stdlib.h>
 
 
@@ -14075,7 +14073,6 @@ const char *luaF_getlocalname (const Proto *f, int local_number, int pc) {
 
 
 #include <locale.h>
-#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15348,7 +15345,6 @@ TString *luaS_newextlstr (lua_State *L,
 ** Hence even when the load factor reaches 100%, performance remains good.
 */
 
-#include <math.h>
 #include <limits.h>
 
 
@@ -17602,7 +17598,6 @@ int luaD_protectedparser (lua_State *L, ZIO *z, const char *name,
 
 #include <float.h>
 #include <limits.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
