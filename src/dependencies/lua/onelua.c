@@ -54,6 +54,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "custom_math/custom_math.h"
 
 /* setup for luaconf.h */
 #define LUA_CORE
@@ -71,6 +72,7 @@
 #define LUAI_DDEF	static
 
 /* core -- used by all */
+#include "custom_math/custom_math.c"
 #include "lzio.c"
 #include "lctype.c"
 #include "lopcodes.c"
