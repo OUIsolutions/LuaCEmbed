@@ -13,6 +13,8 @@ LuaCEmbedReturn  * LuaCEmbedReturn_double(double value);
 
 LuaCEmbedReturn  * LuaCEmbedReturn_long(long value);
 
+LuaCEmbedReturn  * LuaCEmbedReturn_xpath(CxpathJson *value);
+
 LuaCEmbedReturn  * LuaCEmbedReturn_cJSON(cJSON *value);
 
 LuaCEmbedReturn  * LuaCEmbedReturn_error(const char *errror);
