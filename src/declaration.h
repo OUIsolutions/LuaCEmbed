@@ -1,1 +1,1 @@
-#include "dependencies/lua/onelua.c"
+#include "dependencies/dependencies.h"
