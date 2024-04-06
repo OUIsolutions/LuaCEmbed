@@ -114,7 +114,7 @@
 double private_lua_embed_fmod(double x, double y);
 
 // Implementação simples da função pow
-double private_lua_embed_pow(double base, double expoente);
+double private_lua_embed_pow(double b, double e);
 
 // Implementação simples da função floor
 double private_lua_embed_floor(double x);
@@ -542,7 +542,7 @@ double private_lua_embed_floor(double x);
 
 /* The following definitions are good for most cases here */
 
-#define l_floor(x)		(l_mathop(private_lua_embed_fmod)(x))
+#define l_floor(x)		(l_mathop(private_lua_embed_floor)(x))
 
 #define lua_number2str(s,sz,n)  \
 	l_sprintf((s), sz, LUA_NUMBER_FMT, (LUAI_UACNUMBER)(n))
@@ -940,60 +940,48 @@ double private_lua_embed_floor(double x);
 /* core -- used by all */
 
 double private_lua_embed_fmod(double x, double y) {
-    // Enquanto o divisor não for zero
     while (y != 0.0) {
-        // Reduzimos o dividendo até que ele se torne menor que o divisor
         while (x >= y) {
             x -= y;
         }
-        // Se x já é menor que y, então x é o resto da divisão
         if (x < y) {
             return x;
         }
     }
-    // Se o divisor é zero, retorna NaN (Not a Number)
     return 0.0 / 0.0;
 }
 
-// Implementação simples da função pow
-double private_lua_embed_pow(double base, double expoente) {
+double private_lua_embed_pow(double b, double e) {
     double resultado = 1.0;
     int i;
 
-    // Caso especial: se o expoente for zero, o resultado é 1
-    if (expoente == 0.0) {
+    if (e == 0.0) {
         return 1.0;
     }
-    // Caso especial: se o expoente for negativo, inverte a base e torna o expoente positivo
-    if (expoente < 0.0) {
-        base = 1.0 / base;
-        expoente = -expoente;
+    if (e < 0.0) {
+        b = 1.0 / b;
+        e = -e;
     }
 
-    // Multiplica a base consigo mesma expoente vezes
-    for (i = 0; i < expoente; i++) {
-        resultado *= base;
+    for (i = 0; i < e; i++) {
+        resultado *= b;
     }
 
     return resultado;
 }
 
-// Implementação simples da função floor
 double private_lua_embed_floor(double x) {
-    int inteiro = (int)x;
+    int i = (int)x;
 
-    // Se x já é um inteiro, retorna ele mesmo
-    if (x == (double)inteiro) {
+    if (x == (double)i) {
         return x;
     }
 
-    // Se x é negativo, subtrai 1
     if (x < 0.0) {
-        return (double)(inteiro - 1);
+        return (double)(i - 1);
     }
 
-    // Caso contrário, retorna o maior inteiro menor ou igual a x
-    return (double)inteiro;
+    return (double)i;
 }
 
 /*
