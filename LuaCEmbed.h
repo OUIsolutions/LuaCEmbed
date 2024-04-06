@@ -5,6 +5,8 @@
 
 
 
+
+
 /*
 ** Lua core, libraries, and interpreter in a single file.
 ** Compiling just this file generates a complete Lua stand-alone
@@ -97,6 +99,7 @@
 #include <float.h>
 #include <limits.h>
 #include <locale.h>
+#include <math.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -106,6 +109,15 @@
 #include <string.h>
 #include <time.h>
 
+
+
+double private_lua_embed_fmod(double x, double y);
+
+// Implementação simples da função pow
+double private_lua_embed_pow(double base, double expoente);
+
+// Implementação simples da função floor
+double private_lua_embed_floor(double x);
 
 /* setup for luaconf.h */
 #define LUA_CORE
@@ -530,7 +542,7 @@
 
 /* The following definitions are good for most cases here */
 
-#define l_floor(x)		(l_mathop(floor)(x))
+#define l_floor(x)		(l_mathop(private_lua_embed_fmod)(x))
 
 #define lua_number2str(s,sz,n)  \
 	l_sprintf((s), sz, LUA_NUMBER_FMT, (LUAI_UACNUMBER)(n))
@@ -926,6 +938,63 @@
 #define LUAI_DDEF	static
 
 /* core -- used by all */
+
+double private_lua_embed_fmod(double x, double y) {
+    // Enquanto o divisor não for zero
+    while (y != 0.0) {
+        // Reduzimos o dividendo até que ele se torne menor que o divisor
+        while (x >= y) {
+            x -= y;
+        }
+        // Se x já é menor que y, então x é o resto da divisão
+        if (x < y) {
+            return x;
+        }
+    }
+    // Se o divisor é zero, retorna NaN (Not a Number)
+    return 0.0 / 0.0;
+}
+
+// Implementação simples da função pow
+double private_lua_embed_pow(double base, double expoente) {
+    double resultado = 1.0;
+    int i;
+
+    // Caso especial: se o expoente for zero, o resultado é 1
+    if (expoente == 0.0) {
+        return 1.0;
+    }
+    // Caso especial: se o expoente for negativo, inverte a base e torna o expoente positivo
+    if (expoente < 0.0) {
+        base = 1.0 / base;
+        expoente = -expoente;
+    }
+
+    // Multiplica a base consigo mesma expoente vezes
+    for (i = 0; i < expoente; i++) {
+        resultado *= base;
+    }
+
+    return resultado;
+}
+
+// Implementação simples da função floor
+double private_lua_embed_floor(double x) {
+    int inteiro = (int)x;
+
+    // Se x já é um inteiro, retorna ele mesmo
+    if (x == (double)inteiro) {
+        return x;
+    }
+
+    // Se x é negativo, subtrai 1
+    if (x < 0.0) {
+        return (double)(inteiro - 1);
+    }
+
+    // Caso contrário, retorna o maior inteiro menor ou igual a x
+    return (double)inteiro;
+}
 
 /*
 ** $Id: lzio.c $
@@ -1829,14 +1898,14 @@ typedef l_uint32 Instruction;
 */
 #if !defined(luai_nummod)
 #define luai_nummod(L,a,b,m)  \
-  { (void)L; (m) = l_mathop(fmod)(a,b); \
+  { (void)L; (m) = l_mathop(private_lua_embed_fmod)(a,b); \
     if (((m) > 0) ? (b) < 0 : ((m) < 0 && (b) > 0)) (m) += (b); }
 #endif
 
 /* exponentiation */
 #if !defined(luai_numpow)
 #define luai_numpow(L,a,b)  \
-  ((void)L, (b == 2) ? (a)*(a) : l_mathop(pow)(a,b))
+  ((void)L, (b == 2) ? (a)*(a) : l_mathop(private_lua_embed_pow)(a,b))
 #endif
 
 /* the others are quite standard operations */
@@ -8777,6 +8846,7 @@ int luaX_lookahead (LexState *ls) {
 
 #include <float.h>
 #include <limits.h>
+#include <math.h>
 #include <stdlib.h>
 
 
@@ -14073,6 +14143,7 @@ const char *luaF_getlocalname (const Proto *f, int local_number, int pc) {
 
 
 #include <locale.h>
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15345,6 +15416,7 @@ TString *luaS_newextlstr (lua_State *L,
 ** Hence even when the load factor reaches 100%, performance remains good.
 */
 
+#include <math.h>
 #include <limits.h>
 
 
@@ -17598,6 +17670,7 @@ int luaD_protectedparser (lua_State *L, ZIO *z, const char *name,
 
 #include <float.h>
 #include <limits.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22526,6 +22599,7 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
     luaL_error(L, "version mismatch: app. needs %f, Lua core provides %f",
                   (LUAI_UACNUMBER)ver, (LUAI_UACNUMBER)v);
 }
+
 
 
 

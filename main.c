@@ -7,7 +7,6 @@ int nada(lua_State *l){
 }
 
 int main(){
-    
     lua_State *L = luaL_newstate(); // Inicializa o estado Lua
 
     lua_pushcfunction(L, nada);

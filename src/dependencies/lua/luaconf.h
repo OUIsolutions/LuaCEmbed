@@ -415,7 +415,7 @@
 
 /* The following definitions are good for most cases here */
 
-#define l_floor(x)		(l_mathop(floor)(x))
+#define l_floor(x)		(l_mathop(private_lua_embed_floor)(x))
 
 #define lua_number2str(s,sz,n)  \
 	l_sprintf((s), sz, LUA_NUMBER_FMT, (LUAI_UACNUMBER)(n))

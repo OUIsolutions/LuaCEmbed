@@ -125,7 +125,7 @@ static int math_fmod (lua_State *L) {
       lua_pushinteger(L, lua_tointeger(L, 1) % d);
   }
   else
-    lua_pushnumber(L, l_mathop(fmod)(luaL_checknumber(L, 1),
+    lua_pushnumber(L, l_mathop(private_lua_embed_fmod)(luaL_checknumber(L, 1),
                                      luaL_checknumber(L, 2)));
   return 1;
 }
