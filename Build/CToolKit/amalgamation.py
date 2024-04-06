@@ -11,7 +11,7 @@ def get_action(referencer_dir: str, line: str) -> str or None:
 
 
 
-def generate_amalgamated_code(starter: str,output:str=None) -> str:
+def generate_amalgamated_code(starter: str,included=[]) -> str:
     """generate an full amalgamated code of the code you pass
     Args:
         starter (str): the started path of your code ex:'test.h'
@@ -26,20 +26,21 @@ def generate_amalgamated_code(starter: str,output:str=None) -> str:
     with open(starter) as f:
         # get current dir name
         current_dir = '/'.join(starter.split('/')[:-1])
+    
         lines = f.readlines()
         for line in lines:
             ##trim line
             file_to_include = get_action(current_dir, line)
+
             if file_to_include == None:
                 current_text += line
                 continue
+            
+            if file_to_include in included:
+                continue
 
-            else:
-                current_text += generate_amalgamated_code(file_to_include)
+            included.append(file_to_include)
+            current_text += generate_amalgamated_code(file_to_include,included)
 
 
-
-    if output:
-        with open(output,'w') as arq:
-            arq.write(current_text)
     return '\n' + current_text +'\n'

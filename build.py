@@ -9,8 +9,11 @@ STARTER = 'src/one.c'
 OUTPUT = 'LuaCEmbed.h'
 
 
-ct.generate_amalgamated_code(STARTER,OUTPUT)
+result = ct.generate_amalgamated_code(STARTER)
 
+with open(OUTPUT,'w') as arq:
+    arq.write(result)
+    
 ct.include_code_in_markdown('README.md',save_file=True)
 
 

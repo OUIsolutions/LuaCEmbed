@@ -1,5 +1,5 @@
 
-#include "src/one.c"
+#include "LuaCEmbed.h"
 
 int nada(lua_State *l){
     printf("chamou\n");
