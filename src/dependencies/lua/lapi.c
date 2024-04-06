@@ -1081,7 +1081,7 @@ LUA_API int lua_pcallk (lua_State *L, int nargs, int nresults, int errfunc,
     func = 0;
   else {
     StkId o = index2stack(L, errfunc);
-    api_check(L, ttisfunction(s2v(o)), "error handler must be a function");
+    api_check(L, ttisfunction(s2v(o)), "private_lua_error handler must be a function");
     func = savestack(L, o);
   }
   c.func = L->top.p - (nargs+1);  /* function to be called */

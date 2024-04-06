@@ -95,7 +95,7 @@ void luaD_seterrorobj (lua_State *L, int errcode, StkId oldtop) {
       break;
     }
     case LUA_ERRERR: {
-      setsvalue2s(L, oldtop, luaS_newliteral(L, "error in error handling"));
+      setsvalue2s(L, oldtop, luaS_newliteral(L, "error in private_lua_error handling"));
       break;
     }
     case LUA_OK: {  /* special case only for closing upvalues */

@@ -140,7 +140,7 @@ void *luaM_shrinkvector_ (lua_State *L, void *block, int *size,
 
 
 l_noret luaM_toobig (lua_State *L) {
-  luaG_runerror(L, "memory allocation error: block too big");
+  luaG_runerror(L, "memory allocation private_lua_error: block too big");
 }
 
 

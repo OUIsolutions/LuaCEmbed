@@ -42,7 +42,7 @@ typedef struct {
 } LoadState;
 
 
-static l_noret error (LoadState *S, const char *why) {
+static l_noret private_lua_error (LoadState *S, const char *why) {
   luaO_pushfstring(S->L, "%s: bad binary format (%s)", S->name, why);
   luaD_throw(S->L, LUA_ERRSYNTAX);
 }
@@ -56,7 +56,7 @@ static l_noret error (LoadState *S, const char *why) {
 
 static void loadBlock (LoadState *S, void *b, size_t size) {
   if (luaZ_read(S->Z, b, size) != 0)
-    error(S, "truncated chunk");
+      private_lua_error(S, "truncated chunk");
   S->offset += size;
 }
 
@@ -77,7 +77,7 @@ static const void *getaddr_ (LoadState *S, size_t size) {
   const void *block = luaZ_getaddr(S->Z, size);
   S->offset += size;
   if (block == NULL)
-    error(S, "truncated fixed buffer");
+      private_lua_error(S, "truncated fixed buffer");
   return block;
 }
 
@@ -88,7 +88,7 @@ static const void *getaddr_ (LoadState *S, size_t size) {
 static lu_byte loadByte (LoadState *S) {
   int b = zgetc(S->Z);
   if (b == EOZ)
-    error(S, "truncated chunk");
+      private_lua_error(S, "truncated chunk");
   S->offset++;
   return cast_byte(b);
 }
@@ -101,7 +101,7 @@ static size_t loadVarint (LoadState *S, size_t limit) {
   do {
     b = loadByte(S);
     if (x > limit)
-      error(S, "integer overflow");
+        private_lua_error(S, "integer overflow");
     x = (x << 7) | (b & 0x7f);
   } while ((b & 0x80) != 0);
   return x;
@@ -228,7 +228,7 @@ static void loadConstants (LoadState *S, Proto *f) {
         lua_assert(f->source == NULL);
         loadString(S, f, &f->source);  /* use 'source' to anchor string */
         if (f->source == NULL)
-          error(S, "bad format for constant string");
+            private_lua_error(S, "bad format for constant string");
         setsvalue2n(S->L, o, f->source);  /* save it in the right place */
         f->source = NULL;
         break;
@@ -340,13 +340,13 @@ static void checkliteral (LoadState *S, const char *s, const char *msg) {
   size_t len = strlen(s);
   loadVector(S, buff, len);
   if (memcmp(s, buff, len) != 0)
-    error(S, msg);
+      private_lua_error(S, msg);
 }
 
 
 static void fchecksize (LoadState *S, size_t size, const char *tname) {
   if (loadByte(S) != size)
-    error(S, luaO_pushfstring(S->L, "%s size mismatch", tname));
+      private_lua_error(S, luaO_pushfstring(S->L, "%s size mismatch", tname));
 }
 
 
@@ -356,17 +356,17 @@ static void checkHeader (LoadState *S) {
   /* skip 1st char (already read and checked) */
   checkliteral(S, &LUA_SIGNATURE[1], "not a binary chunk");
   if (loadByte(S) != LUAC_VERSION)
-    error(S, "version mismatch");
+      private_lua_error(S, "version mismatch");
   if (loadByte(S) != LUAC_FORMAT)
-    error(S, "format mismatch");
+      private_lua_error(S, "format mismatch");
   checkliteral(S, LUAC_DATA, "corrupted chunk");
   checksize(S, Instruction);
   checksize(S, lua_Integer);
   checksize(S, lua_Number);
   if (loadInteger(S) != LUAC_INT)
-    error(S, "integer format mismatch");
+      private_lua_error(S, "integer format mismatch");
   if (loadNumber(S) != LUAC_NUM)
-    error(S, "float format mismatch");
+      private_lua_error(S, "float format mismatch");
 }
 
 
