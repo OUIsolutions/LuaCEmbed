@@ -1,5 +1,7 @@
 
 tabela = {
- a = 30
+ a = {
+   b= 30
+  }
 }
 nada(tabela)
