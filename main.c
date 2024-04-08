@@ -3,7 +3,10 @@
 
 LuaCEmbedReturn  * nada(LuaCEmbed *self){
 
-    printf("teste\n");
+
+    printf("int arg %ld\n", LuaCEmbed_get_long_arg(self,0));
+    printf("str arg %s\n", LuaCEmbed_get_str_arg(self,0));
+
     return NULL;
 
 }
