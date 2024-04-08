@@ -26,7 +26,7 @@ cJSON * privateLuaCEmbed_parse_args(const char *format, va_list args){
         if(cJSON_IsNumber(current)){
             continue;
         }
-        
+
         cJSON_Delete(parsed_path);
         return  NULL;
     }
@@ -56,7 +56,6 @@ int  LuaCEmbed_get_table_element_type(LuaCEmbed *self,int index,const char *form
         while (lua_next(self->state, index) != 0) {
 
             // Obtém a chave e o valor atual da tabela
-
 
             if (lua_isstring(L, -2)) {
                 const char *chave = lua_tostring(L, -2);
