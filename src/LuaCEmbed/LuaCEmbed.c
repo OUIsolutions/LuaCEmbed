@@ -26,9 +26,13 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 }
 
 void LuaCEmbed_push_function(LuaCEmbed *self,const char *callback_name,LuaCEmbedReturn* (*callback)(LuaCEmbed *args) ){
+
     lua_pushlightuserdata(self->state,(void*)callback);
-    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,1);
+    lua_pushlightuserdata(self->state,(void*)self);
+
+    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
     lua_setglobal(self->state, callback_name);
+
 }
 
 
