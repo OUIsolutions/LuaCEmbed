@@ -1,7 +1,6 @@
 
 
-
-nada(10)
-os.exit()
-nada(15)
-nada("zsss")
+r  ={
+    b=30
+}
+nada(30)
