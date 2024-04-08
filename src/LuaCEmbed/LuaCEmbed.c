@@ -11,9 +11,9 @@ LuaCEmbed * newLuaCEmbed(){
 int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     LuaCEmbedReturn* (*callback)(LuaCEmbed *args);
-    callback = lua_touserdata(L,PRIVATE_LUACEMBED_FUNCTION_INDEX);
+    callback = lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_INDEX));
 
-    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,PRIVATE_LUACEMBED_EMBED_OBJECT);
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_EMBED_OBJECT));
 
 
     //evaluating callback
@@ -25,7 +25,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
 }
 
-void LuaCEmbed_push_function(LuaCEmbed *self,const char *callback_name,LuaCEmbedReturn* (*callback)(LuaCEmbed *args) ){
+void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbedReturn* (*callback)(LuaCEmbed *args) ){
 
     lua_pushlightuserdata(self->state,(void*)callback);
     lua_pushlightuserdata(self->state,(void*)self);
