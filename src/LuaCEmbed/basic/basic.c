@@ -25,6 +25,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
 }
 
+
 void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbedReturn* (*callback)(LuaCEmbed *args) ){
 
     lua_pushlightuserdata(self->state,(void*)callback);
