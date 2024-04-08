@@ -1,0 +1,1 @@
+#define LUA_CEMBED_INVALID_ARGS -1
