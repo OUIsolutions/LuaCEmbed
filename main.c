@@ -10,6 +10,7 @@ int main(){
 
     LuaCEmbed * lua = newLuaCEmbed();
 
+
     LuaCEmbed_add_calback(lua, "nada", nada);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 

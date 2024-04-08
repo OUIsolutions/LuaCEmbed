@@ -1,2 +1,2 @@
 #include "LuaCEmbedReturn/LuaCEmbedReturn.c"
-#include "LuaCEmbed/LuaCEmbed.c"
+#include "LuaCEmbed/definition.h"
