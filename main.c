@@ -3,6 +3,7 @@
 
 void iterate(lua_State *L,int index){
     // Itera sobre os elementos da tabela
+    printf("i: %d\n",index);
     lua_pushnil(L); // Coloca a chave nula na pilha
     while (lua_next(L, index) != 0) { // Enquanto houver elementos na tabela
         // Obtém a chave e o valor atual da tabela
@@ -16,10 +17,9 @@ void iterate(lua_State *L,int index){
             } 
 
             else if (lua_istable(L,-1)) {
-                int index =lua_gettop(L);
-                
-                printf("index %d\n",index); 
-                iterate(L, index);
+
+                //printf("index %d\n",index);
+                iterate(L, lua_gettop(L));
             }
             printf("\n}");
 
@@ -34,10 +34,13 @@ void iterate(lua_State *L,int index){
 
 int nada(lua_State *L){
 
+    //printf("total %d\n",lua_gettop(L));
 
     char *valor = (char*)lua_touserdata(L,lua_upvalueindex(1));
     printf("chamou %s\n",valor);
 
+    set_str(L,"['A']",20);
+    
     iterate(L,2);
     
 
