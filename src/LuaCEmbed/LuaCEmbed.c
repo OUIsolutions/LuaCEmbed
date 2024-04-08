@@ -11,7 +11,7 @@ LuaCEmbed * newLuaCEmbed(){
 int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     LuaCEmbedReturn* (*callback)(LuaCEmbed *args);
-    callback = lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_INDEX));
+    callback = (LuaCEmbedReturn* (*)(LuaCEmbed *args))lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_INDEX));
 
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_EMBED_OBJECT));
 
