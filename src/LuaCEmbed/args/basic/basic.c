@@ -55,7 +55,7 @@ void privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const cha
     LuaCEmbed_evaluate_string(self,formated_function);
 
     lua_getglobal(self->state, PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME);
-    lua_pushvalue(self->state,index);
+    lua_pushvalue(self->state,index+1);
     const int TOTAL_ARGS =1;
     const int TOTAL_RETURNS =1;
     //calling the function
