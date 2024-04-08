@@ -12,5 +12,8 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *ex
     va_start(args, expresion);
     privateLuaCEmbed_evaluate_arg_expresion(self,index,expresion,args);
     va_end(args);
+
     return (char*)lua_tostring(self->state, -1);
+
+
 }

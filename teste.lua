@@ -4,4 +4,5 @@ tabela = {
    b= 30
   }
 }
-nada(tabela)
+
+print(tabela.a.c)

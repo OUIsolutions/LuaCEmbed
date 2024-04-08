@@ -3,10 +3,9 @@
 
 LuaCEmbedReturn  * nada(LuaCEmbed *self){
 
-
-    printf("%s\n", LuaCEmbed_get_table_arg_string(self,0,"['a']['b']"));
-    lua_pop(self->state, 1); // Remove a mensagem de erro da pilha
-    printf("%s\n", LuaCEmbed_get_table_arg_string(self,0,"['a']['b']"));
+    char *result = LuaCEmbed_get_table_arg_string(self,0,"['a']['c']");
+    printf("%d\n",lua_type(self->state, -1) );
+   // printf("%s\n", LuaCEmbed_get_table_arg_string(self,0,"['a']['b']"));
 
     return NULL;
 
