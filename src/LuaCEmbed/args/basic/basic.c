@@ -40,3 +40,7 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
     return (char*)lua_tostring(self->state,index+1);
 }
 
+void privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index){
+
+    
+}

@@ -3,6 +3,7 @@ int  LuaCEmbed_get_total_args(LuaCEmbed *self);
 
 int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index);
 
+void privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index);
 
 bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
