@@ -3,6 +3,7 @@
 
 LuaCEmbedReturn  * nada(LuaCEmbed *self){
     printf("teste\n");
+    return NULL;
 }
 
 int main(){
