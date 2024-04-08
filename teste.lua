@@ -1,6 +1,12 @@
 
+function f(v)
+    return v['a']
+end
+function f(v)
+    return v['a']
+end
 
-r  ={3,3,4}
+x = {a=30}
 
+print(f(x))
 
-print(r[1])

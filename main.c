@@ -4,6 +4,7 @@
 LuaCEmbedReturn  * nada(LuaCEmbed *self){
 
     lua_topointer()
+
     printf("int arg %d\n", LuaCEmbed_get_arg_type(self,0));
 
 
