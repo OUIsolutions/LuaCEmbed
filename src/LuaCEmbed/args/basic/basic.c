@@ -19,7 +19,7 @@ long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
 }
 
 
-double LuaCEmbed_get_doube_arg(LuaCEmbed *self, int index){
+double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_NUMBER){
         return LUA_CEMBED_NOT_FOUND;
     }

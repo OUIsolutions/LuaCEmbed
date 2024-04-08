@@ -6,10 +6,9 @@ int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index);
 
 bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
-
 long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index);
 
-double LuaCEmbed_get_doube_arg(LuaCEmbed *self, int index);
+double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index);
 
 bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index);
 

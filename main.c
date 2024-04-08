@@ -17,6 +17,6 @@ int main(){
     LuaCEmbed_add_calback(lua, "nada", nada);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
     LuaCEmbed_free(lua);
-
+    printf("chamu depois\n");
 
 }
