@@ -18,9 +18,12 @@ int main(){
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
     if(LuaCEmbed_has_errors(lua)){
-        printf("%s", LuaCEmbed_get_error_message(lua));
+        printf("error: %s\n", LuaCEmbed_get_error_message(lua));
     }
-    
+    else{
+        printf("no errors\n");
+    }
+
     LuaCEmbed_free(lua);
 
 }

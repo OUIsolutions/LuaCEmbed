@@ -48,16 +48,22 @@ void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbed
 }
 
 
-void LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
+int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
    int error = luaL_dostring(self->state,str);
    if(error){
        self->error_message = strdup(lua_tostring(self->state,-1));
    }
+   return error;
 
 }
 
-void LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
-    luaL_dofile(self->state,file);
+int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
+    int error =luaL_dofile(self->state,file);
+    if(error){
+        self->error_message = strdup(lua_tostring(self->state,-1));
+    }
+    return error;
+
 }
 
 void LuaCEmbed_free(LuaCEmbed *self){

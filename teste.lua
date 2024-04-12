@@ -1,7 +1,2 @@
 
-tabela = {
- a = {
-   b= 30
-  }
-}
-nada(tabela)
+a = 30
