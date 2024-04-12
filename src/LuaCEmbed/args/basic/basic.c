@@ -4,11 +4,13 @@ int  LuaCEmbed_get_total_args(LuaCEmbed *self){
 }
 
 int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
+
     return  lua_type(self->state, index+1);
 }
 
 
 long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
+
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_NUMBER){
         return LUA_CEMBED_NOT_FOUND;
     }
@@ -17,27 +19,32 @@ long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
 
 
 double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
+
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_NUMBER){
-        return LUA_CEMBED_NOT_FOUND;
+        return (double )LUA_CEMBED_NOT_FOUND;
     }
     return (double )lua_tonumber(self->state,index+1);
 }
 
 bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
+
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_BOOL){
-        return LUA_CEMBED_NOT_FOUND;
+        return false;
     }
+
     return (bool)lua_toboolean(self->state,index+1);
+
 }
 
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
+
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_STRING){
         return NULL;
     }
     return (char*)lua_tostring(self->state,index+1);
 }
 
-void privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char *expresion, va_list args){
+int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char *expresion, va_list args){
 
     char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     vsnprintf(formated_expresion, sizeof(formated_expresion),expresion,args);
@@ -49,7 +56,10 @@ void privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const cha
              formated_expresion
             );
 
-    LuaCEmbed_evaluate_string(self,formated_function);
+    int error_code =LuaCEmbed_evaluate_string(self,formated_function);
+    if(error_code){
+        return error_code;
+    }
 
     lua_getglobal(self->state, PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME);
     lua_pushvalue(self->state,index+1);
