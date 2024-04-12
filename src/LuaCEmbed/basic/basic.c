@@ -7,6 +7,17 @@ LuaCEmbed * newLuaCEmbed(){
     return self;
 }
 
+char * LuaCEmbed_get_error_message(LuaCEmbed *self){
+    return self->error_message;
+}
+
+bool LuaCEmbed_has_errors(LuaCEmbed *self){
+    if(self->error_message){
+        return  true;
+    }
+    return false;
+}
+
 
 int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
@@ -38,7 +49,11 @@ void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbed
 
 
 void LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
-    luaL_dostring(self->state,str);
+   int error = luaL_dostring(self->state,str);
+   if(error){
+       self->error_message = strdup(lua_tostring(self->state,-1));
+   }
+
 }
 
 void LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
@@ -47,5 +62,9 @@ void LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
 
 void LuaCEmbed_free(LuaCEmbed *self){
     lua_close(self->state); // Fecha o estado Lua
+    if(self->error_message){
+        free(self->error_message);
+    }
+
     free(self);
 }

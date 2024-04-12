@@ -7,9 +7,6 @@ int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
     return  lua_type(self->state, index+1);
 }
 
-bool LuaCEmbed_has_errors(LuaCEmbed *self){
-
-}
 
 long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_NUMBER){
