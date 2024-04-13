@@ -7,4 +7,4 @@
 
 
 
-
+#define LUA_CEMBED_OK 0

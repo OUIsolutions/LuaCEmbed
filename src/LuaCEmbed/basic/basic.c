@@ -3,8 +3,18 @@
 LuaCEmbed * newLuaCEmbed(){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
+    self->timeout = 0;
     self->state = luaL_newstate();
     return self;
+}
+
+
+void private_LuaCembed_handle_timeout(int signum) {
+    printf("timeout excedido\n");
+}
+
+void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
+    self->timeout = seconds;
 }
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
@@ -128,16 +138,24 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
 
 int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
-   int error = luaL_dostring(self->state,str);
-   if(error){
-       self->error_message = strdup(lua_tostring(self->state,-1));
-   }
-   return error;
+
+    int error = luaL_dostring(self->state,str);
+    alarm(self->timeout);
+    if(error){
+        self->error_message = strdup(lua_tostring(self->state,-1));
+    }
+    return error;
+
+
+
 
 }
 
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
+
+
     int error =luaL_dofile(self->state,file);
+
     if(error){
         self->error_message = strdup(lua_tostring(self->state,-1));
     }
