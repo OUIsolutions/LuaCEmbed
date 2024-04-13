@@ -26,7 +26,16 @@ LuaCEmbedResponse  *create_ob(LuaCEmbed *lua){
 }
 
 
+void alarmante(int sig){
+    printf("excedeu\n");
+    exit(0);
+    
+}
 int main(){
+    signal(SIGALRM, alarmante);
+    alarm(3);
+    while (true);
+    return 0;
 
     LuaCEmbed * lua = newLuaCEmbed();
 
