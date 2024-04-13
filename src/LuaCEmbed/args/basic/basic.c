@@ -38,6 +38,7 @@ bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
 
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
 
+
     if(LuaCEmbed_get_arg_type(self,index) != LUA_CEMBED_STRING){
         return NULL;
     }

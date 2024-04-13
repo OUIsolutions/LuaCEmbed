@@ -7,13 +7,12 @@ LuaCEmbed * newLuaCEmbed(){
     return self;
 }
 
-LuaCEmbed  *testage;
 void private_LuaCembed_handle_timeout(int signum) {
-    LuaCEmbed_raise_error(testage,"timeout excedido\n");
+    LuaCEmbed_raise_error(timeout_handler,PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
 }
 
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
-    testage = self;
+    timeout_handler = self;
     signal(SIGALRM, private_LuaCembed_handle_timeout);
     alarm(seconds);
 }
