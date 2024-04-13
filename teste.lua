@@ -1,12 +1,6 @@
 
-function f(v)
-    return v['a']
-end
-function f(v)
-    return v['a']
-end
+a = 30
 
-x = {a=30}
-
-print(f(x))
-
+puts(a)
+b = 'aa'
+puts(b)
