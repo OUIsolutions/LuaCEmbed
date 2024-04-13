@@ -17,6 +17,10 @@ LuaCEmbedResponse * soma(LuaCEmbed *lua){
     int arg1 = (int)LuaCEmbed_get_long_arg(lua,0);
     int arg2 = (int)LuaCEmbed_get_long_arg(lua,1);
 
+    if(LuaCEmbed_has_errors(lua)){
+        return  NULL;
+    }
+
 
     return LuaCEmbed_send_long(arg1 + arg2);
 }
