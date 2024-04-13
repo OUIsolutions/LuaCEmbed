@@ -1,7 +1,7 @@
 
 #include "src/one.c"
 
-LuaCEmbedReturn * print_lua_value(LuaCEmbed *values){
+LuaCEmbedResponse * print_lua_value(LuaCEmbed *values){
     if(LuaCEmbed_get_arg_type(values,0) == LUA_CEMBED_NUMBER){
         printf("%lf\n", LuaCEmbed_get_double_arg(values,0));
     }
