@@ -11,6 +11,11 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_message;
 }
 
+void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error){
+    lua_pushstring(self->state,error);
+    lua_error(self->state);
+}
+
 bool LuaCEmbed_has_errors(LuaCEmbed *self){
     if(self->error_message){
         return  true;
@@ -81,13 +86,37 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         return PRIVATE_LUACEMBED_ONE_RETURN;
 
     }
+    if(possible_return->type == PRIVATE_LUA_CEMBED_EVALUATION_FUNCTION){
+        char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+        snprintf(
+                formated_function, sizeof(formated_function),
+                PRIVATE_LUA_CEMBED_FUNCTION_CLOJURE_EVALUATION_CODE,
+                PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME,
+                possible_return->string_val
+        );
 
+        int error_code =LuaCEmbed_evaluate_string(self,formated_function);
+
+        if(error_code){
+            return PRIVATE_LUACEMBED_NO_RETURN;
+        }
+
+        lua_getglobal(self->state, PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME);
+        const int TOTAL_ARGS =0;
+        const int TOTAL_RETURNS =1;
+        //calling the function
+        lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
+        //printf("v:%s\n", lua_tostring(self->state,-1));
+        lua_pushvalue(self->state,-1);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+
+    }
     return PRIVATE_LUACEMBED_NO_RETURN;
 
 }
 
 
-void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
     lua_pushlightuserdata(self->state,(void*)callback);
     lua_pushlightuserdata(self->state,(void*)self);
