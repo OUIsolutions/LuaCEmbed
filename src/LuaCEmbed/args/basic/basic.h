@@ -3,8 +3,8 @@ int  LuaCEmbed_get_total_args(LuaCEmbed *self);
 
 int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index);
 
+int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char *expresion, va_list args);
 
-bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
 long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index);
 

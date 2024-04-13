@@ -1,7 +1,6 @@
 
 
-cJSON * privateLuaCEmbed_parse_args(const char *format, va_list args);
+int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresion,...);
 
 
-int  LuaCEmbed_get_table_element_type(LuaCEmbed *self,int index,const char *element ,...);
-
+char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *expresion,...);
