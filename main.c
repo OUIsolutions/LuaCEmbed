@@ -1,20 +1,24 @@
 
 #include "src/one.c"
 
-LuaCEmbedReturn  * nada(LuaCEmbed *self){
+LuaCEmbedReturn * print_lua_value(LuaCEmbed *values){
+    if(LuaCEmbed_get_arg_type(values,0) == LUA_CEMBED_NUMBER){
+        printf("%lf\n", LuaCEmbed_get_double_arg(values,0));
+    }
 
-    char *result = LuaCEmbed_get_table_arg_string(self,0,"['a']['b']");
-
-    printf("%s\n",result);
+    if(LuaCEmbed_get_arg_type(values,0) == LUA_CEMBED_STRING){
+        printf("%s\n", LuaCEmbed_get_str_arg(values,0));
+    }
     return NULL;
 
 }
+
 
 int main(){
 
     LuaCEmbed * lua = newLuaCEmbed();
 //    LuaCEmbed_add_calback(lua, "nada", nada);
-
+    LuaCEmbed_add_calback(lua,"puts", print_lua_value);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
     if(LuaCEmbed_has_errors(lua)){

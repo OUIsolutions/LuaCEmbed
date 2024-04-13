@@ -18,7 +18,7 @@ int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file);
 int privateLuaCEmbed_main_callback_handler(lua_State  *L);
 
 
-void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbedReturn* (*callback)(LuaCEmbed *args) );
+void LuaCEmbed_add_calback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
 
 
 
