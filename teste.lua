@@ -1,6 +1,5 @@
 
 a = 30
-
-puts(a)
-b = 'aa'
+b = soma(a , 30)
 puts(b)
+
