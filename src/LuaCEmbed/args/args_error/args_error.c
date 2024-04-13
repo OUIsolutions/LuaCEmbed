@@ -1,6 +1,11 @@
 
 
 int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, int index){
+
+    if(LuaCEmbed_has_errors(self)){
+        return LUA_CEMBED_GENERIC_ERROR;
+    }
+
     if(index >= LuaCEmbed_get_total_args(self) ){
         char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
         sprintf(buffer,PRIVATE_LUA_CEMBED_ARG_NOT_PROVIDED,index,self->current_function);
