@@ -32,6 +32,27 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     if(!possible_return){
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
+
+    if(possible_return->type == PRIVATE_LUA_CEMBED_LONG_RESPONSE){
+        lua_pushinteger(L, (int)possible_return->num_val);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+    }
+
+    if(possible_return->type == PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE){
+        lua_pushnumber(L, possible_return->num_val);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+    }
+
+    if(possible_return->type == PRIVATE_LUA_CEMBED_STRING_RESPONSE){
+        lua_pushstring(L, possible_return->string_val);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+    }
+
+    if(possible_return->type == PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE){
+        lua_pushboolean(L, (bool)possible_return->num_val);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+    }
+
     return PRIVATE_LUACEMBED_NO_RETURN;
 
 }
