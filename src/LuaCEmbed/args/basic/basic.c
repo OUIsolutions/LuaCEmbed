@@ -51,8 +51,8 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
 
     char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     snprintf(formated_function, sizeof(formated_function),
-            PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_CODE,
-            PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME,
+             PRIVATE_LUA_CEMBED_FUNCTION_ARGS_EVALUATION_CODE,
+             PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME,
              formated_expresion
             );
 
@@ -67,6 +67,5 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
     const int TOTAL_RETURNS =1;
     //calling the function
     lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
-
 
 }

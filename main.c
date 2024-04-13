@@ -13,19 +13,23 @@ LuaCEmbedResponse * print_lua_value(LuaCEmbed *lua){
 
 }
 LuaCEmbedResponse * soma(LuaCEmbed *lua){
-    int arg1 = LuaCEmbed_get_long_arg(lua,0);
-    int arg2 = LuaCEmbed_get_long_arg(lua,1);
+    int arg1 = (int)LuaCEmbed_get_long_arg(lua,0);
+    int arg2 = (int)LuaCEmbed_get_long_arg(lua,1);
+
 
     return LuaCEmbed_send_long(arg1 + arg2);
+}
+LuaCEmbedResponse  *create_ob(LuaCEmbed *lua){
+    return LuaCEmbed_send_table("{a='aaaa'}");
 }
 
 
 int main(){
 
     LuaCEmbed * lua = newLuaCEmbed();
-//    LuaCEmbed_add_calback(lua, "nada", nada);
-    LuaCEmbed_add_calback(lua,"puts", print_lua_value);
+   LuaCEmbed_add_calback(lua,"puts", print_lua_value);
     LuaCEmbed_add_calback(lua,"soma", soma);
+    LuaCEmbed_add_calback(lua,"create_obj", create_ob);
 
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
