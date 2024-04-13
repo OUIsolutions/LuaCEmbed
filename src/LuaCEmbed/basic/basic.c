@@ -38,9 +38,9 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     LuaCEmbedResponse* (*callback)(LuaCEmbed *args);
     callback = (LuaCEmbedResponse* (*)(LuaCEmbed *args))lua_touserdata(L, lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_INDEX));
-
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_EMBED_OBJECT));
-
+    char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_ARG));;
+    self->current_function = func_name;
 
     //evaluating callback
     LuaCEmbedResponse *possible_return = callback(self);
@@ -130,6 +130,7 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
     lua_pushlightuserdata(self->state,(void*)callback);
     lua_pushlightuserdata(self->state,(void*)self);
+    lua_pushlightuserdata(self->state,(void*)callback_name);
 
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
     lua_setglobal(self->state, callback_name);
