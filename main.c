@@ -33,7 +33,7 @@ int main(){
     LuaCEmbed_add_callback(lua, "puts", print_lua_value);
     LuaCEmbed_add_callback(lua, "soma", soma);
     LuaCEmbed_add_callback(lua, "create_obj", create_ob);
-
+    LuaCEmbed_set_timeout(lua,4);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
     if(LuaCEmbed_has_errors(lua)){
