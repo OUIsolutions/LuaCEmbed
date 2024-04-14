@@ -47,7 +47,7 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
     char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     snprintf(formated_function, sizeof(formated_function),
              PRIVATE_LUA_CEMBED_FUNCTION_ARGS_EVALUATION_CODE,
-             PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME,
+             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
              formated_expresion
             );
 
@@ -56,7 +56,7 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
         return error_code;
     }
 
-    lua_getglobal(self->state, PRIVATE_LUA_CEMBED_FUNCTION_EVALUATION_NAME);
+    lua_getglobal(self->state, PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_pushvalue(self->state,index+1);
     const int TOTAL_ARGS =1;
     const int TOTAL_RETURNS =1;

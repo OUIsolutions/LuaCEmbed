@@ -18,14 +18,6 @@ LuaCEmbedResponse * soma(LuaCEmbed *lua){
     int arg1 = (int)LuaCEmbed_get_long_arg(lua,0);
     int arg2 = (int)LuaCEmbed_get_long_arg(lua,1);
 
-
-    if(LuaCEmbed_has_errors(lua)){
-
-        return NULL;
-    }
-
-
-
     return LuaCEmbed_send_long(arg1 + arg2);
 }
 LuaCEmbedResponse  *create_ob(LuaCEmbed *lua){
@@ -47,16 +39,18 @@ int main(){
     LuaCEmbed_add_callback(lua, "puts", print_lua_value);
     LuaCEmbed_add_callback(lua, "soma", soma);
     LuaCEmbed_add_callback(lua, "create_obj", create_ob);
-    LuaCEmbed_set_timeout(lua,4);
+    //LuaCEmbed_set_timeout(lua,4);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
-   // char *global = LuaCEmbed_get_global_string(lua,"v");
-    if(LuaCEmbed_has_errors(lua)){
+   char *global = LuaCEmbed_get_global_evaluation_string(lua,"v['a']");
+
+   if(LuaCEmbed_has_errors(lua)){
         printf("error: %s\n", LuaCEmbed_get_error_message(lua));
+
     }
 
     else{
-       // printf("global %s\n",global);
+        printf("global %s\n",global);
         printf("no errors\n");
     }
 

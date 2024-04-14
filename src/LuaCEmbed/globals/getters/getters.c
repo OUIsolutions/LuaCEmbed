@@ -38,3 +38,22 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
     return (char*)lua_tostring(self->state,-1);
 }
 
+char * LuaCEmbed_get_global_evaluation_string(LuaCEmbed *self, char *path){
+
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            path
+            );
+
+    printf("codigo : %s",buffer);
+    if(LuaCEmbed_evaluate_string(self,buffer)){
+        return  NULL;
+    }
+
+    return LuaCEmbed_get_global_string(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+
+}
+
+

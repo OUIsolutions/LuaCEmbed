@@ -9,3 +9,7 @@ double LuaCEmbed_get_global_double(LuaCEmbed *self,const char *name);
 bool LuaCEmbed_get_global_bool(LuaCEmbed *self,const char *name);
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name);
+
+char * LuaCEmbed_get_global_evaluation_string(LuaCEmbed *self, char *path);
+
+
