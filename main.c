@@ -25,7 +25,6 @@ LuaCEmbedResponse * soma(LuaCEmbed *l){
 int luaopen_minha_biblioteca(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaCEmbed();
-    lua_close(l->state);
     l->state  = L;
     lua.add_callback(l, "puts", print_lua_value);
     lua.add_callback(l, "soma", soma);
