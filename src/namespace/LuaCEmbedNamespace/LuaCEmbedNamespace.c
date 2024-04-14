@@ -2,6 +2,7 @@
 
 LuaCEmbedNamespace newLuaCEmbedNamespace(){
     LuaCEmbedNamespace self = {0};
+    self.newLuaCEmbed = newLuaCEmbed;
     self.args = newLuaCembedArgsModule();
     self.types = newLuaCEmbedTypeModule();
     self.response = newLuaCEmbedResponseModule();
@@ -13,4 +14,5 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.evaluete_file = LuaCEmbed_evaluete_file;
     self.add_callback = LuaCEmbed_add_callback;
     self.free = LuaCEmbed_free;
+    return self;
 }
