@@ -26,8 +26,13 @@ int luaopen_minha_biblioteca(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaCEmbed();
     l->state  = L;
+
     lua.add_callback(l, "puts", print_lua_value);
     lua.add_callback(l, "soma", soma);
+    lua.evaluate_string(l,"x = function() \nputs('chamou')\n return {a=20}\nend");
+    lua_getglobal(l->state,"x");
+    lua_pcall(l->state,0,1,0);
+    //lua_pushvalue(l->state,-1);
     return 1;
 
 }
