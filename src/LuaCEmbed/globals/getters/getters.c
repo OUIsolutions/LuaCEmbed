@@ -38,16 +38,31 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
     return (char*)lua_tostring(self->state,-1);
 }
 
-char * LuaCEmbed_get_global_evaluation_string(LuaCEmbed *self, char *path){
+
+int  LuaCEmbed_get_global_evaluation_type(LuaCEmbed *self, char *code){
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            code
+    );
+
+    if(LuaCEmbed_evaluate_string(self,buffer)){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+
+    return LuaCEmbed_get_global_type(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+
+}
+char * LuaCEmbed_get_global_evaluation_string(LuaCEmbed *self, char *code){
 
     char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     sprintf(buffer,
             PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-            path
+            code
             );
 
-    printf("codigo : %s",buffer);
     if(LuaCEmbed_evaluate_string(self,buffer)){
         return  NULL;
     }
@@ -57,3 +72,48 @@ char * LuaCEmbed_get_global_evaluation_string(LuaCEmbed *self, char *path){
 }
 
 
+long LuaCEmbed_get_global_evaluation_long(LuaCEmbed *self, char *code){
+
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            code
+    );
+
+    if(LuaCEmbed_evaluate_string(self,buffer)){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+
+    return LuaCEmbed_get_global_long(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+}
+
+double LuaCEmbed_get_global_evaluation_double(LuaCEmbed *self, char *code){
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            code
+    );
+
+    if(LuaCEmbed_evaluate_string(self,buffer)){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+
+    return LuaCEmbed_get_global_double(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+}
+
+bool LuaCEmbed_get_global_evaluation_bool(LuaCEmbed *self, char *code){
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            code
+    );
+
+    if(LuaCEmbed_evaluate_string(self,buffer)){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+
+    return LuaCEmbed_get_global_bool(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+}
