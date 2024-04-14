@@ -61,6 +61,7 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
     const int TOTAL_ARGS =1;
     const int TOTAL_RETURNS =1;
     //calling the function
-    lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
+    error_code =lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
+    return error_code;
 
 }
