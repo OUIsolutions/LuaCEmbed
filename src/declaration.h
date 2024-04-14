@@ -8,3 +8,4 @@
 #include "LuaCEmbedResponse/LuaCEmbedResponse.h"
 #include "LuaCEmbed/declaration.h"
 #include "extra/extra.h"
+#include "namespace/declaration.h"
