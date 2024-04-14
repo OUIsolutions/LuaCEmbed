@@ -42,7 +42,7 @@ int main(){
     //LuaCEmbed_set_timeout(lua,4);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
-   char *global = LuaCEmbed_get_global_evaluation_string(lua,"v['a']");
+  // char *global = LuaCEmbed_get_global_evaluation_string(lua,"v['a']");
 
    if(LuaCEmbed_has_errors(lua)){
         printf("error: %s\n", LuaCEmbed_get_error_message(lua));
@@ -50,7 +50,7 @@ int main(){
     }
 
     else{
-        printf("global %s\n",global);
+        //printf("global %s\n",global);
         printf("no errors\n");
     }
 
