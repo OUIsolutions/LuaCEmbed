@@ -14,15 +14,17 @@ LuaCEmbedResponse * print_lua_value(LuaCEmbed *lua){
 
 }
 LuaCEmbedResponse * soma(LuaCEmbed *lua){
-    char *t = LuaCEmbed_get_global_string(lua,"v");
+
     int arg1 = (int)LuaCEmbed_get_long_arg(lua,0);
     int arg2 = (int)LuaCEmbed_get_long_arg(lua,1);
 
+
     if(LuaCEmbed_has_errors(lua)){
-        return  NULL;
+
+        return NULL;
     }
 
-    printf("v:%s\n",t);
+
 
     return LuaCEmbed_send_long(arg1 + arg2);
 }
@@ -48,13 +50,13 @@ int main(){
     LuaCEmbed_set_timeout(lua,4);
     LuaCEmbed_evaluete_file(lua,"teste.lua");
 
-
-
+   // char *global = LuaCEmbed_get_global_string(lua,"v");
     if(LuaCEmbed_has_errors(lua)){
         printf("error: %s\n", LuaCEmbed_get_error_message(lua));
     }
 
     else{
+       // printf("global %s\n",global);
         printf("no errors\n");
     }
 

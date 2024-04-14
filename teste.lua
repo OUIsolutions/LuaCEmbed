@@ -1,3 +1,5 @@
 
 
-soma(1,0)
+puts(soma(1,0))
+puts("normal")
+

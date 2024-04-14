@@ -21,15 +21,27 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_message;
 }
 
+
 void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error){
-    lua_pushstring(self->state,error);
-    lua_error(self->state);
+    if(LuaCEmbed_has_errors(self)){
+        return;
+    }
+    if(self->current_function){ // means its in protected mode
+        lua_pushstring(self->state,error);
+        lua_error(self->state);
+    }
+
+    self->error_message = strdup(error);
 }
 
+
+
 bool LuaCEmbed_has_errors(LuaCEmbed *self){
+
     if(self->error_message){
         return  true;
     }
+
     return false;
 }
 
@@ -44,7 +56,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     //evaluating callback
     LuaCEmbedResponse *possible_return = callback(self);
-
+    self->current_function = NULL;
     if(!possible_return){
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
@@ -155,6 +167,7 @@ int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
 
     if(error){
         self->error_message = strdup(lua_tostring(self->state,-1));
+
     }
     return error;
 

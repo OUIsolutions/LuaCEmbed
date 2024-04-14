@@ -12,6 +12,8 @@ void private_LuaCembed_handle_timeout(int signum) ;
 
 void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error);
 
+
+
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 
 int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str);
