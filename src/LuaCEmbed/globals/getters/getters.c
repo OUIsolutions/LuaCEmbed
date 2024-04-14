@@ -71,6 +71,24 @@ char * LuaCEmbed_get_global_evaluation_string(LuaCEmbed *self, char *code){
 
 }
 
+long LuaCEmbed_get_global_evaluation_table_size(LuaCEmbed *self, char *code){
+
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            code
+    );
+
+    if(LuaCEmbed_evaluate_string(self,buffer)){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+
+    if(LuaCEmbed_ensure_global_type(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME,LUA_CEMBED_TABLE)){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+    return (long)lua_rawlen(self->state,-1);
+}
 
 long LuaCEmbed_get_global_evaluation_long(LuaCEmbed *self, char *code){
 
