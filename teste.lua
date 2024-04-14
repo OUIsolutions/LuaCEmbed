@@ -1,6 +1,13 @@
 
-local minha_biblioteca = require("minha_biblioteca")
+--local minha_biblioteca = require("minha_biblioteca")
 
-print(minha_biblioteca.a)
-x = soma(1,20)
-puts(x)
+function interna(x,y)
+    print(x)
+    print(y)
+end
+
+function test(...)
+    interna(...)
+end
+
+test(1,2,3,{a=3})
