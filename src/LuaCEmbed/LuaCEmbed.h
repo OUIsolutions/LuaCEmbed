@@ -4,8 +4,9 @@ typedef struct{
     char *error_message;
     char *current_function;
     void *opt_args;
+    bool runing;
 }LuaCEmbed;
 
 
 
-LuaCEmbed  *timeout_handler;
+LuaCEmbed  *global_current_lua_embed_object;

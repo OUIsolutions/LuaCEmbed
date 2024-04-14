@@ -3,3 +3,4 @@
 #include "response/response.c"
 #include "globals/globals.c"
 #include "args/definition.h"
+#include "LuaCEmbedNamespace/LuaCEmbedNamespace.c"

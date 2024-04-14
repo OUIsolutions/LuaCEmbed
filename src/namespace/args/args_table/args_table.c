@@ -8,5 +8,5 @@ LuaCEmbedArgsTableModule newLuaCEmbedArgsTableModule(){
     self.get_arg_size =  LuaCEmbed_get_table_arg_size;
     self.get_arg_string  = LuaCEmbed_get_table_arg_string;
     self.get_arg_type  = LuaCEmbed_get_table_arg_type;
-
+    return self;
 }

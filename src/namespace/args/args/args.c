@@ -8,4 +8,5 @@ LuaCembedArgsModule newLuaCembedArgsModule(){
     self.get_str = LuaCEmbed_get_str_arg;
     self.get_type = LuaCEmbed_get_arg_type;
     self.table = newLuaCEmbedArgsTableModule();
+    return self;
 }

@@ -8,11 +8,14 @@ LuaCEmbed * newLuaCEmbed(){
 }
 
 void private_LuaCembed_handle_timeout(int signum) {
-    LuaCEmbed_raise_error(timeout_handler,PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    if(global_current_lua_embed_object->runing){
+        LuaCEmbed_raise_error(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    }
+
 }
 
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
-    timeout_handler = self;
+    global_current_lua_embed_object = self;
     signal(SIGALRM, private_LuaCembed_handle_timeout);
     alarm(seconds);
 }
@@ -162,8 +165,9 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
 
 int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
-
+    self->runing = true;
     int error = luaL_dostring(self->state,str);
+    self->runing = false;
     if(error){
         self->error_message = strdup(lua_tostring(self->state,-1));
     }
@@ -173,9 +177,9 @@ int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
 
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
 
-
+    self->runing = true;
     int error =luaL_dofile(self->state,file);
-
+    self->runing = false;
     if(error){
         self->error_message = strdup(lua_tostring(self->state,-1));
 
