@@ -1,5 +1,5 @@
 
-typedef struct{
+typedef struct LuaCEmbed{
     lua_State *state;
     char *error_message;
     char *current_function;
@@ -7,6 +7,7 @@ typedef struct{
     bool public_functions;
     void *opt_args;
     bool runing;
+    void (*delelte_function)(struct  LuaCEmbed *self);
 }LuaCEmbed;
 
 

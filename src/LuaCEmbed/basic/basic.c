@@ -6,8 +6,12 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     self->state = luaL_newstate();
     return self;
 }
-int private_LuaCemb_internal_free(lua_State *state){
-    printf("chamou o delete\n");
+int private_LuaCemb_internal_free(lua_State *L){
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
+    if(self->delelte_function){
+        self->delelte_function(self);
+    }
+    LuaCEmbed_free(self);
     return 0;
 }
 LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
@@ -40,7 +44,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
     luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_META_TABLE);
 
-    
+
     return  self;
 }
 

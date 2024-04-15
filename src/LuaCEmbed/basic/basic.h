@@ -3,7 +3,7 @@
 
 LuaCEmbed * newLuaCEmbedEvaluation();
 
-int private_LuaCemb_internal_free(lua_State *state);
+int private_LuaCemb_internal_free(lua_State *L);
 
 LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
 
