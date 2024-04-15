@@ -103,16 +103,13 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 }
 
 
-void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
-
-    if(self->is_lib){
-        //get the table
-        lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-        //set the function name
-        lua_pushvalue(self->state,-1);
-        lua_pushstring(self->state,callback_name);
-    }
+    //get the table
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+    //set the function name
+    lua_pushvalue(self->state,-1);
+    lua_pushstring(self->state,callback_name);
 
     //creating the clojure
     lua_pushlightuserdata(self->state,(void*)callback);
@@ -120,19 +117,38 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
     lua_pushlightuserdata(self->state,(void*)callback_name);
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
 
-    if(self->is_lib){
-        //it will take the table, the name, and the function
-        lua_settable(self->state,-3);
-    }
+    lua_settable(self->state,-3);
 
-    if(self->public_functions && self->is_lib){
+    if(self->public_functions){
+        //it points the function to a global function
+        //like: callback = private_lua_c_embed_main_lib_table.callback
         lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
         lua_getfield(self->state,-1,callback_name);
         lua_setglobal(self->state, callback_name);
     }
 
-    if(!self->is_lib){
-        lua_setglobal(self->state, callback_name);
+
+}
+
+void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+
+    //creating the clojure
+    lua_pushlightuserdata(self->state,(void*)callback);
+    lua_pushlightuserdata(self->state,(void*)self);
+    lua_pushlightuserdata(self->state,(void*)callback_name);
+    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
+    lua_setglobal(self->state, callback_name);
+
+}
+
+
+void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+
+
+    if(self->is_lib){
+        private_LuaCEmbed_add_lib_callback(self,callback_name,callback);
+        return;
     }
+    private_LuaCEmbed_add_evaluation_callback(self,callback_name,callback);
 
 }
