@@ -2,9 +2,10 @@
 
 LuaCEmbedNamespace newLuaCEmbedNamespace(){
     LuaCEmbedNamespace self = {0};
-    self.newLuaCEmbed = newLuaCEmbed;
+    self.newLuaCEmbedEvaluation = newLuaCEmbedEvaluation;
     self.args = newLuaCembedArgsModule();
     self.types = newLuaCEmbedTypeModule();
+    self.globals = newLuaCEmbedGlobalModule();
     self.response = newLuaCEmbedResponseModule();
     self.get_error_message = LuaCEmbed_get_error_message;
     self.has_errors = LuaCEmbed_has_errors;

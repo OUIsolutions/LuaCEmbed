@@ -24,7 +24,7 @@ LuaCEmbedResponse * soma(LuaCEmbed *l){
 // Função para carregar a biblioteca
 int luaopen_minha_biblioteca(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua.newLuaCEmbed();
+    LuaCEmbed * l = lua.
     l->state  = L;
 
     lua.add_callback(l, "puts", print_lua_value);

@@ -4,7 +4,8 @@ typedef struct{
     LuaCEmbedTypeModule  types;
     LuaCEmbedResponseModule  response;
     LuaCembedArgsModule args;
-    LuaCEmbed * (*newLuaCEmbed)();
+    LuaCEmbedGlobalModule  globals;
+    LuaCEmbed * (*newLuaCEmbedEvaluation)();
     char * (*get_error_message)(LuaCEmbed *self);
     bool (*has_errors)(LuaCEmbed *self);
     void (*raise_error)(LuaCEmbed *self, const char *error);

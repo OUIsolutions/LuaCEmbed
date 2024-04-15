@@ -1,13 +1,20 @@
 
---local minha_biblioteca = require("minha_biblioteca")
 
-function interna(x,y)
-    print(x)
-    print(y)
-end
+TESTE = {
+    __index = function (a,b)
+        print("chamo1u",a,b)
+    end,
 
-function test(...)
-    interna(...)
-end
+    __gc = function (v)
+        print("chamo2u")
+    end
 
-test(1,2,3,{a=3})
+}
+xx = {}
+
+setmetatable(xx,TESTE)
+local y = xx 
+y.a = 30 
+
+print(xx.a)
+

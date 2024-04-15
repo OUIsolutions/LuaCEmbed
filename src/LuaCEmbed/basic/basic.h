@@ -1,7 +1,11 @@
 
 
 
-LuaCEmbed * newLuaCEmbed();
+LuaCEmbed * newLuaCEmbedEvaluation();
+
+
+LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
+
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self);
 
@@ -20,13 +24,6 @@ int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str);
 
 
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file);
-
-
-int privateLuaCEmbed_main_callback_handler(lua_State  *L);
-
-
-void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
-
 
 
 
