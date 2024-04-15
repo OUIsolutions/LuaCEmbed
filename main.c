@@ -21,10 +21,12 @@ LuaCEmbedResponse * soma(LuaCEmbed *l){
     return lua.response.send_long(arg1 + arg2);
 }
 
+
 // Função para carregar a biblioteca
 int luaopen_lib(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaLib(L,false);
+
     lua.add_callback(l, "puts", print_lua_value);
     lua.add_callback(l, "soma", soma);
     lua.perform(l);

@@ -5,7 +5,11 @@ LuaCEmbed * newLuaCEmbedEvaluation();
 
 int private_LuaCemb_internal_free(lua_State *L);
 
+
 LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
+
+
+void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
 
 void LuaCembed_perform(LuaCEmbed *self);
 

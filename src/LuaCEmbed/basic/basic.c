@@ -6,6 +6,12 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     self->state = luaL_newstate();
     return self;
 }
+
+
+void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self)){
+    self->delelte_function = delelte_function;
+}
+
 int private_LuaCemb_internal_free(lua_State *L){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
     if(self->delelte_function){
