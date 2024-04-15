@@ -32,3 +32,4 @@ int luaopen_minha_biblioteca(lua_State *L) {
     return 1;
 
 }
+//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

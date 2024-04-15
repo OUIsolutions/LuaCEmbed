@@ -25,7 +25,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
 void LuaCembed_perform(LuaCEmbed *self){
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pcall(self->state,0,1,0);
+    
     lua_pushvalue(self->state,-1);
 }
 
