@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "custom_math.h": "c"
+        "custom_math.h": "c",
+        "pthread.h": "c"
     }
 }
