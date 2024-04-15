@@ -6,6 +6,7 @@ LuaCEmbed * newLuaCEmbedEvaluation();
 
 LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
 
+void LuaCembed_perform(LuaCEmbed *self);
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self);
 

@@ -106,11 +106,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
 
-
     if(self->is_lib){
         //get the table
         lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
         //set the function name
+        lua_pushvalue(self->state,-1);
         lua_pushstring(self->state,callback_name);
     }
 
@@ -120,11 +120,13 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
     lua_pushlightuserdata(self->state,(void*)callback_name);
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
 
-    if(!self->is_lib){
+
+    if(self->public_functions || !self->is_lib){
         lua_setglobal(self->state, callback_name);
         return;
     }
 
     //it will take the table, the name, and the function
     lua_settable(self->state,-3);
+
 }

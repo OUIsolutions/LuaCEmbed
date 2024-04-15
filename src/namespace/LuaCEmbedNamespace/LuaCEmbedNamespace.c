@@ -2,7 +2,9 @@
 
 LuaCEmbedNamespace newLuaCEmbedNamespace(){
     LuaCEmbedNamespace self = {0};
-    self.newLuaCEmbedEvaluation = newLuaCEmbedEvaluation;
+    self.newLuaLib = newLuaCEmbedLib;
+    self.newLuaEvaluation = newLuaCEmbedEvaluation;
+    self.perform = LuaCembed_perform;
     self.args = newLuaCembedArgsModule();
     self.types = newLuaCEmbedTypeModule();
     self.globals = newLuaCEmbedGlobalModule();

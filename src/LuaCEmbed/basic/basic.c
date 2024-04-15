@@ -23,6 +23,12 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     return  self;
 }
 
+void LuaCembed_perform(LuaCEmbed *self){
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+    lua_pcall(self->state,0,1,0);
+    lua_pushvalue(self->state,-1);
+}
+
 void private_LuaCembed_handle_timeout(int signum) {
     if(global_current_lua_embed_object->runing){
         LuaCEmbed_raise_error(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);

@@ -5,7 +5,9 @@ typedef struct{
     LuaCEmbedResponseModule  response;
     LuaCembedArgsModule args;
     LuaCEmbedGlobalModule  globals;
-    LuaCEmbed * (*newLuaCEmbedEvaluation)();
+    LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
+    LuaCEmbed * (*newLuaEvaluation)();
+    void (*perform)(LuaCEmbed *self);
     char * (*get_error_message)(LuaCEmbed *self);
     bool (*has_errors)(LuaCEmbed *self);
     void (*raise_error)(LuaCEmbed *self, const char *error);
