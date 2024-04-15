@@ -14,19 +14,15 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     self->is_lib = true;
     self->public_functions = public_functions;
 
-
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(buffer,PRIVATE_LUA_CEMBED_TABLE_CREATION,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    LuaCEmbed_evaluate_string(self,buffer);
-
+    //creating the global table to store the elements
+    lua_newtable(self->state);
+    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
 
     return  self;
 }
 
 void LuaCembed_perform(LuaCEmbed *self){
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    
-    lua_pushvalue(self->state,-1);
 }
 
 void private_LuaCembed_handle_timeout(int signum) {
