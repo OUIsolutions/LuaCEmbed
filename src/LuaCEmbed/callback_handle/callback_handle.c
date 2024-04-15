@@ -107,8 +107,9 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 
     //get the table
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    //set the function name
     lua_pushvalue(self->state,-1);
+
+    //set the function name
     lua_pushstring(self->state,callback_name);
 
     //creating the clojure
@@ -117,8 +118,8 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
     lua_pushlightuserdata(self->state,(void*)callback_name);
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
 
-    lua_settable(self->state,-3);
 
+    lua_settable(self->state,-3);
     if(self->public_functions){
         //it points the function to a global function
         //like: callback = private_lua_c_embed_main_lib_table.callback

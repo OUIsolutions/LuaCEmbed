@@ -6,7 +6,10 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     self->state = luaL_newstate();
     return self;
 }
-
+int private_LuaCemb_internal_free(lua_State *state){
+    printf("chamou o delete\n");
+    return 0;
+}
 LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
@@ -14,10 +17,30 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     self->is_lib = true;
     self->public_functions = public_functions;
 
+
+
+    //creating the metatable
+    luaL_newmetatable(self->state,PRIVATE_LUA_CEMBED_META_TABLE);
+
+    //seting the clojure key
+    lua_pushstring(self->state,PRIVATE_LUA_CEMBED_DEL_PREFIX);
+
+
+    //set self as first clojure argument
+    lua_pushlightuserdata(self->state,(void*)self);
+    lua_pushcclosure(self->state,private_LuaCemb_internal_free,1);
+
+    lua_settable(self->state, -3);
+
+
+
     //creating the global table to store the elements
     lua_newtable(self->state);
     lua_setglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
 
+    luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_META_TABLE);
+
+    
     return  self;
 }
 
