@@ -4,7 +4,6 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
-    lua.args.table.get_arg_string(l,2,"3,4,-2,'a','aa'");
 
 }
 LuaCEmbedResponse * soma(LuaCEmbed *l){
@@ -38,6 +37,7 @@ int main(){
         printf("error: %s\n",lua.get_error_message(l));
     }
     lua.free(l);
+
     return 0;
 }
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

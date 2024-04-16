@@ -62,7 +62,7 @@ int private_LuaCEmbed_ensure_evaluation_type(LuaCEmbed *self,int type){
     }
     char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     sprintf(buffer,
-            RESULT_EVALUATION_WRONG_TYPE,
+            PRIVATE_LUA_CEMBED_RESULT_EVALUATION_WRONG_TYPE,
             LuaCembed_convert_arg_code(actual_type),
             LuaCembed_convert_arg_code(type)
             );
