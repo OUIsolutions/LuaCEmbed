@@ -32,12 +32,12 @@ int main(){
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaEvaluation();
 
-    long r =lua.get_evaluation_long(l,"function() local x = {55,2,3} retur end");
+    long r =lua.get_evaluation_long(l,"function() local x = {true,2,3} return x[1] end");
     printf("v: %d\n",r);
     if(lua.has_errors(l)){
         printf("error: %s\n",lua.get_error_message(l));
     }
     lua.free(l);
-    return 1;
+    return 0;
 }
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 
