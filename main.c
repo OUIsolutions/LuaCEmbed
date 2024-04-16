@@ -27,4 +27,12 @@ int luaopen_lib(lua_State *L) {
     return 1;
 
 }
+
+int main(){
+    lua =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua.newLuaEvaluation();
+
+    lua.free(l);
+    return 1;
+}
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

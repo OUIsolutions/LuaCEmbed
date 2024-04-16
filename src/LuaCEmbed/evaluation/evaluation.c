@@ -54,9 +54,13 @@ char * LuaCEmbed_evaluate_string_returning_string(LuaCEmbed *self, char *code, .
         return (char*)lua_tostring(self->state,-1);
     }
 
-
-
-    return LuaCEmbed_get_global_string(self,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+    if(type == LUA_CEMBED_FUNCTION){
+        if(lua_pcall(self->state,1,0,0)){
+            const char *generated_error = lua_tostring(self->state,-1);
+            LuaCEmbed_raise_error(self,generated_error );
+        }
+    }
+    return (char*)lua_tostring(self->state,-1);
 
 }
 
