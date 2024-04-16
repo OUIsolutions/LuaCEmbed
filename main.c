@@ -3,18 +3,12 @@
 LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
-    if(lua.args.get_type(l,0) ==lua.types.NUMBER){
-        printf("%lf\n", lua.args.get_double(l,0));
-    }
 
-    if(lua.args.get_type(l,0) == lua.types.STRING){
-        printf("%s\n", lua.args.get_str(l,0));
-    }
-
-    return NULL;
+    lua.args.table.get_arg_string(l,2,"3,4,-2,'a','aa'");
 
 }
 LuaCEmbedResponse * soma(LuaCEmbed *l){
+
 
     int arg1 = (int)lua.args.get_long(l,0);
     int arg2 = (int)lua.args.get_long(l,1);

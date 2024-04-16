@@ -52,7 +52,7 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
              formated_expresion
             );
 
-    int error_code =LuaCEmbed_evaluate_string(self,formated_function);
+    int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
     if(error_code){
         return error_code;
     }

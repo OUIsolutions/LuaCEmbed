@@ -102,29 +102,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 
-int LuaCEmbed_evaluate_string(LuaCEmbed *self, const char *str){
-    self->runing = true;
-    int error = luaL_dostring(self->state,str);
-    self->runing = false;
-    if(error){
-        self->error_message = strdup(lua_tostring(self->state,-1));
-    }
-    return error;
 
-}
-
-int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
-
-    self->runing = true;
-    int error =luaL_dofile(self->state,file);
-    self->runing = false;
-    if(error){
-        self->error_message = strdup(lua_tostring(self->state,-1));
-
-    }
-    return error;
-
-}
 
 void LuaCEmbed_free(LuaCEmbed *self){
 

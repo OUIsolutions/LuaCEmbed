@@ -50,7 +50,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
                 possible_return->string_val
         );
 
-        int error_code =LuaCEmbed_evaluate_string(self,formated_function);
+        int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
 
         if(error_code){
             private_LuaCEmbedResponse_free(possible_return);
@@ -78,7 +78,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
                 possible_return->string_val
         );
 
-        int error_code =LuaCEmbed_evaluate_string(self,formated_function);
+        int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
 
         if(error_code){
             private_LuaCEmbedResponse_free(possible_return);

@@ -1,6 +1,5 @@
 
 
-int private_LuaCEmbed_ensure_table_arg_type(LuaCEmbed *self,int index,int expected_type);
 
 int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresion,...);
 

@@ -14,7 +14,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.has_errors = LuaCEmbed_has_errors;
     self.raise_error = LuaCEmbed_raise_error;
     self.set_timeout = LuaCEmbed_set_timeout;
-    self.evaluate_string = LuaCEmbed_evaluate_string;
+    self.evaluate_string = LuaCEmbed_evaluate_string_no_return;
     self.evaluete_file = LuaCEmbed_evaluete_file;
     self.add_callback = LuaCEmbed_add_callback;
     self.free = LuaCEmbed_free;
