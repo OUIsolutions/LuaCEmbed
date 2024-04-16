@@ -14,6 +14,15 @@ typedef struct{
     void (*raise_error)(LuaCEmbed *self, const char *error);
     void (*set_timeout)(LuaCEmbed *self,int seconds);
     int (*evaluate_string)(LuaCEmbed *self, const char *str);
+
+    char * (*get_evaluate_string_returning_string)(LuaCEmbed *self, char *code, ...);
+    int  (*get_evaluation_type)(LuaCEmbed *self, char *code,...);
+    long (*get_evaluation_size)(LuaCEmbed *self, char *code,...);
+    long (*get_evaluation_long)(LuaCEmbed *self, char *code,...);
+    double (*get_evaluation_double)(LuaCEmbed *self, char *code,...);
+    bool (*get_evaluation_bool)(LuaCEmbed *self, char *code,...);
+
+
     int (*evaluete_file)(LuaCEmbed *self, const char *file);
     void (*add_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
     void (*free)(LuaCEmbed *self);

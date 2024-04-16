@@ -70,7 +70,7 @@ char * LuaCEmbed_evaluate_string_returning_string(LuaCEmbed *self, char *code, .
 }
 
 
-int  LuaCEmbed_get_global_evaluation_type(LuaCEmbed *self, char *code,...){
+int  LuaCEmbed_get_evaluation_type(LuaCEmbed *self, char *code, ...){
     va_list args;
     va_start(args,code);
     int possible_error = private_LuaCEmbed_evaluate_puting_on_top_of_stack(self,code,args);
@@ -83,11 +83,19 @@ int  LuaCEmbed_get_global_evaluation_type(LuaCEmbed *self, char *code,...){
 }
 
 
-long LuaCEmbed_get_global_evaluation_size(LuaCEmbed *self, char *code,...){
-
+long LuaCEmbed_get_evaluation_size(LuaCEmbed *self, char *code, ...){
+    va_list args;
+    va_start(args,code);
+    int possible_error = private_LuaCEmbed_evaluate_puting_on_top_of_stack(self,code,args);
+    va_end(args);
+    if(possible_error){
+        return  LUA_CEMBED_GENERIC_ERROR;
+    }
+    return (long)lua_rawlen(self->state,-1);
 }
 
-long LuaCEmbed_get_global_evaluation_long(LuaCEmbed *self, char *code,...){
+
+long LuaCEmbed_get_evaluation_long(LuaCEmbed *self, char *code, ...){
 
     va_list args;
     va_start(args,code);
@@ -100,7 +108,7 @@ long LuaCEmbed_get_global_evaluation_long(LuaCEmbed *self, char *code,...){
 
 }
 
-double LuaCEmbed_get_global_evaluation_double(LuaCEmbed *self, char *code,...){
+double LuaCEmbed_get_evaluation_double(LuaCEmbed *self, char *code, ...){
 
     va_list args;
     va_start(args,code);
@@ -112,7 +120,7 @@ double LuaCEmbed_get_global_evaluation_double(LuaCEmbed *self, char *code,...){
     return (double)lua_tonumber(self->state,-1);
 }
 
-bool LuaCEmbed_get_global_evaluation_bool(LuaCEmbed *self, char *code,...){
+bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self, char *code, ...){
     va_list args;
     va_start(args,code);
     int possible_error = private_LuaCEmbed_evaluate_puting_on_top_of_stack(self,code,args);
