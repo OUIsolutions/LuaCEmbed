@@ -76,16 +76,23 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
 }
 
 
-void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error){
+void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error,...){
+
+    va_list args;
+    va_start(args,error);
+    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    vsnprintf(formated_expresion, sizeof(formated_expresion),error,args);
+    va_end(args);
+
     if(LuaCEmbed_has_errors(self)){
         return;
     }
     if(self->current_function){ // means its in protected mode
-        lua_pushstring(self->state,error);
+        lua_pushstring(self->state,formated_expresion);
         lua_error(self->state);
     }
 
-    self->error_message = strdup(error);
+    self->error_message = strdup(formated_expresion);
 }
 
 

@@ -2,9 +2,16 @@
 
 
 
-int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *str){
+int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...){
+
+    va_list args;
+    va_start(args,code);
+    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
+    va_end(args);
+
     self->runing = true;
-    int error = luaL_dostring(self->state,str);
+    int error = luaL_dostring(self->state,formated_expresion);
     self->runing = false;
     if(error){
         self->error_message = strdup(lua_tostring(self->state,-1));
@@ -115,7 +122,7 @@ long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self, char *code, ...){
 }
 
 
-long LuaCEmbed_get_evaluation_long(LuaCEmbed *self, char *code, ...){
+long LuaCEmbed_evaluate_string_returning_long(LuaCEmbed *self, char *code, ...){
 
     va_list args;
     va_start(args,code);

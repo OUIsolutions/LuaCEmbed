@@ -1,7 +1,7 @@
 
 
 
-int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *str);
+int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...);
 
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file);
 
@@ -18,7 +18,7 @@ int  LuaCEmbed_get_evaluation_type(LuaCEmbed *self, char *code, ...);
 
 long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self, char *code, ...);
 
-long LuaCEmbed_get_evaluation_long(LuaCEmbed *self, char *code, ...);
+long LuaCEmbed_evaluate_string_returning_long(LuaCEmbed *self, char *code, ...);
 
 double LuaCEmbed_get_evaluation_double(LuaCEmbed *self, char *code, ...);
 

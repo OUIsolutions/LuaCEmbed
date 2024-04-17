@@ -20,7 +20,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
 void private_LuaCembed_handle_timeout(int signum) ;
 
-void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error);
+void LuaCEmbed_raise_error(LuaCEmbed *self, const char *error,...);
 
 
 
