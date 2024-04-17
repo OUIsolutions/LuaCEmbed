@@ -5,3 +5,4 @@
 #define PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME "private_lua_c_embed_main_lib_table"
 #define PRIVATE_LUA_CEMBED_DEL_PREFIX "__gc"
 #define PRIVATE_LUA_CEMBED_META_TABLE "private_lua_c_embed_main_meta_table"
+#define PRIVATE_LUA_CEMBED_TABLE_INDEXATION "%s[%d]"

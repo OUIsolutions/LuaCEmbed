@@ -46,40 +46,22 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *co
     if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
         return  NULL;
     }
-
     va_list args;
     va_start(args,code);
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
+    privateLuaEmbedTableArgs *table_args = newprivateLuaEmbedTableArgs(code,args);
     va_end(args);
-
-    LuaCEmbed  * testage = newLuaCEmbedEvaluation();
-    LuaCEmbed_evaluate_string_no_return(testage,"TABLE_ARGS  = %s",formated_expresion);
-
-    if(LuaCEmbed_has_errors(testage)){
-        LuaCEmbed_free(testage);
+    if(!table_args){
         LuaCEmbed_raise_error(self,
-                              "arguments of function %s at index %d its not a valid lua code",
-                                self->current_function,
-                                index
-        );
-        return NULL;
-    }
-
-   // long size = LuaCEmbed_get_evaluation_table_size(testage,"TABLE_ARGS");
-    if(LuaCEmbed_has_errors(testage)){
-        LuaCEmbed_free(testage);
-        LuaCEmbed_raise_error(self,
-                              "arguments of function %s at index %d its not a valid table",
+                              PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
                               self->current_function,
                               index
-        );
+                              );
         return NULL;
     }
 
     privateLuaEmbed_table_iteration(self,index+1);
 
-    LuaCEmbed_free(testage);
+
 
     return NULL;
 }
