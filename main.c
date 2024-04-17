@@ -4,9 +4,8 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
-
-    long test = lua.args.get_long_arg_clojure_evalation(l,0,"function (v) return v + 10 end ");
-    printf("%ld\n",test);
+    char *test = lua.args.table.get_arg_string(l,1,"{'a',1}");
+   // printf("%s",test);
     return NULL;
 }
 

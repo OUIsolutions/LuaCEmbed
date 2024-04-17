@@ -8,6 +8,10 @@ int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresi
 
 char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *code,...){
 
+    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
+        return  NULL;
+    }
+
     va_list args;
     va_start(args,code);
     char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
@@ -15,7 +19,7 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *co
     va_end(args);
 
     LuaCEmbed  * testage = newLuaCEmbedEvaluation();
-    LuaCEmbed_evaluate_string_no_return(testage,"TABLE_ARGS  = {%s}",formated_expresion);
+    LuaCEmbed_evaluate_string_no_return(testage,"TABLE_ARGS  = %s",formated_expresion);
 
     if(LuaCEmbed_has_errors(testage)){
         LuaCEmbed_free(testage);
@@ -37,7 +41,37 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *co
         );
         return NULL;
     }
-    printf("size: %ld\n",size);
+
+    for(int i = 0; i < size;i++){
+        int type = LuaCEmbed_get_evaluation_type(testage,"TABLE_ARGS[%d]",i+1);
+        lua_pushnil(self->state); // Coloca a chave nula na pilha
+        while (lua_next(self->state, index) != 0) { // Enquanto houver elementos na tabela
+            // Obtém a chave e o valor atual da tabela
+            
+            if (lua_isstring(L, -2)) {
+                const char *chave = lua_tostring(L, -2);
+                printf("%s:\n{",chave);
+
+                if (lua_isstring(L, -1)) {
+                    const char *valor = lua_tostring(L, -1);
+                    printf("%s\n", valor);
+                }
+
+                else if (lua_istable(L,-1)) {
+
+                    //printf("index %d\n",index);
+                    iterate(L, lua_gettop(L));
+                }
+                printf("\n}");
+
+            } else {
+                printf("chave não é uma string\n");
+            }
+
+            lua_pop(self->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
+        }
+    }
+
 
     LuaCEmbed_free(testage);
 
