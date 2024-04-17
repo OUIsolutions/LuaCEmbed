@@ -1,5 +1,2 @@
 
-
-
-local x = {1,2,3}
-print(x[1])
+puts(10)

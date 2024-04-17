@@ -4,8 +4,11 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
-
+    long test = lua.args.get_long_arg_clojure_evalation(l,0,"function (v) return v + 10 end ");
+    printf("%ld\n",test);
+    return NULL;
 }
+
 LuaCEmbedResponse * soma(LuaCEmbed *l){
 
 
@@ -30,9 +33,10 @@ int luaopen_lib(lua_State *L) {
 int main(){
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaEvaluation();
+    lua.add_callback(l,"puts",print_lua_value);
+    lua.evaluete_file(l,"teste.lua");
 
-    long r =lua.get_evaluation_long(l,"function() local x = {true,2,3} return x[1] end");
-    printf("v: %d\n",r);
+
     if(lua.has_errors(l)){
         printf("error: %s\n",lua.get_error_message(l));
     }

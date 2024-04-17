@@ -13,7 +13,7 @@ LuaCembedArgsModule newLuaCembedArgsModule(){
     self.get_long_arg_clojure_evalation = LuaCEmbed_get_long_arg_clojure_evalation;
     self.get_double_arg_clojure_evalation = LuaCEmbed_get_double_arg_clojure_evalation;
     self.get_string_arg_clojure_evalation = LuaCEmbed_get_string_arg_clojure_evalation;
-    
+
     self.table = newLuaCEmbedArgsTableModule();
     return self;
 }
