@@ -3,7 +3,7 @@
 LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
-    lua.args.table.get_arg_string(l,0,"{'a',1}");
+    lua.args.table.get_arg_string(l,0,"{3,2,true}");
    // printf("%s",test);
     return NULL;
 }
