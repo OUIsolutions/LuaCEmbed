@@ -35,8 +35,8 @@ int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
 
 int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code, va_list args){
 
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
+    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE -500] = {0};
+    vsnprintf(formated_expresion, sizeof(formated_expresion) -1000,code,args);
 
     char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     sprintf(buffer,
