@@ -47,27 +47,10 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *co
         lua_pushnil(self->state); // Coloca a chave nula na pilha
         while (lua_next(self->state, index) != 0) { // Enquanto houver elementos na tabela
             // Obtém a chave e o valor atual da tabela
-            
-            if (lua_isstring(L, -2)) {
-                const char *chave = lua_tostring(L, -2);
-                printf("%s:\n{",chave);
 
-                if (lua_isstring(L, -1)) {
-                    const char *valor = lua_tostring(L, -1);
-                    printf("%s\n", valor);
-                }
-
-                else if (lua_istable(L,-1)) {
-
-                    //printf("index %d\n",index);
-                    iterate(L, lua_gettop(L));
-                }
-                printf("\n}");
-
-            } else {
-                printf("chave não é uma string\n");
+            if(lua_isstring(self->state,-2)){
+                printf("é uma chave %s", lua_tostring(self->state,-2));
             }
-
             lua_pop(self->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
         }
     }

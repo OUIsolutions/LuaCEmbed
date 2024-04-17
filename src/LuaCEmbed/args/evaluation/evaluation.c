@@ -66,7 +66,16 @@ long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,char *code,.
     }
     return lua_type(self->state,-1);
 }
-
+long LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,char *code,...){
+    va_list args;
+    va_start(args,code);
+    int possible_error = private_LuaCembed_run_code_with_args(self,index,code,args);
+    va_end(args);
+    if(possible_error){
+        return possible_error;
+    }
+    return LUA_CEMBED_OK;
+}
 long LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,char *code,...){
 
     va_list args;

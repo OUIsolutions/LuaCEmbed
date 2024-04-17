@@ -6,6 +6,8 @@ int privateLuaCembed_ensure_arg_evaluation_type(LuaCEmbed *self,int index,int ex
 
 long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,char *code,...);
 
+long LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,char *code,...);
+
 long LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,char *code,...);
 
 
