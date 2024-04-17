@@ -5,8 +5,9 @@ int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresi
     return -1;
 
 }
-void privateLuaEmbed_table_iteration(LuaCEmbed *self,int index){
+void privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs *args,int index){
     lua_pushnil(self->state); // Coloca a chave nula na pilha
+
 
     while (lua_next(self->state, index) != 0) { // Enquanto houver elementos na tabela
         // Obtém a chave e o valor atual da tabela
@@ -15,6 +16,7 @@ void privateLuaEmbed_table_iteration(LuaCEmbed *self,int index){
         int value_type = lua_type(self->state,-1);
         char *converted_key = NULL;
         char buffer[200]= {0};
+
         if(key_type == LUA_CEMBED_STRING){
             converted_key = (char*)lua_tostring(self->state,-2);
         }
@@ -34,7 +36,7 @@ void privateLuaEmbed_table_iteration(LuaCEmbed *self,int index){
         }
         if(value_type == LUA_CEMBED_TABLE){
             printf("%s:\n",converted_key);
-            privateLuaEmbed_table_iteration(self, lua_gettop(self->state));
+            privateLuaEmbed_table_iteration(self, args,lua_gettop(self->state));
         }
         lua_pop(self->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
     }
@@ -59,7 +61,7 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *co
         return NULL;
     }
 
-    privateLuaEmbed_table_iteration(self,index+1);
+    privateLuaEmbed_table_iteration(self,table_args,index+1);
 
 
 

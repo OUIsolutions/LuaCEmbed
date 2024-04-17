@@ -1,5 +1,4 @@
 
-
 privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list  args){
 
     privateLuaEmbedTableArgs *self = (privateLuaEmbedTableArgs*) malloc(sizeof (privateLuaEmbedTableArgs));
@@ -48,6 +47,14 @@ privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list 
     }
     return self;
 
+}
+int privateLuaEmbedTableArgs_get_current_index_type(privateLuaEmbedTableArgs *self){
+  return LuaCEmbed_get_evaluation_type(
+            self->element,
+            PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
+            PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
+            self->index+1
+    );
 }
 
 void privateLuaEmbedTableArgs_free(privateLuaEmbedTableArgs *self){

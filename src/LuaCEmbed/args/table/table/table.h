@@ -3,6 +3,7 @@
 
 int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresion,...);
 
+void privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs *args,int index);
 
 char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *expresion,...);
 
