@@ -4,10 +4,12 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
+
     long test = lua.args.get_long_arg_clojure_evalation(l,0,"function (v) return v + 10 end ");
     printf("%ld\n",test);
     return NULL;
 }
+
 
 LuaCEmbedResponse * soma(LuaCEmbed *l){
 
