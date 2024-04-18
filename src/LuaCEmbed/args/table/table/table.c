@@ -13,7 +13,6 @@ char * privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs 
 
 
     while (lua_next(self->state, index) != 0) { // Enquanto houver elementos na tabela
-        i+=1;
 
         // Obtém a chave e o valor atual da tabela
         //printf("index %d\n",index);
@@ -25,6 +24,8 @@ char * privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs 
 
         if(!privateLuaEmbedTableArgs_is_the_current_index(args,i,total_elements,possible_key)){
             lua_pop(self->state, 1);
+            i+=1;
+
             continue;
         }
         int value_type = lua_type(self->state,-1);
