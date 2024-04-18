@@ -8,6 +8,7 @@ privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list 
     char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
     self->element =  newLuaCEmbedEvaluation();
+    self->formated_code = strdup(formated_expresion);
 
     LuaCEmbed_evaluate_string_no_return(
             self->element,
@@ -73,6 +74,13 @@ void privateLuaEmbedTableArgs_next(privateLuaEmbedTableArgs *self){
     self->index+=1;
 
 }
+bool private_LuaCembed_is_the_last_index(privateLuaEmbedTableArgs *self){
+    if(self->index == self->size){
+        return  true;
+    }
+    return  false;
+}
+
 
 bool privateLuaEmbedTableArgs_is_the_current_index(
         privateLuaEmbedTableArgs *self,
@@ -104,5 +112,6 @@ bool privateLuaEmbedTableArgs_is_the_current_index(
 }
 void privateLuaEmbedTableArgs_free(privateLuaEmbedTableArgs *self){
     LuaCEmbed_free(self->element);
+    free(self->formated_code);
     free(self);
 }

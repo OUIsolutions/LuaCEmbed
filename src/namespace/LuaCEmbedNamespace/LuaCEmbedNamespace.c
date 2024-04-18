@@ -12,7 +12,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.response = newLuaCEmbedResponseModule();
     self.get_error_message = LuaCEmbed_get_error_message;
     self.has_errors = LuaCEmbed_has_errors;
-    self.raise_error = LuaCEmbed_raise_error;
+    self.raise_error = LuaCEmbed_raise_internal_error;
     self.set_timeout = LuaCEmbed_set_timeout;
     self.evaluate_string = LuaCEmbed_evaluate_string_no_return;
     self.get_evaluate_string_returning_string = LuaCEmbed_get_evaluation_string;

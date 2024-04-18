@@ -57,7 +57,7 @@ int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code
     if(type == LUA_CEMBED_FUNCTION){
         if(lua_pcall(self->state,0,1,0)){
             const char *generated_error = lua_tostring(self->state,-1);
-            LuaCEmbed_raise_error(self,generated_error );
+            LuaCEmbed_raise_internal_error(self, generated_error);
         }
     }
     return LUA_CEMBED_OK;
@@ -74,7 +74,7 @@ int private_LuaCEmbed_ensure_evaluation_type(LuaCEmbed *self,int type){
             LuaCembed_convert_arg_code(actual_type),
             LuaCembed_convert_arg_code(type)
             );
-    LuaCEmbed_raise_error(self,buffer);
+    LuaCEmbed_raise_internal_error(self, buffer);
     return LUA_CEMBED_GENERIC_ERROR;
 }
 
