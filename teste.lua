@@ -8,11 +8,13 @@ local x = {
             d='funcionou porraazz'
          }
     },
+
+
     a1={
-            b='aaasss',
-             c={
-                d='funcionou porraa2ssss'
-             }
-        }
+        b='aaasss',
+         c={
+            d='funcionou porraaz2z'
+         }
+    }
 }
 puts(x)

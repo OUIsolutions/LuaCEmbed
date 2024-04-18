@@ -5,10 +5,9 @@ typedef struct privateLuaCembedTableIteration {
     privateLuaEmbedTableArgs *args;
     char *location;
     char *str_result;
-    void (*callback)(struct  privateLuaCembedTableIteration *self )
+    void (*callback)(struct  privateLuaCembedTableIteration *self );
 
-}privateLuaCembedTableIteration;
-
+} privateLuaCembedTableIteration;
 
 privateLuaCembedTableIteration * nwqprivateLuaCembedTableIteration(LuaCEmbed *embed_obj);
 
