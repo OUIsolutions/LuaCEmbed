@@ -2,6 +2,10 @@
 typedef  struct {
     LuaCEmbed  *element;
     int index;
+    int current_type;
+    long current_value;
+    char *current_value_str;
+
     int size;
 
 }privateLuaEmbedTableArgs;
@@ -10,6 +14,14 @@ typedef  struct {
 
 privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list  args);
 
-int privateLuaEmbedTableArgs_get_current_index_type(privateLuaEmbedTableArgs *self);
+void privateLuaEmbedTableArgs_next(privateLuaEmbedTableArgs *self);
+
+bool privateLuaEmbedTableArgs_is_the_current_index(
+        privateLuaEmbedTableArgs *self,
+        long current_iteration,
+        long total_elements,
+        const char *possible_key
+        );
+
 
 void privateLuaEmbedTableArgs_free(privateLuaEmbedTableArgs *self);

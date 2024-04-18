@@ -5,39 +5,30 @@ int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresi
     return -1;
 
 }
+
 void privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs *args,int index){
     lua_pushnil(self->state); // Coloca a chave nula na pilha
+    int i = 0;
+    long total_elements =  (long)lua_rawlen(self->state,index);
 
 
     while (lua_next(self->state, index) != 0) { // Enquanto houver elementos na tabela
+        i+=1;
+
         // Obtém a chave e o valor atual da tabela
         //printf("index %d\n",index);
         int key_type = lua_type(self->state,-2);
-        int value_type = lua_type(self->state,-1);
-        char *converted_key = NULL;
-        char buffer[200]= {0};
-
+        const char *possible_key = NULL;
         if(key_type == LUA_CEMBED_STRING){
-            converted_key = (char*)lua_tostring(self->state,-2);
+            possible_key = lua_tostring(self->state,-2);
         }
+        if(!privateLuaEmbedTableArgs_is_the_current_index(args,i,total_elements,possible_key)){
+            lua_pop(self->state, 1);
+            continue;
+        }
+        int value_type = lua_type(self->state,-1);
 
-        if(key_type == LUA_CEMBED_NUMBER){
-            int key = lua_tonumber(self->state,-2);
-            sprintf(buffer,"%d",key);
-            converted_key = buffer;
-        }
-
-        if(value_type == LUA_CEMBED_STRING || value_type == LUA_CEMBED_NUMBER ){
-            printf("%s:%s\n",converted_key, lua_tostring(self->state,-1));
-        }
-
-        if(value_type == LUA_CEMBED_BOOL){
-            printf("%s:%s\n",converted_key, lua_toboolean(self->state,-1) ? "true":"false");
-        }
-        if(value_type == LUA_CEMBED_TABLE){
-            printf("%s:\n",converted_key);
-            privateLuaEmbed_table_iteration(self, args,lua_gettop(self->state));
-        }
+        
         lua_pop(self->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
     }
 

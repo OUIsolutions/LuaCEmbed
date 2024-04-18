@@ -78,7 +78,7 @@ int private_LuaCEmbed_ensure_evaluation_type(LuaCEmbed *self,int type){
     return LUA_CEMBED_GENERIC_ERROR;
 }
 
-char * LuaCEmbed_evaluate_string_returning_string(LuaCEmbed *self, char *code, ...){
+char * LuaCEmbed_get_evaluation_string(LuaCEmbed *self, char *code, ...){
 
     va_list args;
     va_start(args,code);
@@ -123,7 +123,7 @@ long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self, char *code, ...){
 }
 
 
-long LuaCEmbed_evaluate_string_returning_long(LuaCEmbed *self, char *code, ...){
+long LuaCEmbed_get_evaluation_long(LuaCEmbed *self, char *code, ...){
 
     va_list args;
     va_start(args,code);
