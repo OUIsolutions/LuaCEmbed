@@ -71,6 +71,8 @@ char * privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs 
 
     return NULL;
 }
+
+
 char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *code,...){
 
     if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){

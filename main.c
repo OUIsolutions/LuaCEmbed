@@ -3,17 +3,19 @@
 LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
-    char *test = lua.args.table.get_arg_string(l,0,"{0,'c','d'}");
+
+    char *test = lua.args.table.get_arg_string(l,0,"{-1,'c','d'}");
     printf("test: %s\n",test);
     return NULL;
+
 }
 
 
 LuaCEmbedResponse * soma(LuaCEmbed *l){
 
-
     int arg1 = (int)lua.args.get_long(l,0);
     int arg2 = (int)lua.args.get_long(l,1);
+
     return lua.response.send_long(arg1 + arg2);
 }
 
