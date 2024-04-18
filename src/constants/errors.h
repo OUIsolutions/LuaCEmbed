@@ -10,4 +10,4 @@
 
 #define PRIVATE_LUA_CEMBED_CODE_ITS_NOT_A_FUNCTION "value %s its not a function"
 #define PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR "arguments of function %s at index %d its not a valid lua code"
-#define PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST "value at path:%s of function %s at index %d not exist"
+#define PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST "value at path:%s of %s  not exist"
