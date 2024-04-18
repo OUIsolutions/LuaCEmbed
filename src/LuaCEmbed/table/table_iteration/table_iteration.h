@@ -4,6 +4,7 @@ typedef struct privateLuaCembedTableIteration {
     LuaCEmbed  *embed_obj;
     privateLuaEmbedTableArgs *args;
     char *location;
+    char *str_result;
     void (*callback)(struct  privateLuaCembedTableIteration *self )
 
 }privateLuaCembedTableIteration;
@@ -18,6 +19,7 @@ int  privateLuaCembedTableIteration_set_args_code(privateLuaCembedTableIteration
 
 void  privateLuaCembedTableIteration_set_location(privateLuaCembedTableIteration *self,const char *format,...);
 
+void privateLuaCembedTableIteration_str_callback(privateLuaCembedTableIteration *self );
 
 char * privateLuaCembedTableIteration_get_str(privateLuaCembedTableIteration *self,int index );
 
