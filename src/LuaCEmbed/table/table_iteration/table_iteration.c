@@ -36,11 +36,17 @@ void  privateLuaCembedTableIteration_set_location(privateLuaCembedTableIteration
 
 void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration *self, int index){
     int i = 0;
-    long total_elements =  (long)lua_rawlen(self->embed_obj->state,1);
+    long total_elements =  0;
     //printf("total %ld\n",total_elements);
 
     lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
 
+    while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
+        lua_pop(self->embed_obj->state, 1);
+        total_elements+=1;
+    }
+
+    lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
 
     while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
 

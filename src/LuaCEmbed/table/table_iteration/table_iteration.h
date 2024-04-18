@@ -9,6 +9,7 @@ typedef struct privateLuaCembedTableIteration {
 
 } privateLuaCembedTableIteration;
 
+
 privateLuaCembedTableIteration * nwqprivateLuaCembedTableIteration(LuaCEmbed *embed_obj);
 
 void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration *self, int index);

@@ -24,3 +24,4 @@ const char * LuaCembed_convert_arg_code(int arg_code){
 
     return PRIVATE_LUA_CEMBED_UNKNOW_STRING;
 }
+

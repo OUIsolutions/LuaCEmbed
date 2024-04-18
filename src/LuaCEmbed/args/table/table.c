@@ -9,7 +9,6 @@ int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *expresi
 
 char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *code,...){
 
-    printf("total %ld\n", (long)luaL_len(self->state,1));
 
     if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
         return  NULL;

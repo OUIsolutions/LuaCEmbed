@@ -1,7 +1,7 @@
 
 
 int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name){
-
+    lua_getglobal(self->state, name);
     return lua_type(self->state,-1);
 }
 
