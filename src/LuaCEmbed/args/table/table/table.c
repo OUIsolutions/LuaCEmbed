@@ -35,6 +35,7 @@ char * privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs 
             return NULL;
         }
 
+
         //means its the last iteration
         if(!is_last_index){
             privateLuaEmbedTableArgs_next(args);

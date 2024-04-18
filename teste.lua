@@ -3,7 +3,10 @@
 
 local x = {
     a={
-        b='aaasss'
+        b='aaasss',
+         c={
+            d='funcionou porraa'
+         }
     }
 }
 puts(x)
