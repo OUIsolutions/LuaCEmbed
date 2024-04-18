@@ -12,23 +12,24 @@ char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *co
     if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
         return  NULL;
     }
-    va_list args;
+
+    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
+    va_list  args;
     va_start(args,code);
-    privateLuaEmbedTableArgs *table_args = newprivateLuaEmbedTableArgs(code,args);
+    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
     va_end(args);
-    if(!table_args){
-        LuaCEmbed_raise_internal_error(self,
-                                       PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
-                                       self->current_function,
-                                       index
-        );
+
+    if(args_result){
+        privateLuaCembedTableIteration_free(iterator);
         return NULL;
     }
+    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
 
-    char *result =  privateLuaEmbed_table_iteration(self,table_args,index+1,index+1);
-    privateLuaEmbedTableArgs_free(table_args);
+    char *result = privateLuaCembedTableIteration_get_str(iterator,index+1);
+    privateLuaCembedTableIteration_free(iterator);
     return result;
 }
+
 
 
 long LuaCEmbed_get_table_arg_long(LuaCEmbed *self, int index,const char *expresion,...){
