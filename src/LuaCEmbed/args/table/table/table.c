@@ -22,6 +22,7 @@ char * privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs 
         if(key_type == LUA_CEMBED_STRING){
             possible_key = lua_tostring(self->state,-2);
         }
+
         if(!privateLuaEmbedTableArgs_is_the_current_index(args,i,total_elements,possible_key)){
             lua_pop(self->state, 1);
             continue;
@@ -36,6 +37,7 @@ char * privateLuaEmbed_table_iteration(LuaCEmbed *self,privateLuaEmbedTableArgs 
 
         //means its the last iteration
         if(!is_last_index){
+            privateLuaEmbedTableArgs_next(args);
             char *result = privateLuaEmbed_table_iteration(self,args, lua_gettop(self->state),started_index);
             lua_pop(self->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
             return result;

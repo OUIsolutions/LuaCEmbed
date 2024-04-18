@@ -61,14 +61,16 @@ void privateLuaEmbedTableArgs_next(privateLuaEmbedTableArgs *self){
         self->current_value = LuaCEmbed_get_evaluation_long(
                 self->element,
                 PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
-                PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME
-                );
+                PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
+                self->index+1
+        );
     }
     if(self->current_type == LUA_CEMBED_STRING){
         self->current_value_str = LuaCEmbed_get_evaluation_string(
                 self->element,
                 PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
-                PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME
+                PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
+                self->index+1
         );
     }
     self->index+=1;
@@ -92,9 +94,13 @@ bool privateLuaEmbedTableArgs_is_the_current_index(
         if(!possible_key){
             return  false;
         }
+
         if(strcmp(possible_key,self->current_value_str) == 0){
+
             return  true;
         }
+
+
         return false;
     }
 
