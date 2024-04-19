@@ -1,7 +1,5 @@
-
-#include "src/one.c"
+#include "../../../LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
-
 
 
 LuaCEmbedResponse  * hello(LuaCEmbed *args){
@@ -9,15 +7,13 @@ LuaCEmbedResponse  * hello(LuaCEmbed *args){
     return NULL;
 }
 
-
-int main(){
-
+int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"hello",hello);
 
-    lua_n.get_string_evaluation(l, "hello()");
+    lua_n.evaluate_string(l,"hello()");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -26,4 +22,3 @@ int main(){
 
     return 0;
 }
-//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

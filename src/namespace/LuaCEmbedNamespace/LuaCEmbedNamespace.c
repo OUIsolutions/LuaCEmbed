@@ -6,6 +6,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.newLuaEvaluation = newLuaCEmbedEvaluation;
     self.set_delete_function = LuaCembed_set_delete_function;
     self.perform = LuaCembed_perform;
+    self.convert_arg_code = LuaCembed_convert_arg_code;
     self.args = newLuaCembedArgsModule();
     self.types = newLuaCEmbedTypeModule();
     self.globals = newLuaCEmbedGlobalModule();
@@ -15,7 +16,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.raise_error = privateLuaCEmbed_raise_error_not_jumping;
     self.set_timeout = LuaCEmbed_set_timeout;
     self.evaluate_string = LuaCEmbed_evaluate_string_no_return;
-    self.get_evaluate_string_returning_string = LuaCEmbed_get_evaluation_string;
+    self.get_string_evaluation = LuaCEmbed_get_evaluation_string;
     self.get_evaluation_type = LuaCEmbed_get_evaluation_type;
     self.get_evaluation_size = LuaCEmbed_get_evaluation_table_size;
     self.get_evaluation_long = LuaCEmbed_get_evaluation_long;
