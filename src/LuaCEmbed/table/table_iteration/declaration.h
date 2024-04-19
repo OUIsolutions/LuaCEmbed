@@ -2,3 +2,5 @@
 #include "basic/basic.h"
 #include "string/str.h"
 #include "long/long_num.h"
+#include "double/double.h"
+#include "bool/bool.h"
