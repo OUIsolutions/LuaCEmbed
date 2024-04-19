@@ -33,7 +33,7 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va
 
     if(lua_pcall(self->state,1,1,0)){
         const char *generated_error = lua_tostring(self->state,-1);
-        LuaCEmbed_raise_internal_error(self, generated_error);
+        privateLuaCEmbed_raise_internal_error(self, generated_error);
     }
 
     return LUA_CEMBED_OK;
@@ -52,7 +52,7 @@ int privateLuaCembed_ensure_arg_evaluation_type(LuaCEmbed *self,int index,int ex
             LuaCembed_convert_arg_code(actual_type),
             LuaCembed_convert_arg_code(expected_type)
     );
-    LuaCEmbed_raise_internal_error(self, buffer);
+    privateLuaCEmbed_raise_internal_error(self, buffer);
     return LUA_CEMBED_GENERIC_ERROR;
 }
 long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,char *code,...){

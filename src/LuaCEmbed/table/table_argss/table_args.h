@@ -17,6 +17,8 @@ privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list 
 
 void privateLuaEmbedTableArgs_next(privateLuaEmbedTableArgs *self);
 
+bool private_LuaCembed_require_total(privateLuaEmbedTableArgs  *self);
+
 bool private_LuaCembed_is_the_last_index(privateLuaEmbedTableArgs *self);
 
 bool privateLuaEmbedTableArgs_is_the_current_index(

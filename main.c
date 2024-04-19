@@ -4,8 +4,11 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
-    char *test = lua.args.table.get_arg_string(l,0,"{-1,'c','d'}");
+    char *test = lua.args.table.get_arg_string(l,0,"{'s','c','d'}");
     printf("test: %s\n",test);
+
+
+
     return NULL;
 
 }

@@ -11,10 +11,10 @@ privateLuaCembedTableIteration * nwqprivateLuaCembedTableIteration(LuaCEmbed *em
 int  privateLuaCembedTableIteration_set_args_code(privateLuaCembedTableIteration *self,const char *code,va_list args){
     self->args= newprivateLuaEmbedTableArgs(code,args);
     if(!self->args){
-        LuaCEmbed_raise_internal_error(self->embed_obj,
-                                       PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
-                                       self->embed_obj->current_function,
-                                       index
+        privateLuaCEmbed_raise_internal_error(self->embed_obj,
+                                              PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
+                                              self->embed_obj->current_function,
+                                              index
         );
 
         return LUA_CEMBED_GENERIC_ERROR;
@@ -39,12 +39,14 @@ void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration
     long total_elements =  0;
     //printf("total %ld\n",total_elements);
 
-    
-    lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-    while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
-        lua_pop(self->embed_obj->state, 1);
-        total_elements+=1;
+    if(private_LuaCembed_require_total(self->args)){
+        lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
+        while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
+            lua_pop(self->embed_obj->state, 1);
+            total_elements+=1;
+        }
     }
+
 
 
     lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
@@ -71,7 +73,7 @@ void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration
         int is_last_index = private_LuaCembed_is_the_last_index(self->args);
 
         if(!is_last_index && value_type !=LUA_CEMBED_TABLE){
-            LuaCEmbed_raise_internal_error(
+            privateLuaCEmbed_raise_internal_error(
                     self->embed_obj,
                     PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST,
                     self->args->formated_code,
@@ -93,7 +95,7 @@ void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration
         return ;
     }
 
-    LuaCEmbed_raise_internal_error(
+    privateLuaCEmbed_raise_internal_error(
             self->embed_obj,
             PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST,
             self->args->formated_code,
@@ -105,7 +107,7 @@ void privateLuaCembedTableIteration_str_callback(privateLuaCembedTableIteration 
     int value_type = lua_type(self->embed_obj->state,-1);
     if(value_type != LUA_CEMBED_STRING){
 
-        LuaCEmbed_raise_internal_error(
+        privateLuaCEmbed_raise_internal_error(
                 self->embed_obj,
                 PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
                 self->args->formated_code,

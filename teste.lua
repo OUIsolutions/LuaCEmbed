@@ -2,7 +2,7 @@
 
 
 local x = {
-    a={
+    {
         b='aaasss',
          c={
             d='funcionou porraazz'
@@ -10,7 +10,7 @@ local x = {
     },
 
 
-    a1={
+    {
         b='aaasss',
          c={
             d='funcionou porraaz2z'

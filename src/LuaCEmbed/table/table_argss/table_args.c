@@ -82,7 +82,14 @@ bool private_LuaCembed_is_the_last_index(privateLuaEmbedTableArgs *self){
     }
     return  false;
 }
-
+bool private_LuaCembed_require_total(privateLuaEmbedTableArgs  *self) {
+    if (self->current_type == LUA_CEMBED_NUMBER) {
+        if(self->current_value < -0){
+            return  true;
+        }
+    }
+    return false;
+}
 
 bool privateLuaEmbedTableArgs_is_the_current_index(
         privateLuaEmbedTableArgs *self,
