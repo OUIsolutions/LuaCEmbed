@@ -47,7 +47,16 @@ int luaopen_lib(lua_State *L) {
 
 }
 
+void teste(char *format,...){
+    va_list  args;
+    va_start(args,format);
+    private_LuaCembed_format(format,args);
+    va_end(args);
+}
 int main(){
+
+    teste("%s%s1234","foda","foda");
+    return 0;
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaEvaluation();
     lua.add_callback(l,"puts",print_lua_value);
