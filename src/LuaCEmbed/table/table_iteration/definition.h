@@ -4,3 +4,4 @@
 #include "double/double.c"
 #include "bool/bool.c"
 #include "size/size.c"
+#include "type/type.c"

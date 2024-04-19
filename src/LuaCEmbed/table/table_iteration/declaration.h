@@ -5,3 +5,4 @@
 #include "double/double.h"
 #include "bool/bool.h"
 #include "size/size.h"
+#include "type/type.h"
