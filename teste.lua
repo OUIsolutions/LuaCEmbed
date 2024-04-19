@@ -2,19 +2,10 @@
 
 
 local x = {
-    {
-        b='aaasss',
-         c={
-            d='funcionou porraazz'
-         }
-    },
-
-
-    {
-        b='aaasss',
-         c={
-            d='funcionou porraaz2z'
-         }
-    }
+    name='mateus',
+    age=27,
+    maried=false,
+    height=1.7 ,
+    cars={'corsa','astra'}
 }
 puts(x)

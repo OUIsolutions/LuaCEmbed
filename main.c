@@ -4,13 +4,21 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
-    char *test = lua.args.table.get_arg_string(l,0,"{'name'}");
-    long age = lua.args.table.get_arg_long(l,0,"{'name'}");
+    char *name = lua.args.table.get_arg_string(l,0,"{'name'}");
+    printf("name: %s\n",name);
+    long age = lua.args.table.get_arg_long(l,0,"{'age'}");
+    printf("age: %ld\n",age);
     double height = lua.args.table.get_arg_double(l,0,"{'height'}");
+    printf("height: %lf\n",height);
     bool maired = lua.args.table.get_arg_bool(l,0,"{'maried'}");
+    printf("maried: %d\n",maired);
 
-    printf("test: %s\n",test);
-
+    long cars_size = lua.args.table.get_arg_size(l,0,"{'cars'}");
+    printf("cars: \n");
+    for(int i = 0; i < cars_size; i++){
+        char *current_car = lua.args.table.get_arg_string(l,0,"{'cars',%d}",i);
+        printf("%s\n",current_car);
+    }
 
 
     return NULL;

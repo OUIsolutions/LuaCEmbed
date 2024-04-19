@@ -16,13 +16,7 @@ void privateLuaCembedTableIteration_size_callback(privateLuaCembedTableIteration
     }
 
 
-    self->num_result = 0;
-
-    lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-    while (lua_next(self->embed_obj->state, -1) != 0) { // Enquanto houver elementos na tabela
-        lua_pop(self->embed_obj->state, 1);
-        self->num_result+=1;
-    }
+    self->num_result =  (double )lua_rawlen(self->embed_obj->state,-1);
 
 
 }
@@ -31,13 +25,7 @@ void privateLuaCembedTableIteration_size_callback(privateLuaCembedTableIteration
 long privateLuaCembedTableIteration_get_size(privateLuaCembedTableIteration *self,int index ){
 
     if(self->args->size == 0){
-        int size = 0;
-        lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-        while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
-            lua_pop(self->embed_obj->state, 1);
-            size+=1;
-        }
-        return  size;
+        (long)lua_rawlen(self->embed_obj->state,-1);
     }
 
     self->callback = privateLuaCembedTableIteration_size_callback;

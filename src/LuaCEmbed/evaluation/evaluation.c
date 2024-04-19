@@ -119,13 +119,16 @@ long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self, char *code, ...){
     if(private_LuaCEmbed_ensure_evaluation_type(self,LUA_CEMBED_TABLE)){
         return LUA_CEMBED_GENERIC_ERROR;
     }
+    /*
     long  size = 0;
     lua_pushnil(self->state); // Coloca a chave nula na pilha
     while (lua_next(self->state, -1) != 0) { // Enquanto houver elementos na tabela
-        lua_pop(self->state, 1);
         size+=1;
+        lua_pop(self->state, 1);
     }
-    return size;
+     */
+
+    return (long)lua_rawlen(self->state,-1);
 }
 
 
