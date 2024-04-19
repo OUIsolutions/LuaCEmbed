@@ -29,9 +29,9 @@ privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list 
         privateLuaEmbedTableArgs_free(self);
         return NULL;
     }
+
     if(self->size == 0){
-        privateLuaEmbedTableArgs_free(self);
-        return NULL;
+        return self;
     }
 
 
