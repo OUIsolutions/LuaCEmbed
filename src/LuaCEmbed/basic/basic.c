@@ -60,7 +60,7 @@ void LuaCembed_perform(LuaCEmbed *self){
 
 void private_LuaCembed_handle_timeout(int signum) {
     if(global_current_lua_embed_object->runing){
-        privateLuaCEmbed_raise_internal_error(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
+        privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
     }
 
 }
@@ -75,8 +75,11 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_message;
 }
 
+void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...){
+    if(LuaCEmbed_has_errors(self)){
 
-void privateLuaCEmbed_raise_internal_error(LuaCEmbed *self, const char *error, ...){
+        free(self->error_message);
+    }
 
     va_list args;
     va_start(args,error);
@@ -84,15 +87,27 @@ void privateLuaCEmbed_raise_internal_error(LuaCEmbed *self, const char *error, .
     vsnprintf(formated_expresion, sizeof(formated_expresion),error,args);
     va_end(args);
 
-    if(LuaCEmbed_has_errors(self)){
-        return;
-    }
-    /*
     if(self->current_function){ // means its in protected mode
         lua_pushstring(self->state,formated_expresion);
         lua_error(self->state);
     }
-     */
+
+
+    self->error_message = strdup(formated_expresion);
+}
+
+void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
+
+    if(LuaCEmbed_has_errors(self)){
+        return;
+    }
+
+    va_list args;
+    va_start(args,error);
+    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    vsnprintf(formated_expresion, sizeof(formated_expresion),error,args);
+    va_end(args);
+
 
     self->error_message = strdup(formated_expresion);
 }

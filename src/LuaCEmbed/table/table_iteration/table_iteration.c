@@ -11,10 +11,10 @@ privateLuaCembedTableIteration * nwqprivateLuaCembedTableIteration(LuaCEmbed *em
 int  privateLuaCembedTableIteration_set_args_code(privateLuaCembedTableIteration *self,const char *code,va_list args){
     self->args= newprivateLuaEmbedTableArgs(code,args);
     if(!self->args){
-        privateLuaCEmbed_raise_internal_error(self->embed_obj,
-                                              PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
-                                              self->embed_obj->current_function,
-                                              index
+        privateLuaCEmbed_raise_error_not_jumping(self->embed_obj,
+                                                 PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
+                                                 self->embed_obj->current_function,
+                                                 index
         );
 
         return LUA_CEMBED_GENERIC_ERROR;
@@ -73,7 +73,7 @@ void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration
         int is_last_index = private_LuaCembed_is_the_last_index(self->args);
 
         if(!is_last_index && value_type !=LUA_CEMBED_TABLE){
-            privateLuaCEmbed_raise_internal_error(
+            privateLuaCEmbed_raise_error_not_jumping(
                     self->embed_obj,
                     PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST,
                     self->args->formated_code,
@@ -95,7 +95,7 @@ void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration
         return ;
     }
 
-    privateLuaCEmbed_raise_internal_error(
+    privateLuaCEmbed_raise_error_not_jumping(
             self->embed_obj,
             PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST,
             self->args->formated_code,
@@ -107,7 +107,7 @@ void privateLuaCembedTableIteration_str_callback(privateLuaCembedTableIteration 
     int value_type = lua_type(self->embed_obj->state,-1);
     if(value_type != LUA_CEMBED_STRING){
 
-        privateLuaCEmbed_raise_internal_error(
+        privateLuaCEmbed_raise_error_not_jumping(
                 self->embed_obj,
                 PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
                 self->args->formated_code,

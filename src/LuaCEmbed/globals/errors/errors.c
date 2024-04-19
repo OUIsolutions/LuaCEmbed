@@ -19,7 +19,7 @@ int LuaCEmbed_ensure_global_type(LuaCEmbed *self, const char *name,int expected_
                 LuaCembed_convert_arg_code(expected_type)
         );
 
-        privateLuaCEmbed_raise_internal_error(self, buffer);
+        privateLuaCEmbed_raise_error_not_jumping(self, buffer);
         return  LUA_CEMBED_GENERIC_ERROR;
     }
     return LUA_CEMBED_OK;
