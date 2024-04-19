@@ -5,7 +5,7 @@ from Build.full_folder_zip import zip_folder
 from platform import system as osname
 
 STARTER = 'src/one.c'
-TEST_NAME = 'LuaCEmbed_test.h'
+TEST_NAME = 'LuaCEmbed.h'
 OUTPUT_FULL = 'LuaCEmbed.h'
 
 OUTPUT_TEST = 'tests/LuaCEmbed.h'

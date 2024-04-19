@@ -5,7 +5,7 @@ providing any methods to control Lua Code from C
 ### Hello World
 <!--codeof:exemples/evaluation/hello_world.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
@@ -34,7 +34,7 @@ To evaluate Lua Code from C, you can use all the evaluation methods, provided by
 
 <!--codeof:exemples/evaluation/string_evalation.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -61,7 +61,7 @@ It's also possible to evaluate a file by using the **evaluete_file** method
 
 <!--codeof:exemples/evaluation/file_evaluation.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -93,7 +93,7 @@ You can determine the type of the evaluation by using the **get_evaluation_type*
 
 <!--codeof:exemples/evaluation/type_evaluation.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]){
 Its also possible to determine the size of a table by using the **get_evaluation_size** method 
 <!--codeof:exemples/evaluation/table_size.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]){
 
 <!--codeof:exemples/evaluation/long_return.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -173,7 +173,7 @@ int main(int argc, char *argv[]){
 
 <!--codeof:exemples/evaluation/double_evaluation.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -200,7 +200,7 @@ int main(int argc, char *argv[]){
 
 <!--codeof:exemples/evaluation/bool_evaluation.c-->
 ~~~c
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
