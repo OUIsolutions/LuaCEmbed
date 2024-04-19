@@ -27,9 +27,13 @@ privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list 
     self->size = (int)LuaCEmbed_get_evaluation_table_size(self->element,PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME);
     if(LuaCEmbed_has_errors(self->element)){
         privateLuaEmbedTableArgs_free(self);
-
         return NULL;
     }
+    if(self->size == 0){
+        privateLuaEmbedTableArgs_free(self);
+        return NULL;
+    }
+
 
     for(int i = 0; i < self->size; i++){
         int type = LuaCEmbed_get_evaluation_type(

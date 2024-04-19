@@ -4,7 +4,11 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedResponse * print_lua_value(LuaCEmbed *l){
 
-    char *test = lua.args.table.get_arg_string(l,0,"{'s','c','d'}");
+    char *test = lua.args.table.get_arg_string(l,0,"{'name'}");
+    long age = lua.args.table.get_arg_long(l,0,"{'name'}");
+    double height = lua.args.table.get_arg_double(l,0,"{'height'}");
+    bool maired = lua.args.table.get_arg_bool(l,0,"{'maried'}");
+
     printf("test: %s\n",test);
 
 
