@@ -58,7 +58,7 @@ def compile_project( file: str,compiler ='gcc', output: str = None, flags: List[
 
     if output is None:
         if current_os() == 'Windows':
-            output = file.replace('.c', 'exe').replace('.cpp', '.exe')
+            output = file.replace('.c', '.exe').replace('.cpp', '.exe')
         else:
             output = file.replace('.c', '.out').replace('.cpp', '.out')
 
@@ -83,7 +83,7 @@ def test_binary_with_valgrind(binary_file:str,flags: List[str]= None)->dict:
     if flags is None:
         flags = []
 
-    command = f'valgrind  ./{binary_file} ' + ' -'.join(flags)
+    command = f'valgrind  ./{binary_file} ' + '  '.join(list(map(lambda x :str(x),flags)))
     result = ComandLineExecution(command)
 
     #(result.output)
@@ -129,7 +129,7 @@ def execute_test_for_file(
     if not use_valgrind:
         if not execution_flags:
             execution_flags = []
-        command =f'{result} '+ ' -'.join(execution_flags)
+        command =f'{result} '+ ' '.join(list(map(lambda x: str(x),execution_flags)))
         return  ComandLineExecution(command)
 
     try:

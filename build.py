@@ -10,7 +10,10 @@ OUTPUT_FULL = 'LuaCEmbed.h'
 
 OUTPUT_TEST = 'tests/LuaCEmbed.h'
 
-ct.generate_amalgamated_code(STARTER,OUTPUT_TEST)
+r = ct.generate_amalgamated_code(STARTER)
+with open(OUTPUT_TEST,'w') as arq:
+    arq.write(r)
+
 use_valgrind = True
 
 if osname() == 'Windows':
@@ -28,4 +31,6 @@ test.start_test()
 create_exemples(TEST_NAME,OUTPUT_FULL)
 
 ct.include_code_in_markdown('README.md',save_file=True)
-ct.generate_amalgamated_code(STARTER,OUTPUT_FULL)
+
+with open(OUTPUT_FULL,'w') as arq:
+    arq.write(r)
