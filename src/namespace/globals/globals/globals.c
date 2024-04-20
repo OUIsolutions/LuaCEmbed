@@ -2,8 +2,9 @@
 
 LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     LuaCEmbedGlobalModule self = {0};
-    self.ensure_type = LuaCEmbed_ensure_global_type;
 
+    self.ensure_type = LuaCEmbed_ensure_global_type;
+    self.table = newLuaCEmbedGlobalTableModule();
     self.get_double = LuaCEmbed_get_global_double;
     self.get_string = LuaCEmbed_get_global_string;
     self.get_long = LuaCEmbed_get_global_long;

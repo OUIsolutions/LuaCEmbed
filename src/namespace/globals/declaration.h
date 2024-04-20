@@ -1,2 +1,2 @@
-#include "globals/globals.h"
 #include "tables/tables.h"
+#include "globals/globals.h"
