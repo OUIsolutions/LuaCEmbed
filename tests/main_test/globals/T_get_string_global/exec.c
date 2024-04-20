@@ -1,20 +1,15 @@
-
-#include "src/one.c"
+#include "../../../LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
-
-
-
-
-int main(){
-
+int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"hello",hello);
 
-    lua_n.evaluete_file(l, "hello()");
+    lua_n.evaluate_string(l,"r = 'hello world'");
+    char *  result  = lua_n.globals.get_string(l,"r");
+    printf("result %s\n",result);
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -23,4 +18,3 @@ int main(){
 
     return 0;
 }
-//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

@@ -222,5 +222,7 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+### Globals 
+Glbals can be fully handled by the LuaCEmbed Api
 
-
+#### Retriving Globals 
