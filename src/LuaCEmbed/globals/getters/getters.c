@@ -42,7 +42,7 @@ LuaCEmbedTable * LuaCembed_get_global_table_auto_creating(LuaCEmbed *self, const
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_TABLE)){
         return  LuaCembed_new_global_table(self,name);
     }
-    return private_LuaCembed_get_table_or_create_internal(self,name);
+    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,name);
 }
 
 LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
@@ -51,5 +51,5 @@ LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
     lua_newtable(self->state);
     lua_setglobal(self->state,name);
 
-    return private_LuaCembed_get_table_or_create_internal(self,name);
+    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,name);
 }

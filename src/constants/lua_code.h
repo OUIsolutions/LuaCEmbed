@@ -7,3 +7,4 @@
 #define PRIVATE_LUA_CEMBED_META_TABLE "private_lua_c_embed_main_meta_table"
 
 #define PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT "private_lua_c_embed%s_%s"
+#define PRIVATE_LUA_CEMBE_SUB_ARG_TABLE "private_lua_c_embed_%s_%d"

@@ -38,31 +38,15 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
     return (char*)lua_tostring(self->state,index+1);
 }
 
-int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char *expresion, va_list args){
-
-
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),expresion,args);
-
-
-    char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE +1000] = {0};
-    snprintf(formated_function, sizeof(formated_function),
-             PRIVATE_LUA_CEMBED_FUNCTION_ARGS_EVALUATION_CODE,
-             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-             formated_expresion
-            );
-
-    int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
-    if(error_code){
-        return error_code;
+LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
+    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
+        return NULL;
     }
 
-    lua_getglobal(self->state, PRIVATE_LUA_CEMBED_EVALUATION_NAME);
-    lua_pushvalue(self->state,index+1);
-    const int TOTAL_ARGS =1;
-    const int TOTAL_RETURNS =1;
-    //calling the function
-    error_code =lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
-    return error_code;
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(buffer,PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,index+1);
 
+    lua_pushvalue(self->state,index+1);
+    lua_setglobal(self->state,buffer);
+    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,buffer);
 }

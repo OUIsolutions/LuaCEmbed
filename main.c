@@ -3,24 +3,26 @@
 LuaCEmbedNamespace  lua_n;
 
 
-
-
-LuaCEmbedResponse  *increment(LuaCEmbedTable *self, LuaCEmbed *args){
-
-
-    printf("nome %s\n",self->global_buffer);
-
-    long v = lua_n.tables.get_long_prop(self,"v");
-
-    long value_to_increment =  lua_n.args.get_long(args,0);
-
-    printf("value to increment %ld",value_to_increment);
+LuaCEmbedResponse  *test (LuaCEmbed *args){
     return NULL;
 }
 
 
-int main(int argc, char *argv[]){
 
+int luaopen_lib(lua_State *L) {
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaLib(L,false);
+
+    lua_n.add_callback(l, "test", test);
+
+    lua_n.perform(l);
+    return 1;
+
+}
+
+
+int main(int argc, char *argv[]){
+/*
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
@@ -44,5 +46,6 @@ int main(int argc, char *argv[]){
     lua_n.free(l);
 
     return 0;
+    */
 }
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

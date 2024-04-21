@@ -7,6 +7,7 @@ LuaCembedArgsModule newLuaCembedArgsModule(){
     self.get_double = LuaCEmbed_get_double_arg;
     self.get_str = LuaCEmbed_get_str_arg;
     self.get_type = LuaCEmbed_get_arg_type;
+    self.get_table = LuaCEmbed_get_arg_table;
     self.get_type_clojure_evalation = LuaCEmbed_get_type_clojure_evalation;
     self.generate_arg_clojure_evalation = LuaCEmbed_generate_arg_clojure_evalation;
     self.get_bool_arg_clojure_evalation = LuaCEmbed_get_bool_arg_clojure_evalation;

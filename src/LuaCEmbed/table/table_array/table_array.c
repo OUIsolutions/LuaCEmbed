@@ -3,7 +3,7 @@
 privateLuaCEmbedTableArray *newprivateLuaCEmbedTableArray(){
     privateLuaCEmbedTableArray *self = (privateLuaCEmbedTableArray*) malloc(sizeof (privateLuaCEmbedTableArray));
     *self = (privateLuaCEmbedTableArray){0};
-    self->tables = malloc(0);
+    self->tables = (LuaCEmbedTable**)malloc(0);
     return self;
 }
 
