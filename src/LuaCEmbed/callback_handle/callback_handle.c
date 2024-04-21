@@ -2,15 +2,28 @@
 
 int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
-    LuaCEmbedResponse* (*callback)(LuaCEmbed *args);
-    callback = (LuaCEmbedResponse* (*)(LuaCEmbed *args))lua_touserdata(L, lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_INDEX));
-    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_EMBED_OBJECT));
-    char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_ARG));;
+    bool is_a_method =  (bool)lua_touserdata(L, lua_upvalueindex(1));
+    bool is_a_function = !is_a_method;
+    LuaCEmbedResponse *possible_return = NULL;
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
+    char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(3));
     self->current_function = func_name;
 
-    //evaluating callback
-    LuaCEmbedResponse *possible_return = callback(self);
+    if(is_a_method){
+        LuaCEmbedResponse *(*method_callback)(LuaCembedTable *tb,LuaCEmbed *self);
+        LuaCembedTable  *table = (LuaCembedTable*) lua_touserdata(L, lua_upvalueindex(4));
+        method_callback = (LuaCEmbedResponse *(*)(LuaCembedTable *tb,LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
+        possible_return = method_callback(table,self);
+    }
+
+    if(is_a_function){
+        LuaCEmbedResponse *(*function_callback)(LuaCEmbed *self);
+        function_callback = (LuaCEmbedResponse *(*)(LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(4));
+        possible_return = function_callback(self);
+    }
+
     self->current_function = NULL;
+
     if(!possible_return){
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
