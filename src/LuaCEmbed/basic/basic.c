@@ -4,6 +4,7 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
     self->state = luaL_newstate();
+    self->global_tables = (void*)newprivateLuaCEmbedTableArray();
     return self;
 }
 
@@ -26,6 +27,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     self->state = state;
     self->is_lib = true;
     self->public_functions = public_functions;
+    self->global_tables = (void*)newprivateLuaCEmbedTableArray();
 
 
 
@@ -129,7 +131,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 void LuaCEmbed_free(LuaCEmbed *self){
-
+    privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->global_tables);
     if(!self->is_lib){ //se for do próprio lua, o lua cuidará de limpar
         lua_close(self->state); // Fecha o estado Lua
     }

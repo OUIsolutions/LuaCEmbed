@@ -8,6 +8,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
     char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(3));
     self->current_function = func_name;
+    self->func_tables = (void*)newprivateLuaCEmbedTableArray();
 
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
@@ -22,6 +23,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         possible_return = function_callback(self);
     }
 
+    privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
     self->current_function = NULL;
 
     if(!possible_return){
