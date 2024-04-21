@@ -12,6 +12,8 @@ typedef struct {
     double  (*get_double_prop)(LuaCEmbedTable *self , const char *name);
     bool  (*get_bool_prop)(LuaCEmbedTable *self , const char *name);
 
+
+    LuaCEmbedTable  *(*get_sub_table)(LuaCEmbedTable *self, const char *name);
     char *(*get_key_by_index)(LuaCEmbedTable *self, long index);
     bool (*has_key)(LuaCEmbedTable *self,long index);
 

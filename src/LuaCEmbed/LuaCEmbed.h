@@ -8,6 +8,8 @@ typedef struct LuaCEmbed{
     void *opt_args;
     bool runing;
     void (*delelte_function)(struct  LuaCEmbed *self);
+    void *global_tables;
+    void *func_tables;
 }LuaCEmbed;
 
 
