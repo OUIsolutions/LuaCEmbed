@@ -8,8 +8,4 @@
 #define PRIVATE_LUA_CEMBED_RESULT_EVALUATION_ARG_WRONG_TYPE "result evaluation of function %s at index %d its:%s instead of %s"
 
 #define PRIVATE_LUA_CEMBED_CODE_ITS_NOT_A_FUNCTION "value %s its not a function"
-#define PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR "arguments of function %s at index %d its not a valid lua code"
-#define PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST "value at path:%s of %s  not exist"
-#define PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE "value at path:%s of %s  its:%s instead of %s"
-#define PRIVATE_LUA_CEMBED_ARG_LOCATION "function %s at arg:%d "
-#define PRIVATE_LUA_CEMBED_GLOBAL_LOCATION "global var %s "
+#define PRIVATE_LUA_CEMBED_WRONG_TYPE_PROPETY "propety %s at object %s its %s instead of %s"

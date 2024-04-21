@@ -1,8 +1,8 @@
 
 
-LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...){
-    LuaCembedTable  *self = (LuaCembedTable*)malloc(sizeof (LuaCembedTable));
-    *self = (LuaCembedTable){0};
+LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...){
+    LuaCEmbedTable  *self = (LuaCEmbedTable*)malloc(sizeof (LuaCEmbedTable));
+    *self = (LuaCEmbedTable){0};
     self->main_object =main_embed;
     char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     va_list  args;
@@ -14,7 +14,7 @@ LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...
 }
 
 
-void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedResponse *(*callback)(LuaCembedTable  *self,LuaCEmbed *args)){
+void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args)){
 
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
@@ -31,7 +31,7 @@ void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedR
     lua_settable(self->main_object->state,-3);
 }
 
-void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value){
+void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, const char *value){
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
     lua_pushstring(self->main_object->state,value);
@@ -39,24 +39,56 @@ void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,cons
     lua_settable(self->main_object->state,-3);
 }
 
-void  LuaCembedTable_set_long_prop(LuaCembedTable *self ,const char *name,long  value){
+void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long  value){
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,(double)value);
     lua_settable(self->main_object->state,-3);
 }
 
-void  LuaCembedTable_set_double_prop(LuaCembedTable *self ,const char *name,double  value){
+void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, double  value){
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
 }
 
-void  LuaCembedTable_set_bool_prop(LuaCembedTable *self ,const char *name,bool value){
+void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool value){
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
     lua_pushboolean(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
 }
+
+int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_getfield(self->main_object->state,-1,name);
+    return lua_type(self->main_object->state,-1);
+}
+
+int privateLuaCEmbedTable_ensure_type(LuaCEmbedTable *self,const char *name, int expected_type){
+    int type = lua_type(self->main_object->state,-1);
+    if(type == expected_type){
+        return  LUA_CEMBED_OK;
+    }
+    privateLuaCEmbed_raise_error_not_jumping(
+            self->main_object,
+            PRIVATE_LUA_CEMBED_WRONG_TYPE_PROPETY,
+                    name,
+                    self->global_buffer,
+            LuaCembed_convert_arg_code(type),
+            LuaCembed_convert_arg_code(expected_type)
+    );
+    return LUA_CEMBED_GENERIC_ERROR;
+}
+
+char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_getfield(self->main_object->state,-1,name);
+    if(!privateLuaCEmbedTable_ensure_type(self,name,LUA_CEMBED_STRING)){
+        return NULL;
+    }
+    return (char*)lua_tostring(self->main_object->state,-1);
+}
+
 

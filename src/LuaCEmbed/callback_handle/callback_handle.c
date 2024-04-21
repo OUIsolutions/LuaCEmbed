@@ -10,9 +10,9 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     self->current_function = func_name;
 
     if(is_a_method){
-        LuaCEmbedResponse *(*method_callback)(LuaCembedTable *tb,LuaCEmbed *self);
-        LuaCembedTable  *table = (LuaCembedTable*) lua_touserdata(L, lua_upvalueindex(4));
-        method_callback = (LuaCEmbedResponse *(*)(LuaCembedTable *tb,LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
+        LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
+        LuaCEmbedTable  *table = (LuaCEmbedTable*) lua_touserdata(L, lua_upvalueindex(4));
+        method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
     }
 

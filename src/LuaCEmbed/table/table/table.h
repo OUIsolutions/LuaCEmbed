@@ -4,19 +4,26 @@ typedef struct {
     LuaCEmbed  *main_object;
     char  *global_buffer;
 
-}LuaCembedTable;
+}LuaCEmbedTable;
 
-LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...);
+LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...);
 
 
-void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedResponse *(*callback)(LuaCembedTable  *self,LuaCEmbed *args));
+void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args));
 
-void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value);
+void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, const char *value);
 
-void  LuaCembedTable_set_long_prop(LuaCembedTable *self ,const char *name,long  value);
+void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long  value);
 
-void  LuaCembedTable_set_double_prop(LuaCembedTable *self ,const char *name,double  value);
+void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, double  value);
 
-void  LuaCembedTable_set_bool_prop(LuaCembedTable *self ,const char *name,bool value);
+void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool value);
 
+int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name);
+
+int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name);
+
+int privateLuaCEmbedTable_ensure_type(LuaCEmbedTable *self,const char *name, int expected_type);
+
+char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name);
 

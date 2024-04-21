@@ -38,14 +38,14 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
     return (char*)lua_tostring(self->state,-1);
 }
 
-LuaCembedTable * LuaCembed_get_global_table(LuaCEmbed *self,const char *name){
+LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name){
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_TABLE)){
         return  NULL;
     }
     return newLuaCembedTable(self,"%s",name);
 }
 
-LuaCembedTable * LuaCembed_new_global_table(LuaCEmbed *self,const char *name){
+LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
 
     lua_newtable(self->state);
     lua_setglobal(self->state,name);
