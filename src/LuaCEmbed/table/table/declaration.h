@@ -2,3 +2,4 @@
 #include "basic/basic.h"
 #include "getters/getters.h"
 #include "setters/setters.h"
+#include "errors/errors.h"
