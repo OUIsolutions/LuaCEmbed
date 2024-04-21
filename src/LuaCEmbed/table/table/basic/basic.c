@@ -12,6 +12,7 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ..
     vsnprintf(buffer,sizeof(buffer),format,args);
     va_end(args);
     self->global_buffer = strdup(buffer);
+    self->sub_tables = (void*)newprivateLuaCEmbedTableArray();
     return self;
 }
 
@@ -21,5 +22,6 @@ void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
     if(self->prop_name){
         free(self->prop_name);
     }
+    privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->sub_tables);
     free(self);
 }

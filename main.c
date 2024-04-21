@@ -29,10 +29,10 @@ int main(int argc, char *argv[]){
 
     LuaCEmbedTable *t1  = lua_n.globals.get_table(l,"test");
 
-    long size = lua_n.tables.get_size(t1);
-    for(int i = 0; i  < size; i++){
-        printf("%s:%ld\n", lua_n.tables.get_key_by_index(t1, i), lua_n.tables.get_long_by_index(t1, i));
-    }
+    LuaCEmbedTable  *t2 = lua_n.tables.get_sub_table(t1,"teste2");
+    lua_n.tables.set_string_prop(t2,"a","va se fuder");
+
+    printf("%s",lua_n.get_string_evaluation(l,"test.teste2.a"));
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
