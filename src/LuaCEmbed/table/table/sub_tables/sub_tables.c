@@ -78,3 +78,38 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
     );
     return creaeted;
 }
+
+void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table){
+
+    char full_sub_table_name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    sprintf(full_sub_table_name,PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT,self->global_buffer,name);
+
+
+    //assagnin these prop as the same as sub table
+    lua_getglobal(self->main_object->state,sub_table->global_buffer);
+    lua_setglobal(self->main_object->state,full_sub_table_name);
+
+
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_pushstring(self->main_object->state,name);
+    lua_getglobal(self->main_object->state,full_sub_table_name);
+
+    lua_settable(self->main_object->state,-3);
+
+
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_name(
+            (privateLuaCEmbedTableArray*)self->sub_tables,
+            name
+    );
+    if(possible){
+        return ;
+    }
+
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,full_sub_table_name);
+    creaeted->prop_name = strdup(name);
+
+    privateLuaCEmbedTableArray_append(
+            (privateLuaCEmbedTableArray*)self->sub_tables,
+            creaeted
+    );
+}
