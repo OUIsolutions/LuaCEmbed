@@ -1,6 +1,5 @@
 #include "LuaCEmbed.h"
 #include "basic/basic.h"
-#include "old_table/declaration.h"
 #include "args/declaration.h"
 #include "table/declaration.h"
 #include "globals/declaration.h"

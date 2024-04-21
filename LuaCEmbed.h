@@ -22663,7 +22663,7 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST "value at path:%s of %s  not exist"
 #define PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE "value at path:%s of %s  its:%s instead of %s"
 #define PRIVATE_LUA_CEMBED_ARG_LOCATION "function %s at arg:%d "
-
+#define PRIVATE_LUA_CEMBED_GLOBAL_LOCATION "global var %s "
 
 
 
@@ -22753,134 +22753,6 @@ void LuaCEmbed_free(LuaCEmbed *self);
 
 
 
-typedef  struct {
-    LuaCEmbed  *element;
-    int index;
-    int current_type;
-    long current_value;
-    char *formated_code;
-    char *current_value_str;
-
-    int size;
-
-}privateLuaEmbedTableArgs;
-
-
-
-privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list  args);
-
-void privateLuaEmbedTableArgs_next(privateLuaEmbedTableArgs *self);
-
-bool private_LuaCembed_require_total(privateLuaEmbedTableArgs  *self);
-
-bool private_LuaCembed_is_the_last_index(privateLuaEmbedTableArgs *self);
-
-bool privateLuaEmbedTableArgs_is_the_current_index(
-        privateLuaEmbedTableArgs *self,
-        long current_iteration,
-        long total_elements,
-        const char *possible_key
-        );
-
-
-void privateLuaEmbedTableArgs_free(privateLuaEmbedTableArgs *self);
-
-
-
-typedef struct privateLuaCembedTableIteration {
-    LuaCEmbed  *embed_obj;
-    privateLuaEmbedTableArgs *args;
-    char *location;
-    char *str_result;
-    double num_result;
-    void (*callback)(struct  privateLuaCembedTableIteration *self );
-
-} privateLuaCembedTableIteration;
-
-
-
-
-
-
-privateLuaCembedTableIteration * nwqprivateLuaCembedTableIteration(LuaCEmbed *embed_obj);
-
-void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration *self, int index);
-
-int  privateLuaCembedTableIteration_set_args_code(privateLuaCembedTableIteration *self,const char *code,va_list args);
-
-
-void  privateLuaCembedTableIteration_set_location(privateLuaCembedTableIteration *self,const char *format,...);
-
-
-
-void privateLuaCembedTableIteration_free(privateLuaCembedTableIteration *self);
-
-
-
-void privateLuaCembedTableIteration_str_callback(privateLuaCembedTableIteration *self );
-
-
-char * privateLuaCembedTableIteration_get_str(privateLuaCembedTableIteration *self,int index );
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_long_callback(privateLuaCembedTableIteration *self );
-
-
-long privateLuaCembedTableIteration_get_long(privateLuaCembedTableIteration *self,int index );
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_double_callback(privateLuaCembedTableIteration *self );
-
-
-double privateLuaCembedTableIteration_get_double(privateLuaCembedTableIteration *self,int index );
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_bool_callback(privateLuaCembedTableIteration *self );
-
-
-bool privateLuaCembedTableIteration_get_bool(privateLuaCembedTableIteration *self,int index );
-
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_size_callback(privateLuaCembedTableIteration *self );
-
-
-long privateLuaCembedTableIteration_get_size(privateLuaCembedTableIteration *self,int index );
-
-
-
-
-
-
-
-int privateLuaCembedTableIteration_get_type(privateLuaCembedTableIteration *self,int index );
-
-
-
-
-
-
-
 
 int  LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, int index);
 
@@ -22903,24 +22775,6 @@ double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index);
 bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index);
 
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index);
-
-
-
-
-
-int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *code,...);
-
-char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *code,...);
-
-long LuaCEmbed_get_table_arg_long(LuaCEmbed *self, int index,const char *code,...);
-
-long LuaCEmbed_get_table_arg_size(LuaCEmbed *self, int index,const char *code,...);
-
-
-double LuaCEmbed_get_table_arg_double(LuaCEmbed *self, int index,const char *code,...);
-
-bool LuaCEmbed_get_table_arg_bool(LuaCEmbed *self, int index,const char *code,...);
-
 
 
 
@@ -22948,6 +22802,29 @@ char* LuaCEmbed_get_string_arg_clojure_evalation(LuaCEmbed *self,int index,char 
 
 
 
+typedef struct {
+    LuaCEmbed  *main_object;
+    char  *global_buffer;
+
+}LuaCembedTable;
+
+LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...);
+
+void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value);
+
+void  LuaCembedTable_set_long_prop(LuaCembedTable *self ,const char *name,long  value);
+
+void  LuaCembedTable_set_double_prop(LuaCembedTable *self ,const char *name,double  value);
+
+void  LuaCembedTable_set_bool_prop(LuaCembedTable *self ,const char *name,bool value);
+
+
+
+
+
+
+
+
 
 int LuaCEmbed_ensure_global_type(LuaCEmbed *self, const char *name,int expected_type);
 
@@ -22964,6 +22841,9 @@ bool LuaCEmbed_get_global_bool(LuaCEmbed *self,const char *name);
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name);
 
+LuaCembedTable * LuaCembed_get_global_table(LuaCEmbed *self,const char *name);
+
+LuaCembedTable * LuaCembed_new_global_table(LuaCEmbed *self,const char *name);
 
 
 
@@ -22974,22 +22854,6 @@ void LuaCEmbed_set_global_long(LuaCEmbed *self, const char *name, long value);
 void LuaCEmbed_set_global_double(LuaCEmbed *self, const char *name, double value);
 
 void LuaCEmbed_set_global_bool(LuaCEmbed *self, const char *name, bool value);
-
-
-
-
-
-long LuaCEmbed_get_global_table_long(LuaCEmbed *self,const char *name,const char *format, ...);
-
-double LuaCEmbed_get_global_table_double(LuaCEmbed *self,const char *name,const char *format, ...);
-
-char *LuaCEmbed_get_global_table_string(LuaCEmbed *self,const char *name,const char *format, ...);
-
-bool LuaCEmbed_get_global_table_bool(LuaCEmbed *self,const char *name,const char *format, ...);
-
-int  LuaCEmbed_get_global_table_type(LuaCEmbed *self,const char *name,const char *format, ...);
-
-long  LuaCEmbed_get_global_table_size(LuaCEmbed *self,const char *name,const char *format, ...);
 
 
 
@@ -23079,24 +22943,7 @@ LuaCEmbedResponseModule newLuaCEmbedResponseModule();
 
 typedef struct {
 
-    long (*get_long)(LuaCEmbed *self,const char *name,const char *format, ...);
-    double (*get_double)(LuaCEmbed *self,const char *name,const char *format, ...);
-    char *(*get_string)(LuaCEmbed *self,const char *name,const char *format, ...);
-    bool (*get_bool)(LuaCEmbed *self,const char *name,const char *format, ...);
-    int  (*get_type)(LuaCEmbed *self,const char *name,const char *format, ...);
-    long  (*get_size)(LuaCEmbed *self,const char *name,const char *format, ...);
-
-
-}LuaCEmbedGlobalTableModule;
-
-LuaCEmbedGlobalTableModule newLuaCEmbedGlobalTableModule();
-
-
-
-typedef struct {
-
     int (*ensure_type)(LuaCEmbed *self, const char *name,int expected_type);
-    LuaCEmbedGlobalTableModule table;
     int (*get_type)(LuaCEmbed *self,const char *name);
     long (*get_long)(LuaCEmbed *self,const char *name);
     double (*get_double)(LuaCEmbed *self,const char *name);
@@ -23108,30 +22955,13 @@ typedef struct {
     void (*set_double)(LuaCEmbed *self,const char *name,double value);
     void (*set_bool)(LuaCEmbed *self,const char *name,bool value);
 
+    LuaCembedTable * (*get_table)(LuaCEmbed *self, const char *name);
+    LuaCembedTable * (*new_table)(LuaCEmbed *self, const char *name);
+
 
 }LuaCEmbedGlobalModule;
 
 LuaCEmbedGlobalModule newLuaCEmbedGlobalModule();
-
-
-
-
-
-typedef struct {
-
-
-
-    int  (*get_arg_type)(LuaCEmbed *self, int index,const char *expresion,...);
-    char *  (*get_arg_string)(LuaCEmbed *self, int index,const char *expresion,...);
-    long (*get_arg_long)(LuaCEmbed *self, int index,const char *expresion,...);
-    long (*get_arg_size)(LuaCEmbed *self, int index,const char *expresion,...);
-    double (*get_arg_double)(LuaCEmbed *self, int index,const char *expresion,...);
-    bool (*get_arg_bool)(LuaCEmbed *self, int index,const char *expresion,...);
-
-
-}LuaCEmbedArgsTableModule;
-
-LuaCEmbedArgsTableModule newLuaCEmbedArgsTableModule();
 
 
 typedef struct {
@@ -23150,12 +22980,22 @@ typedef struct {
     bool (*get_bool_arg_clojure_evalation)(LuaCEmbed *self,int index,char *code,...);
     char* (*get_string_arg_clojure_evalation)(LuaCEmbed *self,int index,char *code,...);
 
-    LuaCEmbedArgsTableModule table;
 
 
 } LuaCembedArgsModule;
 
 LuaCembedArgsModule newLuaCembedArgsModule();
+
+
+typedef struct {
+    void  (*set_string_prop)(LuaCembedTable *self ,const char *name,const char *value);
+    void  (*set_long_prop)(LuaCembedTable *self ,const char *name,long  value);
+    void  (*set_double_prop)(LuaCembedTable *self ,const char *name,double  value);
+    void  (*set_bool_prop)(LuaCembedTable *self ,const char *name,bool value);
+
+}LuaCembedTableModule;
+
+LuaCembedTableModule newLuaCembedTableModule();
 
 
 
@@ -23165,6 +23005,7 @@ typedef struct{
     LuaCEmbedResponseModule  response;
     LuaCembedArgsModule args;
     LuaCEmbedGlobalModule  globals;
+    LuaCembedTableModule tables;
     LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();
@@ -23517,154 +23358,6 @@ int privateLuaCEmbed_evaluate_arg_expresion(LuaCEmbed *self,int index,const char
 
 
 
-
-int  LuaCEmbed_get_table_arg_type(LuaCEmbed *self, int index,const char *code,...){
-    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,code);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    int  result = privateLuaCembedTableIteration_get_type(iterator,index+1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-
-char *  LuaCEmbed_get_table_arg_string(LuaCEmbed *self, int index,const char *code,...){
-
-
-    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
-        return  NULL;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,code);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return NULL;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    char *result = privateLuaCembedTableIteration_get_str(iterator,index+1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-
-
-long LuaCEmbed_get_table_arg_long(LuaCEmbed *self, int index,const char *code,...){
-    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,code);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-   long  result = privateLuaCembedTableIteration_get_long(iterator,index+1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-long LuaCEmbed_get_table_arg_size(LuaCEmbed *self, int index,const char *code,...){
-    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,code);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    long  result = privateLuaCembedTableIteration_get_size(iterator,index+1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-double LuaCEmbed_get_table_arg_double(LuaCEmbed *self, int index,const char *code,...){
-    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,code);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    double  result = privateLuaCembedTableIteration_get_double(iterator,index+1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-
-bool LuaCEmbed_get_table_arg_bool(LuaCEmbed *self, int index,const char *code,...){
-    if(LuaCEmbed_ensure_arg_type(self,index,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,code);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,code,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    bool  result = privateLuaCembedTableIteration_get_bool(iterator,index+1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-
-
-
 int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va_list args){
 
     if(LuaCEmbed_ensure_arg_exist(self,index)){
@@ -23809,488 +23502,6 @@ char* LuaCEmbed_get_string_arg_clojure_evalation(LuaCEmbed *self,int index,char 
 
 
 
-privateLuaEmbedTableArgs * newprivateLuaEmbedTableArgs(const char *code,va_list  args){
-
-    privateLuaEmbedTableArgs *self = (privateLuaEmbedTableArgs*) malloc(sizeof (privateLuaEmbedTableArgs));
-    *self = (privateLuaEmbedTableArgs){0};
-
-
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
-    self->element =  newLuaCEmbedEvaluation();
-    self->formated_code = strdup(formated_expresion);
-
-    LuaCEmbed_evaluate_string_no_return(
-            self->element,
-            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
-            PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
-             formated_expresion
-   );
-
-    if(LuaCEmbed_has_errors(self->element)){
-        privateLuaEmbedTableArgs_free(self);
-
-        return NULL;
-    }
-
-
-    self->size = (int)LuaCEmbed_get_evaluation_table_size(self->element,PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME);
-    if(LuaCEmbed_has_errors(self->element)){
-        privateLuaEmbedTableArgs_free(self);
-        return NULL;
-    }
-
-    if(self->size == 0){
-        return self;
-    }
-
-
-    for(int i = 0; i < self->size; i++){
-        int type = LuaCEmbed_get_evaluation_type(
-                    self->element,
-                    PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
-                    PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
-                    i+1
-        );
-
-
-        if(type != LUA_CEMBED_STRING && type != LUA_CEMBED_NUMBER){
-            privateLuaEmbedTableArgs_free(self);
-            return NULL;
-        }
-
-    }
-    privateLuaEmbedTableArgs_next(self);
-    return self;
-
-}
-void privateLuaEmbedTableArgs_next(privateLuaEmbedTableArgs *self){
-    self->current_type = LuaCEmbed_get_evaluation_type(
-            self->element,
-            PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
-            PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
-            self->index+1
-    );
-    if(self->current_type == LUA_CEMBED_NUMBER){
-        self->current_value = LuaCEmbed_get_evaluation_long(
-                self->element,
-                PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
-                PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
-                self->index+1
-        );
-    }
-    if(self->current_type == LUA_CEMBED_STRING){
-        self->current_value_str = LuaCEmbed_get_evaluation_string(
-                self->element,
-                PRIVATE_LUA_CEMBED_TABLE_INDEXATION,
-                PRIVATE_LUA_CEMBED_TABLE_ARGS_INTERNAL_NAME,
-                self->index+1
-        );
-    }
-    self->index+=1;
-
-}
-bool private_LuaCembed_is_the_last_index(privateLuaEmbedTableArgs *self){
-    if(self->index == self->size){
-        return  true;
-    }
-    return  false;
-}
-bool private_LuaCembed_require_total(privateLuaEmbedTableArgs  *self) {
-    if (self->current_type == LUA_CEMBED_NUMBER) {
-        if(self->current_value < -0){
-            return  true;
-        }
-    }
-    return false;
-}
-
-bool privateLuaEmbedTableArgs_is_the_current_index(
-        privateLuaEmbedTableArgs *self,
-        long current_iteration,
-        long total_elements,
-        const char *possible_key
-){
-    if(self->current_type == LUA_CEMBED_STRING){
-        if(!possible_key){
-            return  false;
-        }
-
-        if(strcmp(possible_key,self->current_value_str) == 0){
-
-            return  true;
-        }
-
-
-        return false;
-    }
-
-    if(self->current_type == LUA_CEMBED_NUMBER){
-        long converted = self->current_value;
-        if(self->current_value <0){
-            converted = total_elements + self->current_value;
-        }
-        if(converted == current_iteration){
-            return true;
-        }
-    }
-
-    return false;
-}
-void privateLuaEmbedTableArgs_free(privateLuaEmbedTableArgs *self){
-    LuaCEmbed_free(self->element);
-    free(self->formated_code);
-    free(self);
-}
-
-
-
-
-
-
-privateLuaCembedTableIteration * nwqprivateLuaCembedTableIteration(LuaCEmbed *embed_obj){
-    privateLuaCembedTableIteration *self = (privateLuaCembedTableIteration*) malloc(sizeof (privateLuaCembedTableIteration));
-    *self = (privateLuaCembedTableIteration){0};
-    self->embed_obj = embed_obj;
-    return self;
-}
-
-int  privateLuaCembedTableIteration_set_args_code(privateLuaCembedTableIteration *self,const char *code,va_list args){
-    self->args= newprivateLuaEmbedTableArgs(code,args);
-    if(!self->args){
-        privateLuaCEmbed_raise_error_not_jumping(self->embed_obj,
-                                                 PRIVATE_LUA_CEMBED_TABLE_ARGS_ERROR,
-                                                 self->embed_obj->current_function,
-                                                 index
-        );
-
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    return LUA_CEMBED_OK;
-}
-
-void  privateLuaCembedTableIteration_set_location(privateLuaCembedTableIteration *self,const char *format,...){
-
-    va_list args;
-    va_start(args,format);
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),format,args);
-    va_end(args);
-
-    self->location  = strdup(formated_expresion);
-
-}
-
-void privateLuaCembedTableIteration_run_iteration(privateLuaCembedTableIteration *self, int index){
-    int i = 0;
-    long total_elements =  0;
-    //printf("total %ld\n",total_elements);
-
-    if(private_LuaCembed_require_total(self->args)){
-        lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-        while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
-            lua_pop(self->embed_obj->state, 1);
-            total_elements+=1;
-        }
-    }
-
-
-
-    lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-
-    while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
-
-        // Obtém a chave e o valor atual da tabela
-        //printf("index %d\n",index);
-        int key_type = lua_type(self->embed_obj->state,-2);
-        const char *possible_key = NULL;
-        if(key_type == LUA_CEMBED_STRING){
-            possible_key = lua_tostring(self->embed_obj->state,-2);
-        }
-
-        if(!privateLuaEmbedTableArgs_is_the_current_index(self->args,i,total_elements,possible_key)){
-            lua_pop(self->embed_obj->state, 1);
-            i+=1;
-
-            continue;
-        }
-        //here it means its the correct key/index
-
-        int value_type = lua_type(self->embed_obj->state,-1);
-        int is_last_index = private_LuaCembed_is_the_last_index(self->args);
-
-        if(!is_last_index && value_type !=LUA_CEMBED_TABLE){
-            privateLuaCEmbed_raise_error_not_jumping(
-                    self->embed_obj,
-                    PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST,
-                    self->args->formated_code,
-                    self->location
-            );
-            return;
-        }
-
-        //means its the last iteration
-        if(!is_last_index){
-            privateLuaEmbedTableArgs_next(self->args);
-            privateLuaCembedTableIteration_run_iteration(self, lua_gettop(self->embed_obj->state));
-            lua_pop(self->embed_obj->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
-            return ;
-        }
-
-        self->callback(self);
-        lua_pop(self->embed_obj->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
-        return ;
-    }
-
-    privateLuaCEmbed_raise_error_not_jumping(
-            self->embed_obj,
-            PRIVATE_LUA_CEMBED_PATH_TABLE_NOT_EXIST,
-            self->args->formated_code,
-            self->location
-    );
-
-}
-
-
-void privateLuaCembedTableIteration_free(privateLuaCembedTableIteration *self){
-    free(self->location);
-    privateLuaEmbedTableArgs_free(self->args);
-    free(self);
-
-}
-
-
-void privateLuaCembedTableIteration_str_callback(privateLuaCembedTableIteration *self ){
-    int value_type = lua_type(self->embed_obj->state,-1);
-    if(value_type != LUA_CEMBED_STRING){
-
-        privateLuaCEmbed_raise_error_not_jumping(
-                self->embed_obj,
-                PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
-                self->args->formated_code,
-                self->location,
-                LuaCembed_convert_arg_code(value_type),
-                LuaCembed_convert_arg_code(LUA_CEMBED_STRING)
-        );
-        return;
-    }
-    self->str_result = (char*) lua_tostring(self->embed_obj->state,-1);
-
-}
-
-char * privateLuaCembedTableIteration_get_str(privateLuaCembedTableIteration *self,int index ){
-    self->callback = privateLuaCembedTableIteration_str_callback;
-    privateLuaCembedTableIteration_run_iteration(self,index);
-    return self->str_result;
-}
-
-
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_long_callback(privateLuaCembedTableIteration *self ){
-    int value_type = lua_type(self->embed_obj->state,-1);
-    if(value_type != LUA_CEMBED_NUMBER){
-
-        privateLuaCEmbed_raise_error_not_jumping(
-                self->embed_obj,
-                PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
-                self->args->formated_code,
-                self->location,
-                LuaCembed_convert_arg_code(value_type),
-                LuaCembed_convert_arg_code(LUA_CEMBED_NUMBER)
-        );
-        return;
-    }
-    self->num_result = lua_tonumber(self->embed_obj->state,-1);
-
-}
-
-
-long privateLuaCembedTableIteration_get_long(privateLuaCembedTableIteration *self,int index ){
-    self->callback = privateLuaCembedTableIteration_long_callback;
-    privateLuaCembedTableIteration_run_iteration(self,index);
-    return (long )self->num_result;
-}
-
-
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_double_callback(privateLuaCembedTableIteration *self ){
-    int value_type = lua_type(self->embed_obj->state,-1);
-    if(value_type != LUA_CEMBED_NUMBER){
-
-        privateLuaCEmbed_raise_error_not_jumping(
-                self->embed_obj,
-                PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
-                self->args->formated_code,
-                self->location,
-                LuaCembed_convert_arg_code(value_type),
-                LuaCembed_convert_arg_code(LUA_CEMBED_NUMBER)
-        );
-        return;
-    }
-    self->num_result = lua_tonumber(self->embed_obj->state,-1);
-
-}
-
-
-double privateLuaCembedTableIteration_get_double(privateLuaCembedTableIteration *self,int index ){
-    self->callback = privateLuaCembedTableIteration_double_callback;
-    privateLuaCembedTableIteration_run_iteration(self,index);
-    return (double )self->num_result;
-}
-
-
-
-
-
-
-
-
-
-void privateLuaCembedTableIteration_bool_callback(privateLuaCembedTableIteration *self ){
-    int value_type = lua_type(self->embed_obj->state,-1);
-    if(value_type != LUA_CEMBED_BOOL){
-
-        privateLuaCEmbed_raise_error_not_jumping(
-                self->embed_obj,
-                PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
-                self->args->formated_code,
-                self->location,
-                LuaCembed_convert_arg_code(value_type),
-                LuaCembed_convert_arg_code(LUA_CEMBED_BOOL)
-        );
-        return;
-    }
-    self->num_result = (bool)lua_toboolean(self->embed_obj->state,-1);
-
-}
-
-
-bool privateLuaCembedTableIteration_get_bool(privateLuaCembedTableIteration *self,int index ){
-    self->callback = privateLuaCembedTableIteration_bool_callback;
-    privateLuaCembedTableIteration_run_iteration(self,index);
-    return (bool )self->num_result;
-}
-
-
-
-
-
-
-void privateLuaCembedTableIteration_size_callback(privateLuaCembedTableIteration *self ){
-    int value_type = lua_type(self->embed_obj->state,-1);
-    if(value_type != LUA_CEMBED_TABLE){
-
-        privateLuaCEmbed_raise_error_not_jumping(
-                self->embed_obj,
-                PRIVATE_LUA_CEMBED_VALUE_TABLE_WITH_WRONG_TYPE,
-                self->args->formated_code,
-                self->location,
-                LuaCembed_convert_arg_code(value_type),
-                LuaCembed_convert_arg_code(LUA_CEMBED_TABLE)
-        );
-        return;
-    }
-
-
-    self->num_result =  (double )lua_rawlen(self->embed_obj->state,-1);
-
-
-}
-
-
-long privateLuaCembedTableIteration_get_size(privateLuaCembedTableIteration *self,int index ){
-
-    if(self->args->size == 0){
-        (long)lua_rawlen(self->embed_obj->state,-1);
-    }
-
-    self->callback = privateLuaCembedTableIteration_size_callback;
-    privateLuaCembedTableIteration_run_iteration(self,index);
-    return (long )self->num_result;
-}
-
-
-
-
-
-int privateLuaCembedTableIteration_get_type(privateLuaCembedTableIteration *self,int index ){
-    int i = 0;
-    long total_elements =  0;
-    //printf("total %ld\n",total_elements);
-
-    if(private_LuaCembed_require_total(self->args)){
-        lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-        while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
-            lua_pop(self->embed_obj->state, 1);
-            total_elements+=1;
-        }
-    }
-
-
-    lua_pushnil(self->embed_obj->state); // Coloca a chave nula na pilha
-
-    while (lua_next(self->embed_obj->state, index) != 0) { // Enquanto houver elementos na tabela
-
-        // Obtém a chave e o valor atual da tabela
-        //printf("index %d\n",index);
-        int key_type = lua_type(self->embed_obj->state,-2);
-        const char *possible_key = NULL;
-        if(key_type == LUA_CEMBED_STRING){
-            possible_key = lua_tostring(self->embed_obj->state,-2);
-        }
-
-        if(!privateLuaEmbedTableArgs_is_the_current_index(self->args,i,total_elements,possible_key)){
-            lua_pop(self->embed_obj->state, 1);
-            i+=1;
-
-            continue;
-        }
-        //here it means its the correct key/index
-
-        int value_type = lua_type(self->embed_obj->state,-1);
-        int is_last_index = private_LuaCembed_is_the_last_index(self->args);
-
-        if(!is_last_index && value_type !=LUA_CEMBED_TABLE){
-            lua_pop(self->embed_obj->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
-
-            return LUA_CEMBED_NOT_FOUND;
-        }
-
-        //means its the last iteration
-        if(!is_last_index){
-            privateLuaEmbedTableArgs_next(self->args);
-            int result = privateLuaCembedTableIteration_get_type(self, lua_gettop(self->embed_obj->state));
-            lua_pop(self->embed_obj->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
-            return result;
-        }
-
-        int result = lua_type(self->embed_obj->state,-1);
-        lua_pop(self->embed_obj->state, 1); // Remove o valor, mantendo a chave na pilha para a próxima iteração
-        return result;
-    }
-
-    return LUA_CEMBED_NOT_FOUND;
-
-}
-
-
-
-
-
-
-
 
 
 int LuaCEmbed_ensure_global_type(LuaCEmbed *self, const char *name,int expected_type){
@@ -24357,6 +23568,19 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
     return (char*)lua_tostring(self->state,-1);
 }
 
+LuaCembedTable * LuaCembed_get_global_table(LuaCEmbed *self,const char *name){
+    if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_TABLE)){
+        return  NULL;
+    }
+    return newLuaCembedTable(self,"%s",name);
+}
+
+LuaCembedTable * LuaCembed_new_global_table(LuaCEmbed *self,const char *name){
+
+    lua_newtable(self->state);
+    lua_setglobal(self->state,name);
+    return newLuaCembedTable(self,"%s",name);
+}
 
 
 
@@ -24382,151 +23606,6 @@ void LuaCEmbed_set_global_bool(LuaCEmbed *self, const char *name, bool value){
 }
 
 
-
-
-
-long LuaCEmbed_get_global_table_long(LuaCEmbed *self,const char *name,const char *format, ...){
-    lua_getglobal(self->state,name);
-    if(LuaCEmbed_ensure_arg_type(self,-1,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,format);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,format,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    long  result = privateLuaCembedTableIteration_get_long(iterator,-1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-double LuaCEmbed_get_global_table_double(LuaCEmbed *self,const char *name,const char *format, ...){
-    lua_getglobal(self->state,name);
-    if(LuaCEmbed_ensure_arg_type(self,-1,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,format);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,format,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    double  result = privateLuaCembedTableIteration_get_double(iterator,-1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-char *LuaCEmbed_get_global_table_string(LuaCEmbed *self,const char *name,const char *format, ...){
-    lua_getglobal(self->state,name);
-    if(LuaCEmbed_ensure_arg_type(self,-1,LUA_CEMBED_TABLE)){
-        return  NULL;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,format);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,format,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return NULL;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    char*  result = privateLuaCembedTableIteration_get_str(iterator,-1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-bool LuaCEmbed_get_global_table_bool(LuaCEmbed *self,const char *name,const char *format, ...){
-    lua_getglobal(self->state,name);
-    if(LuaCEmbed_ensure_arg_type(self,-1,LUA_CEMBED_TABLE)){
-        return  false;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,format);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,format,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return false;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    bool result = privateLuaCembedTableIteration_get_bool(iterator,-1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-int  LuaCEmbed_get_global_table_type(LuaCEmbed *self,const char *name,const char *format, ...){
-    lua_getglobal(self->state,name);
-    if(LuaCEmbed_ensure_arg_type(self,-1,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,format);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,format,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    int   result = privateLuaCembedTableIteration_get_type(iterator,-1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
-
-long  LuaCEmbed_get_global_table_size(LuaCEmbed *self,const char *name,const char *format, ...){
-    lua_getglobal(self->state,name);
-    if(LuaCEmbed_ensure_arg_type(self,-1,LUA_CEMBED_TABLE)){
-        return  LUA_CEMBED_GENERIC_ERROR;
-    }
-
-    privateLuaCembedTableIteration * iterator = nwqprivateLuaCembedTableIteration(self);
-    va_list  args;
-    va_start(args,format);
-    int args_result = privateLuaCembedTableIteration_set_args_code(iterator,format,args);
-    va_end(args);
-
-    if(args_result){
-        privateLuaCembedTableIteration_free(iterator);
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    privateLuaCembedTableIteration_set_location(iterator,PRIVATE_LUA_CEMBED_ARG_LOCATION,self->current_function,index+1);
-
-
-    long   result = privateLuaCembedTableIteration_get_size(iterator,-1);
-    privateLuaCembedTableIteration_free(iterator);
-    return result;
-}
 
 
 
@@ -24872,6 +23951,54 @@ bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self, char *code, ...){
 
 
 
+LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...){
+    LuaCembedTable  *self = (LuaCembedTable*)malloc(sizeof (LuaCembedTable));
+    *self = (LuaCembedTable){0};
+    self->main_object =main_embed;
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    va_list  args;
+    va_start(args,format);
+    vsnprintf(buffer,sizeof(buffer),format,args);
+    va_end(args);
+    self->global_buffer = strdup(buffer);
+    return self;
+}
+
+void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_pushstring(self->main_object->state,name);
+    lua_pushstring(self->main_object->state,value);
+
+    lua_settable(self->main_object->state,-3);
+}
+
+void  LuaCembedTable_set_long_prop(LuaCembedTable *self ,const char *name,long  value){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_pushstring(self->main_object->state,name);
+    lua_pushnumber(self->main_object->state,(double)value);
+    lua_settable(self->main_object->state,-3);
+}
+
+void  LuaCembedTable_set_double_prop(LuaCembedTable *self ,const char *name,double  value){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_pushstring(self->main_object->state,name);
+    lua_pushnumber(self->main_object->state,value);
+    lua_settable(self->main_object->state,-3);
+}
+
+void  LuaCembedTable_set_bool_prop(LuaCembedTable *self ,const char *name,bool value){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_pushstring(self->main_object->state,name);
+    lua_pushboolean(self->main_object->state,value);
+    lua_settable(self->main_object->state,-3);
+}
+
+
+
+
+
+
+
 const char * LuaCembed_convert_arg_code(int arg_code){
     if(arg_code == LUA_CEMBED_NOT_FOUND){
         return PRIVATE_LUA_CEMBED_NOT_FOUND_STRING;
@@ -24933,25 +24060,10 @@ LuaCEmbedResponseModule newLuaCEmbedResponseModule(){
 
 
 
-
-LuaCEmbedGlobalTableModule newLuaCEmbedGlobalTableModule(){
-    LuaCEmbedGlobalTableModule self = {0};
-    self.get_bool = LuaCEmbed_get_global_table_bool;
-    self.get_string = LuaCEmbed_get_global_table_string;
-    self.get_double = LuaCEmbed_get_global_table_double;
-    self.get_type  = LuaCEmbed_get_global_table_type;
-    self.get_type = LuaCEmbed_get_global_table_type;
-    self.get_long = LuaCEmbed_get_global_table_long;
-    return self;
-}
-
-
-
 LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     LuaCEmbedGlobalModule self = {0};
 
     self.ensure_type = LuaCEmbed_ensure_global_type;
-    self.table = newLuaCEmbedGlobalTableModule();
     self.get_double = LuaCEmbed_get_global_double;
     self.get_string = LuaCEmbed_get_global_string;
     self.get_long = LuaCEmbed_get_global_long;
@@ -24963,21 +24075,8 @@ LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     self.set_bool =LuaCEmbed_set_global_bool;
     self.set_double = LuaCEmbed_set_global_double;
     self.set_long = LuaCEmbed_set_global_long;
-    return self;
-}
-
-
-
-
-
-LuaCEmbedArgsTableModule newLuaCEmbedArgsTableModule(){
-    LuaCEmbedArgsTableModule self = {0};
-    self.get_arg_bool = LuaCEmbed_get_table_arg_bool;
-    self.get_arg_double = LuaCEmbed_get_table_arg_double;
-    self.get_arg_long = LuaCEmbed_get_table_arg_long;
-    self.get_arg_size =  LuaCEmbed_get_table_arg_size;
-    self.get_arg_string  = LuaCEmbed_get_table_arg_string;
-    self.get_arg_type  = LuaCEmbed_get_table_arg_type;
+    self.new_table = LuaCembed_new_global_table;
+    self.get_table = LuaCembed_get_global_table;
     return self;
 }
 
@@ -24997,7 +24096,17 @@ LuaCembedArgsModule newLuaCembedArgsModule(){
     self.get_double_arg_clojure_evalation = LuaCEmbed_get_double_arg_clojure_evalation;
     self.get_string_arg_clojure_evalation = LuaCEmbed_get_string_arg_clojure_evalation;
 
-    self.table = newLuaCEmbedArgsTableModule();
+    return self;
+}
+
+
+
+LuaCembedTableModule newLuaCembedTableModule(){
+    LuaCembedTableModule self ={0};
+    self.set_bool_prop = LuaCembedTable_set_bool_prop;
+    self.set_double_prop = LuaCembedTable_set_double_prop;
+    self.set_long_prop = LuaCembedTable_set_long_prop;
+    self.set_string_prop = LuaCembedTable_set_string_prop;
     return self;
 }
 
@@ -25011,6 +24120,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.set_delete_function = LuaCembed_set_delete_function;
     self.perform = LuaCembed_perform;
     self.convert_arg_code = LuaCembed_convert_arg_code;
+    self.tables = newLuaCembedTableModule();
     self.args = newLuaCembedArgsModule();
     self.types = newLuaCEmbedTypeModule();
     self.globals = newLuaCEmbedGlobalModule();

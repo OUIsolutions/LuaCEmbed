@@ -15,7 +15,6 @@ typedef struct {
     bool (*get_bool_arg_clojure_evalation)(LuaCEmbed *self,int index,char *code,...);
     char* (*get_string_arg_clojure_evalation)(LuaCEmbed *self,int index,char *code,...);
 
-    LuaCEmbedArgsTableModule table;
 
 
 } LuaCembedArgsModule;

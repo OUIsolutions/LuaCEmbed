@@ -3,7 +3,6 @@
 typedef struct {
 
     int (*ensure_type)(LuaCEmbed *self, const char *name,int expected_type);
-    LuaCEmbedGlobalTableModule table;
     int (*get_type)(LuaCEmbed *self,const char *name);
     long (*get_long)(LuaCEmbed *self,const char *name);
     double (*get_double)(LuaCEmbed *self,const char *name);
