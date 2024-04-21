@@ -5,6 +5,7 @@ LuaCEmbed * newLuaCEmbedEvaluation();
 
 int private_LuaCemb_internal_free(lua_State *L);
 
+void * private_LuaCembed_get_table_or_create_internal(LuaCEmbed *self, const char *name);
 
 LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
 
