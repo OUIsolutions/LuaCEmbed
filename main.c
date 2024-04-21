@@ -14,10 +14,9 @@ int main(int argc, char *argv[]){
 
     LuaCembedTable *t1 = lua_n.globals.new_table(l,"test");
     printf("pegou aqui\n");
-
     lua_n.tables.set_string_prop(t1,"a","vai se fuder");
     lua_n.tables.set_string_prop(t1,"b","não pode aparecer");
-
+    LuaCEmbed_add_callback()
     char *test = lua_n.get_string_evaluation(l,"test.a");
     printf("test: %s\n",test);
     if(lua_n.has_errors(l)){
