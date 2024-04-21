@@ -7,4 +7,4 @@
 
 
 #define LUA_CEMBED_OK 0
-#define LUA_CEMBED_GENERIC_ERROR 1
+#define LUA_CEMBED_GENERIC_ERROR (-1)
