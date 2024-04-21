@@ -38,9 +38,9 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
     return (char*)lua_tostring(self->state,-1);
 }
 
-LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name){
+LuaCEmbedTable * LuaCembed_get_global_table_auto_creating(LuaCEmbed *self, const char *name){
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_TABLE)){
-        return  NULL;
+        return  LuaCembed_new_global_table(self,name);
     }
     return newLuaCembedTable(self,"%s",name);
 }

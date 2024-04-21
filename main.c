@@ -27,10 +27,10 @@ int main(int argc, char *argv[]){
     lua_n.evaluate_string(l,"test ={a=30,x=40,b=90,d=30};");
 
 
-    LuaCEmbedTable *t1  = lua_n.globals.get_table(l,"test");
+    LuaCEmbedTable *t1  = lua_n.globals.get_table_auto_creating(l, "test");
 
-    LuaCEmbedTable  *t2 = lua_n.tables.get_sub_table(t1,"teste2");
-    LuaCEmbedTable  *t3 = lua_n.tables.get_sub_table(t1,"teste2");
+    LuaCEmbedTable  *t2 = lua_n.tables.get_sub_table_auto_creating(t1, "teste2");
+    LuaCEmbedTable  *t3 = lua_n.tables.get_sub_table_auto_creating(t1, "teste2");
 
     lua_n.tables.set_string_prop(t2,"a","va se fuder funcinou porra");
 

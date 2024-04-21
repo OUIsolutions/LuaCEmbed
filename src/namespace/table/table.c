@@ -8,7 +8,9 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.set_long_prop = LuaCEmbedTable_set_long_prop;
     self.set_string_prop = LuaCEmbedTable_set_string_prop;
 
-    self.get_sub_table = LuaCEmbedTable_get_sub_table;
+    self.get_sub_table_auto_creating = LuaCEmbedTable_get_sub_table_auto_creating;
+    self.new_sub_table = LuaCEmbedTable_new_sub_table;
+
     self.get_bool_prop = LuaCembedTable_get_bool_prop;
     self.get_double_prop = LuaCembedTable_get_double_prop;
     self.get_long_prop = LuaCembedTable_get_long_prop;
