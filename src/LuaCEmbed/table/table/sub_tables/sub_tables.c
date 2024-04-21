@@ -27,8 +27,8 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
     }
 
 
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_name(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
+            (privateLuaCEmbedTableArray *) self->sub_tables,
             name
     );
     if(possible){
@@ -61,8 +61,8 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
     lua_settable(self->main_object->state,-3);
 
 
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_name(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
+            (privateLuaCEmbedTableArray *) self->sub_tables,
             name
     );
     if(possible){
@@ -97,8 +97,8 @@ void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbe
     lua_settable(self->main_object->state,-3);
 
 
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_name(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
+            (privateLuaCEmbedTableArray *) self->sub_tables,
             name
     );
     if(possible){

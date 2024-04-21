@@ -17,7 +17,17 @@ void privateLuaCEmbedTableArray_append(privateLuaCEmbedTableArray *self,LuaCEmbe
     self->size+=1;
 }
 
-LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_name(privateLuaCEmbedTableArray *self,const char *name){
+LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_full_name(privateLuaCEmbedTableArray *self, const char *name){
+    for(int i = 0; i < self->size;i++){
+        LuaCEmbedTable  *current_table = self->tables[i];
+        if(strcmp(current_table->global_buffer,name) ==0){
+            return  current_table;
+        }
+    }
+    return NULL;
+}
+
+LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_prop_name(privateLuaCEmbedTableArray *self, const char *name){
     for(int i = 0; i < self->size;i++){
         LuaCEmbedTable  *current_table = self->tables[i];
         if(current_table->prop_name){
