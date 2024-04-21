@@ -30,7 +30,9 @@ int main(int argc, char *argv[]){
     LuaCEmbedTable *t1  = lua_n.globals.get_table(l,"test");
 
     LuaCEmbedTable  *t2 = lua_n.tables.get_sub_table(t1,"teste2");
-    lua_n.tables.set_string_prop(t2,"a","va se fuder");
+    LuaCEmbedTable  *t3 = lua_n.tables.get_sub_table(t1,"teste2");
+
+    lua_n.tables.set_string_prop(t2,"a","va se fuder funcinou porra");
 
     printf("%s",lua_n.get_string_evaluation(l,"test.teste2.a"));
 

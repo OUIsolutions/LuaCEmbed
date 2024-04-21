@@ -3,7 +3,7 @@
 
 
 
-LuaCEmbedTable  *LuaCEmbedTable_get_sub_table(LuaCEmbedTable *self, const char *name);
+
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self, const char *name);
 
