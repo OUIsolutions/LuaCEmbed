@@ -97,6 +97,7 @@ You can determine the type of the evaluation by using the **get_evaluation_type*
 LuaCEmbedNamespace  lua_n;
 
 
+
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
@@ -201,6 +202,8 @@ int main(int argc, char *argv[]){
 ~~~c
 #include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
+
+
 
 int main(int argc, char *argv[]){
 
