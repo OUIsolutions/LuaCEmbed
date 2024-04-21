@@ -1,4 +1,24 @@
 
+LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,const char *full_sub_name,const char *name){
+
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
+            (privateLuaCEmbedTableArray *) self->sub_tables,
+            name
+    );
+    if(possible){
+        return possible;
+    }
+
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,full_sub_name);
+    creaeted->prop_name = strdup(name);
+
+    privateLuaCEmbedTableArray_append(
+            (privateLuaCEmbedTableArray*)self->sub_tables,
+            creaeted
+    );
+    return creaeted;
+}
+
 
 
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self, const char *name){
@@ -26,23 +46,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
         lua_settable(self->main_object->state,-3);
     }
 
-
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
-            (privateLuaCEmbedTableArray *) self->sub_tables,
-            name
-    );
-    if(possible){
-        return possible;
-    }
-
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,full_sub_table_name);
-    creaeted->prop_name = strdup(name);
-
-    privateLuaCEmbedTableArray_append(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
-            creaeted
-    );
-    return creaeted;
+    return privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
 }
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *name){
@@ -60,23 +64,8 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
 
     lua_settable(self->main_object->state,-3);
 
+    return privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
 
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
-            (privateLuaCEmbedTableArray *) self->sub_tables,
-            name
-    );
-    if(possible){
-        return possible;
-    }
-
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,full_sub_table_name);
-    creaeted->prop_name = strdup(name);
-
-    privateLuaCEmbedTableArray_append(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
-            creaeted
-    );
-    return creaeted;
 }
 
 void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table){
@@ -96,20 +85,6 @@ void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbe
 
     lua_settable(self->main_object->state,-3);
 
+    (void)privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
 
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
-            (privateLuaCEmbedTableArray *) self->sub_tables,
-            name
-    );
-    if(possible){
-        return ;
-    }
-
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,full_sub_table_name);
-    creaeted->prop_name = strdup(name);
-
-    privateLuaCEmbedTableArray_append(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
-            creaeted
-    );
 }

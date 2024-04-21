@@ -1,4 +1,5 @@
 
+LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,const char *full_sub_name,const char *name);
 
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self, const char *name);
 

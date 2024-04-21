@@ -47,7 +47,11 @@ LuaCEmbedTable * LuaCembed_get_global_table_auto_creating(LuaCEmbed *self, const
 
 LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
 
+
     lua_newtable(self->state);
     lua_setglobal(self->state,name);
+
+
+
     return newLuaCembedTable(self,"%s",name);
 }
