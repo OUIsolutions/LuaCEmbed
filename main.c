@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 
     long size = lua_n.tables.get_size(t1);
     for(int i = 0; i  < size; i++){
-        printf("")
+        printf("%s:%ld\n", lua_n.tables.get_key_by_index(t1, i), lua_n.tables.get_long_by_index(t1, i));
     }
 
     if(lua_n.has_errors(l)){

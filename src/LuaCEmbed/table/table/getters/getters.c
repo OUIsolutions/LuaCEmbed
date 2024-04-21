@@ -80,13 +80,12 @@ int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
     }
     return LUA_CEMBED_NOT_FOUND;
 }
-char *LuaCembedTable_get_key(LuaCEmbedTable *self,long index){
+char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
     lua_getglobal(self->main_object->state,self->global_buffer);
     long converted_index = privateLuaCEmbedTable_convert_index(self,index);
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){
-        total+=1;
         if(total == converted_index){
             if(lua_type(self->main_object->state,-2) != LUA_CEMBED_STRING ){
                 privateLuaCEmbed_raise_error_not_jumping(
@@ -104,6 +103,8 @@ char *LuaCembedTable_get_key(LuaCEmbedTable *self,long index){
         }
 
         lua_pop(self->main_object->state,1);
+        total+=1;
+
     }
 
     privateLuaCEmbed_raise_error_not_jumping(
@@ -114,13 +115,12 @@ char *LuaCembedTable_get_key(LuaCEmbedTable *self,long index){
     );
     return NULL;
 }
-bool LuaCembedTable_has_key(LuaCEmbedTable *self,long index){
+bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
     lua_getglobal(self->main_object->state,self->global_buffer);
     long converted_index = privateLuaCEmbedTable_convert_index(self,index);
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){
-        total+=1;
         if(total == converted_index){
             if(lua_type(self->main_object->state,-2) != LUA_CEMBED_STRING ){
                 return false;
@@ -129,8 +129,10 @@ bool LuaCembedTable_has_key(LuaCEmbedTable *self,long index){
         }
 
         lua_pop(self->main_object->state,1);
+        total+=1;
+
     }
-    
+
     return false;
 }
 
@@ -140,7 +142,6 @@ long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){
-        total+=1;
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,index,LUA_CEMBED_NUMBER)){
                 lua_pop(self->main_object->state,1);
@@ -151,6 +152,8 @@ long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
             return result;
         }
         lua_pop(self->main_object->state,1);
+        total+=1;
+
     }
 
     privateLuaCEmbed_raise_error_not_jumping(
@@ -170,7 +173,6 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){
-        total+=1;
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,index,LUA_CEMBED_NUMBER)){
                 lua_pop(self->main_object->state,1);
@@ -181,6 +183,8 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
             return result;
         }
         lua_pop(self->main_object->state,1);
+        total+=1;
+
     }
 
     privateLuaCEmbed_raise_error_not_jumping(
@@ -200,7 +204,6 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){
-        total+=1;
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,index,LUA_CEMBED_STRING)){
                 lua_pop(self->main_object->state,1);
@@ -211,6 +214,8 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
             return result;
         }
         lua_pop(self->main_object->state,1);
+        total+=1;
+
     }
 
     privateLuaCEmbed_raise_error_not_jumping(
@@ -230,7 +235,6 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){
-        total+=1;
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,index,LUA_CEMBED_BOOL)){
                 lua_pop(self->main_object->state,1);
@@ -241,6 +245,8 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
             return result;
         }
         lua_pop(self->main_object->state,1);
+        total+=1;
+
     }
 
     privateLuaCEmbed_raise_error_not_jumping(
