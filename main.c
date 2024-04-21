@@ -7,7 +7,8 @@ LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  *increment(LuaCembedTable *self,LuaCEmbed *args){
 
-    printf("chamou\n");
+
+
 
     return NULL;
 }
@@ -22,6 +23,8 @@ int main(int argc, char *argv[]){
 
     lua_n.tables.set_long_prop(t1,"v",0);
     lua_n.tables.set_method(t1,"increment",increment);
+
+    lua_n.evaluate_string(l,"test.increment()");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

@@ -19,7 +19,6 @@ void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedR
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
 
-
     //creating the clojure
     lua_pushlightuserdata(self->main_object->state,(void*)true);//is a method
     lua_pushlightuserdata(self->main_object->state,(void*)self->main_object); //self
@@ -29,7 +28,7 @@ void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedR
 
     //add these clojure to be handled by the callbacks
     lua_pushcclosure(self->main_object->state,privateLuaCEmbed_main_callback_handler,5);
-    lua_settable(self->main_object->state,3);
+    lua_settable(self->main_object->state,-3);
 }
 
 void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value){

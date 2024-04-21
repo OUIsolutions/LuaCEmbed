@@ -22600,13 +22600,10 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 
 
 
-#define PRIVATE_LUACEMBED_FUNCTION_INDEX 1
-#define PRIVATE_LUACEMBED_EMBED_OBJECT 2
-#define PRIVATE_LUACEMBED_FUNCTION_ARG 3
+
 #define PRIVATE_LUACEMBED_NO_RETURN 0
 #define PRIVATE_LUACEMBED_ONE_RETURN 1
 
-#define PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS 3
 
 
 #define LUA_CEMBED_NOT_FOUND LUA_TNONE
@@ -22810,6 +22807,9 @@ typedef struct {
 
 LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...);
 
+
+void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedResponse *(*callback)(LuaCembedTable  *self,LuaCEmbed *args));
+
 void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value);
 
 void  LuaCembedTable_set_long_prop(LuaCembedTable *self ,const char *name,long  value);
@@ -22988,6 +22988,8 @@ LuaCembedArgsModule newLuaCembedArgsModule();
 
 
 typedef struct {
+
+    void (*set_method)(LuaCembedTable *self ,const char *name,LuaCEmbedResponse *(*callback)(LuaCembedTable  *self,LuaCEmbed *args));
     void  (*set_string_prop)(LuaCembedTable *self ,const char *name,const char *value);
     void  (*set_long_prop)(LuaCembedTable *self ,const char *name,long  value);
     void  (*set_double_prop)(LuaCembedTable *self ,const char *name,double  value);
@@ -23613,15 +23615,28 @@ void LuaCEmbed_set_global_bool(LuaCEmbed *self, const char *name, bool value){
 
 int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
-    LuaCEmbedResponse* (*callback)(LuaCEmbed *args);
-    callback = (LuaCEmbedResponse* (*)(LuaCEmbed *args))lua_touserdata(L, lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_INDEX));
-    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_EMBED_OBJECT));
-    char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(PRIVATE_LUACEMBED_FUNCTION_ARG));;
+    bool is_a_method =  (bool)lua_touserdata(L, lua_upvalueindex(1));
+    bool is_a_function = !is_a_method;
+    LuaCEmbedResponse *possible_return = NULL;
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
+    char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(3));
     self->current_function = func_name;
 
-    //evaluating callback
-    LuaCEmbedResponse *possible_return = callback(self);
+    if(is_a_method){
+        LuaCEmbedResponse *(*method_callback)(LuaCembedTable *tb,LuaCEmbed *self);
+        LuaCembedTable  *table = (LuaCembedTable*) lua_touserdata(L, lua_upvalueindex(4));
+        method_callback = (LuaCEmbedResponse *(*)(LuaCembedTable *tb,LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
+        possible_return = method_callback(table,self);
+    }
+
+    if(is_a_function){
+        LuaCEmbedResponse *(*function_callback)(LuaCEmbed *self);
+        function_callback = (LuaCEmbedResponse *(*)(LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(4));
+        possible_return = function_callback(self);
+    }
+
     self->current_function = NULL;
+
     if(!possible_return){
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
@@ -23724,10 +23739,14 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
     lua_pushstring(self->state,callback_name);
 
     //creating the clojure
-    lua_pushlightuserdata(self->state,(void*)callback);
-    lua_pushlightuserdata(self->state,(void*)self);
-    lua_pushlightuserdata(self->state,(void*)callback_name);
-    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
+
+    //creating the clojure
+    lua_pushlightuserdata(self->state,(void*)false);//is a method
+    lua_pushlightuserdata(self->state,(void*)self); //self
+    lua_pushlightuserdata(self->state,(void*)callback_name);//calback name
+    lua_pushlightuserdata(self->state,(void*)callback);//calback
+
+    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
 
 
     lua_settable(self->state,-3);
@@ -23745,10 +23764,12 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
     //creating the clojure
+    lua_pushlightuserdata(self->state,(void*)false);//is a method
+    lua_pushlightuserdata(self->state,(void*)self); //self
+    lua_pushlightuserdata(self->state,(void*)callback_name);//calback name
     lua_pushlightuserdata(self->state,(void*)callback);
-    lua_pushlightuserdata(self->state,(void*)self);
-    lua_pushlightuserdata(self->state,(void*)callback_name);
-    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
+
+    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
     lua_setglobal(self->state, callback_name);
 
 }
@@ -23964,6 +23985,24 @@ LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...
     return self;
 }
 
+
+void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedResponse *(*callback)(LuaCembedTable  *self,LuaCEmbed *args)){
+
+    lua_getglobal(self->main_object->state,self->global_buffer);
+    lua_pushstring(self->main_object->state,name);
+
+    //creating the clojure
+    lua_pushlightuserdata(self->main_object->state,(void*)true);//is a method
+    lua_pushlightuserdata(self->main_object->state,(void*)self->main_object); //self
+    lua_pushlightuserdata(self->main_object->state,(void*)name);//calback name
+    lua_pushlightuserdata(self->main_object->state,(void*)self);//table
+    lua_pushlightuserdata(self->main_object->state,(void*)callback);
+
+    //add these clojure to be handled by the callbacks
+    lua_pushcclosure(self->main_object->state,privateLuaCEmbed_main_callback_handler,5);
+    lua_settable(self->main_object->state,-3);
+}
+
 void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value){
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
@@ -24103,6 +24142,7 @@ LuaCembedArgsModule newLuaCembedArgsModule(){
 
 LuaCembedTableModule newLuaCembedTableModule(){
     LuaCembedTableModule self ={0};
+    self.set_method = LuaCembedTable_set_method;
     self.set_bool_prop = LuaCembedTable_set_bool_prop;
     self.set_double_prop = LuaCembedTable_set_double_prop;
     self.set_long_prop = LuaCembedTable_set_long_prop;
