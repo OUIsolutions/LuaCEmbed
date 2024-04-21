@@ -24,14 +24,15 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"test ={1,true,3,d=30};");
+    lua_n.evaluate_string(l,"test ={a=30,x=40,b=90,d=30};");
+
 
     LuaCEmbedTable *t1  = lua_n.globals.get_table(l,"test");
 
-    printf("type %s\n", LuaCembed_convert_arg_code(
-            LuaCEmbedTable_get_type_by_index(t1,333)
-            ));
-
+    long size = lua_n.tables.get_size(t1);
+    for(int i = 0; i  < size; i++){
+        printf("")
+    }
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

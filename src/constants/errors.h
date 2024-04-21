@@ -10,3 +10,4 @@
 #define PRIVATE_LUA_CEMBED_CODE_ITS_NOT_A_FUNCTION "value %s its not a function"
 #define PRIVATE_LUA_CEMBED_WRONG_TYPE_PROPETY "propety %s at object %s its %s instead of %s"
 #define PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX "index %d at object %s its %s instead of %s"
+#define PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY "index %d at object %s not have a key"

@@ -14,6 +14,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.get_string_prop = LuaCembedTable_get_string_prop;
     self.get_type_prop = LuaCEmbedTable_get_type_prop;
 
+    self.get_size = LuaCEmbedTable_get_size;
     self.get_type_by_index = LuaCEmbedTable_get_type_by_index;
     self.get_long_by_index = LuaCEmbedTable_get_long_by_index;
     self.get_double_by_index = LuaCEmbedTable_get_double_by_index;

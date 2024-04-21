@@ -15,6 +15,10 @@ bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self, const char *name);
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name);
 
+char *LuaCembedTable_get_key(LuaCEmbedTable *self,long index);
+
+bool LuaCembedTable_has_key(LuaCEmbedTable *self,long index);
+
 long  LuaCEmbedTable_get_size(LuaCEmbedTable *self);
 
 long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self,long index);
