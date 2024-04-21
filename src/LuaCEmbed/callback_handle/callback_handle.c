@@ -126,10 +126,14 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
     lua_pushstring(self->state,callback_name);
 
     //creating the clojure
-    lua_pushlightuserdata(self->state,(void*)callback);
-    lua_pushlightuserdata(self->state,(void*)self);
-    lua_pushlightuserdata(self->state,(void*)callback_name);
-    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
+
+    //creating the clojure
+    lua_pushlightuserdata(self->state,(void*)false);//is a method
+    lua_pushlightuserdata(self->state,(void*)self); //self
+    lua_pushlightuserdata(self->state,(void*)callback_name);//calback name
+    lua_pushlightuserdata(self->state,(void*)callback);//calback
+
+    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
 
 
     lua_settable(self->state,-3);
@@ -147,10 +151,12 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
     //creating the clojure
+    lua_pushlightuserdata(self->state,(void*)false);//is a method
+    lua_pushlightuserdata(self->state,(void*)self); //self
+    lua_pushlightuserdata(self->state,(void*)callback_name);//calback name
     lua_pushlightuserdata(self->state,(void*)callback);
-    lua_pushlightuserdata(self->state,(void*)self);
-    lua_pushlightuserdata(self->state,(void*)callback_name);
-    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,PRIVATE_LUACEMBED_TOTAL_MAIN_CALLBACK_ARGS);
+
+    lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
     lua_setglobal(self->state, callback_name);
 
 }

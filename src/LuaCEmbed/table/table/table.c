@@ -19,15 +19,16 @@ void LuaCembedTable_set_method(LuaCembedTable *self ,const char *name,LuaCEmbedR
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_pushstring(self->main_object->state,name);
 
-    lua_pushlightuserdata(self->main_object->state,(void*)callback); //calback
-    lua_pushlightuserdata(self->main_object->state,(void*)self->main_object); //main_object
-    lua_pushlightuserdata(self->main_object->state,(void*)name); //function name
-    lua_pushlightuserdata(self->main_object->state,(void*)true); ///has a method
-    lua_pushlightuserdata(self->main_object->state,(void*)self); //table
 
+    //creating the clojure
+    lua_pushlightuserdata(self->main_object->state,(void*)true);//is a method
+    lua_pushlightuserdata(self->main_object->state,(void*)self->main_object); //self
+    lua_pushlightuserdata(self->main_object->state,(void*)name);//calback name
+    lua_pushlightuserdata(self->main_object->state,(void*)self);//table
+    lua_pushlightuserdata(self->main_object->state,(void*)callback);
 
     //add these clojure to be handled by the callbacks
-    lua_pushcclosure(self->main_object->state,privateLuaCembedTable_handle_methods,4);
+    lua_pushcclosure(self->main_object->state,privateLuaCEmbed_main_callback_handler,5);
     lua_settable(self->main_object->state,3);
 }
 
