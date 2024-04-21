@@ -4,12 +4,24 @@ LuaCEmbedNamespace  lua_n;
 
 
 LuaCEmbedResponse  *test (LuaCEmbed *args){
+
+    LuaCEmbedTable * t = lua_n.args.get_table(args,0);
+    if(lua_n.has_errors(args)){
+        lua_n.raise_error(args,lua_n.get_error_message(args));
+        return NULL;
+    }
+
+    printf("a = %ld",lua_n.tables.get_long_prop(t,"teste"));
+    if(lua_n.has_errors(args)){
+        lua_n.raise_error(args,lua_n.get_error_message(args));
+    }
+
     return NULL;
 }
 
 
 
-int luaopen_lib(lua_State *L) {
+int luaopen_minha_biblioteca(lua_State *L) {
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaLib(L,false);
 
@@ -20,23 +32,15 @@ int luaopen_lib(lua_State *L) {
 
 }
 
-/*
+
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l, "test", test);
 
-    lua_n.evaluate_string(l,"test ={a=30,x=40,b=90,d=30};");
+    lua_n.evaluete_file(l,"teste.lua");
 
-
-    LuaCEmbedTable *t1  = lua_n.globals.get_table_auto_creating(l, "test");
-
-    LuaCEmbedTable  *t2 = lua_n.tables.get_sub_table_auto_creating(t1, "teste2");
-    LuaCEmbedTable  *t3 = lua_n.tables.get_sub_table_auto_creating(t1, "teste2");
-
-    lua_n.tables.set_string_prop(t2,"a","va se fuder funcinou porra");
-
-    printf("%s",lua_n.get_string_evaluation(l,"test.teste2.a"));
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -48,5 +52,5 @@ int main(int argc, char *argv[]){
     return 0;
 
 }
- */
+
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 

@@ -78,16 +78,16 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
 }
 
 void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...){
-    if(LuaCEmbed_has_errors(self)){
-
-        free(self->error_message);
-    }
 
     va_list args;
     va_start(args,error);
     char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     vsnprintf(formated_expresion, sizeof(formated_expresion),error,args);
     va_end(args);
+    if(LuaCEmbed_has_errors(self)){
+        free(self->error_message);
+    }
+    self->error_message = strdup(formated_expresion);
 
     if(self->current_function){ // means its in protected mode
         lua_pushstring(self->state,formated_expresion);
@@ -95,7 +95,6 @@ void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...){
     }
 
 
-    self->error_message = strdup(formated_expresion);
 }
 
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
