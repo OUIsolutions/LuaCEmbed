@@ -113,7 +113,7 @@ long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
 
 double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
     lua_getglobal(self->main_object->state,self->global_buffer);
-    int converted_index = privateLuaCEmbedTable_convert_index(self,index);
+    long converted_index = privateLuaCEmbedTable_convert_index(self,index);
     int total = 0;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,1)){

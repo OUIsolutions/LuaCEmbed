@@ -12,6 +12,12 @@ typedef struct {
     double  (*get_double_prop)(LuaCEmbedTable *self , const char *name);
     bool  (*get_bool_prop)(LuaCEmbedTable *self , const char *name);
 
+    int (*get_type_by_index)(LuaCEmbedTable *self, int index);
+    long (*get_long_by_index)(LuaCEmbedTable *self, int index);
+    double (*get_double_by_index)(LuaCEmbedTable *self, int index);
+    char * (*get_string_by_index)(LuaCEmbedTable *self, int index);
+    bool (*get_bool_by_index)(LuaCEmbedTable *self, int index);
+
 }LuaCembedTableModule;
 
 LuaCembedTableModule newLuaCembedTableModule();
