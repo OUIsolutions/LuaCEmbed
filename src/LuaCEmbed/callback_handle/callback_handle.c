@@ -56,35 +56,13 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_TABLE_RESPONSE){
-
-        char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-        snprintf(
-                formated_function, sizeof(formated_function),
-                PRIVATE_LUA_CEMBED_FUNCTION_TABLE_RESPONSE_EVALUATION_CODE,
-                PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-                possible_return->string_val
-        );
-
-        int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
-
-        if(error_code){
-            private_LuaCEmbedResponse_free(possible_return);
-            return PRIVATE_LUACEMBED_NO_RETURN;
-        }
-
-        lua_getglobal(self->state, PRIVATE_LUA_CEMBED_EVALUATION_NAME);
-        const int TOTAL_ARGS =0;
-        const int TOTAL_RETURNS =1;
-        //calling the function
-        lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
-        //printf("v:%s\n", lua_tostring(self->state,-1));
+        lua_getglobal(self->state, possible_return->string_val);
         lua_pushvalue(self->state,-1);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
-
     }
 
-    if(possible_return->type == PRIVATE_LUA_CEMBED_EVALUATION_FUNCTION){
+    if(possible_return->type == PRIVATE_LUA_CEMBED_EVALUATION){
         char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
         snprintf(
                 formated_function, sizeof(formated_function),
@@ -95,17 +73,23 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
         int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
 
+
         if(error_code){
             private_LuaCEmbedResponse_free(possible_return);
             return PRIVATE_LUACEMBED_NO_RETURN;
         }
 
         lua_getglobal(self->state, PRIVATE_LUA_CEMBED_EVALUATION_NAME);
-        const int TOTAL_ARGS =0;
-        const int TOTAL_RETURNS =1;
-        //calling the function
-        lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0);
-        //printf("v:%s\n", lua_tostring(self->state,-1));
+        int v_type = lua_type(self->state,-1);
+        if(v_type == LUA_CEMBED_FUNCTION){
+            const int TOTAL_ARGS =0;
+            const int TOTAL_RETURNS =1;
+            if(lua_pcall(self->state,TOTAL_ARGS,TOTAL_RETURNS,0)){
+                private_LuaCEmbedResponse_free(possible_return);
+                return PRIVATE_LUACEMBED_NO_RETURN;
+            }
+        }
+
         lua_pushvalue(self->state,-1);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;

@@ -5,18 +5,10 @@ LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  *test (LuaCEmbed *args){
 
-    LuaCEmbedTable * t = lua_n.args.get_table(args,0);
-    if(lua_n.has_errors(args)){
-        lua_n.raise_error(args,lua_n.get_error_message(args));
-        return NULL;
-    }
+    LuaCEmbedTable *t1 = lua_n.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(t1,"valor","vai se fuder");
+    return lua_n.response.send_table(t1);
 
-    printf("a = %ld",lua_n.tables.get_long_prop(t,"teste"));
-    if(lua_n.has_errors(args)){
-        lua_n.raise_error(args,lua_n.get_error_message(args));
-    }
-
-    return NULL;
 }
 
 

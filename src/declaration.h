@@ -7,5 +7,7 @@
 #include "constants/all.h"
 #include "LuaCEmbedResponse/LuaCEmbedResponse.h"
 #include "LuaCEmbed/declaration.h"
+#include "LuaCEmbedResponse/LuaCembedResponse_pt2.h"
+
 #include "extra/extra.h"
 #include "namespace/declaration.h"

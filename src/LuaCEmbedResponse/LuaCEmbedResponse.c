@@ -20,17 +20,17 @@ LuaCEmbedResponse * LuaCEmbed_send_str(const char *text){
     self->string_val  = strdup(text);
     return self;
 }
-LuaCEmbedResponse * LuaCEmbed_send_table(const char *table_code){
+LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_TABLE_RESPONSE;
-    self->string_val  = strdup(table_code);
+    self->string_val = strdup(table->global_buffer);
     return self;
 }
 
-LuaCEmbedResponse * LuaCEmbed_send_evaluation_function(const char *function){
+LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
-    self->type = PRIVATE_LUA_CEMBED_EVALUATION_FUNCTION;
-    self->string_val  = strdup(function);
+    self->type = PRIVATE_LUA_CEMBED_EVALUATION;
+    self->string_val  = strdup(code);
     return self;
 }
 

@@ -12,10 +12,9 @@ LuaCEmbedResponse *private_LuaCEmbedReturn_raw();
 
 LuaCEmbedResponse * LuaCEmbed_send_str(const char *text);
 
-LuaCEmbedResponse * LuaCEmbed_send_table(const char *table_code);
 
 
-LuaCEmbedResponse * LuaCEmbed_send_evaluation_function(const char *function);
+LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code);
 
 
 
