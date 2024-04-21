@@ -10,7 +10,10 @@ LuaCEmbedResponse  *increment(LuaCEmbedTable *self, LuaCEmbed *args){
 
     printf("nome %s\n",self->global_buffer);
 
+    long v = lua_n.tables.get_long_prop(self,"v");
+
     long value_to_increment =  lua_n.args.get_long(args,0);
+
     printf("value to increment %ld",value_to_increment);
     return NULL;
 }
