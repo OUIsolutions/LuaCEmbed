@@ -24,12 +24,14 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    LuaCEmbedTable *t1 = lua_n.globals.new_table(l, "test");
+    lua_n.evaluate_string(l,"test ={1,true,3};");
 
-    lua_n.tables.set_long_prop(t1,"v",0);
-    lua_n.tables.set_method(t1,"increment",increment);
+    LuaCEmbedTable *t1  = lua_n.globals.get_table(l,"test");
 
-    lua_n.evaluate_string(l,"test.increment(20)");
+    printf("type %s\n", LuaCembed_convert_arg_code(
+            LuaCEmbedTable_get_type_by_index(t1,333)
+            ));
+
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

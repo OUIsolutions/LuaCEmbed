@@ -77,6 +77,15 @@ int privateLuaCEmbedTable_ensure_type(LuaCEmbedTable *self,const char *name, int
     );
     return LUA_CEMBED_GENERIC_ERROR;
 }
+
+int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
+    lua_getglobal(self->main_object->state,self->global_buffer);
+
+    lua_geti(self->main_object->state,-1,index+1);
+    return lua_type(self->main_object->state,-1);
+}
+
+
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
     lua_getglobal(self->main_object->state,self->global_buffer);
     lua_getfield(self->main_object->state,-1,name);
