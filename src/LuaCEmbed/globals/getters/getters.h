@@ -10,3 +10,6 @@ bool LuaCEmbed_get_global_bool(LuaCEmbed *self,const char *name);
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name);
 
+LuaCembedTable * LuaCembed_get_global_table(LuaCEmbed *self,const char *name);
+
+LuaCembedTable * LuaCembed_new_global_table(LuaCEmbed *self,const char *name);

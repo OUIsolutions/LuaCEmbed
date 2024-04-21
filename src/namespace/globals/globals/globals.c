@@ -16,5 +16,7 @@ LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     self.set_bool =LuaCEmbed_set_global_bool;
     self.set_double = LuaCEmbed_set_global_double;
     self.set_long = LuaCEmbed_set_global_long;
+    self.new_table = LuaCembed_new_global_table;
+    self.get_table = LuaCembed_get_global_table;
     return self;
 }

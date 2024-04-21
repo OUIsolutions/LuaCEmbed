@@ -1,11 +1,14 @@
 
 
-LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, va_list  args){
+LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...){
     LuaCembedTable  *self = (LuaCembedTable*)malloc(sizeof (LuaCembedTable));
     *self = (LuaCembedTable){0};
     self->main_object =main_embed;
     char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    va_list  args;
+    va_start(args,format);
     sprintf(buffer,format,args);
+    va_end(args);
     self->global_buffer = strdup(buffer);
     return self;
 }

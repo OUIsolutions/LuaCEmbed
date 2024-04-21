@@ -6,7 +6,7 @@ typedef struct {
 
 }LuaCembedTable;
 
-LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_object,const char *format, va_list  args);
+LuaCembedTable * newLuaCembedTable(LuaCEmbed *main_embed,const char *format, ...);
 
 void  LuaCembedTable_set_string_prop(LuaCembedTable *self ,const char *name,const char *value);
 

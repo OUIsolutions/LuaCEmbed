@@ -15,6 +15,9 @@ typedef struct {
     void (*set_double)(LuaCEmbed *self,const char *name,double value);
     void (*set_bool)(LuaCEmbed *self,const char *name,bool value);
 
+    LuaCembedTable * (*get_table)(LuaCEmbed *self, const char *name);
+    LuaCembedTable * (*new_table)(LuaCEmbed *self, const char *name);
+
 
 }LuaCEmbedGlobalModule;
 
