@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"test ={1,true,3};");
+    lua_n.evaluate_string(l,"test ={1,true,3,d=30};");
 
     LuaCEmbedTable *t1  = lua_n.globals.get_table(l,"test");
 

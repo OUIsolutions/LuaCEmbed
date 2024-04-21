@@ -1,1 +1,1 @@
-#include "table/table.c"
+#include "table/definition.h"
