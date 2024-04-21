@@ -1,5 +1,3 @@
+local x = require("lib")
 
-
-r = {1,2,3}
-
-print(r[40])
+x.teste()

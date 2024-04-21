@@ -20,9 +20,9 @@ int luaopen_lib(lua_State *L) {
 
 }
 
-
-int main(int argc, char *argv[]){
 /*
+int main(int argc, char *argv[]){
+
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
@@ -46,6 +46,7 @@ int main(int argc, char *argv[]){
     lua_n.free(l);
 
     return 0;
-    */
+
 }
+ */
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 
