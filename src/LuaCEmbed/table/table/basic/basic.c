@@ -16,3 +16,10 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ..
 }
 
 
+void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
+    free(self->global_buffer);
+    if(self->prop_name){
+        free(self->prop_name);
+    }
+    free(self);
+}
