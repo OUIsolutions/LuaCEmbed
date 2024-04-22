@@ -4,7 +4,10 @@
 
 void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args)){
 
+
+
     lua_getglobal(self->main_object->state,self->global_buffer);
+    
     lua_pushstring(self->main_object->state,name);
 
     //creating the clojure

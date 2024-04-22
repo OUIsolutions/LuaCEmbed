@@ -22,6 +22,7 @@ LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
 LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
     lua.tables.set_long_prop(t,"num",0);
+    LuaCEmbedTable_set_method()
     lua.tables.set_method(t,"increment",increment);
     return lua.response.send_table(t);
 }
