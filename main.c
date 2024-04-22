@@ -44,12 +44,26 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
 
 int luaopen_minha_biblioteca(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua.newLuaLib(L, false);
+    LuaCEmbed * l = lua.newLuaLib(L, true);
     lua.add_callback(l, "create_obj", create_obj);
 
 
     lua.perform(l);
     return 1;
+}
+LuaCEmbedResponse * lua_print_func(LuaCEmbed *args){
+    int size = lua.args.get_total_args(args);
+    for(int i = 0; i < size; i++){
+        int type = lua.args.get_type(args,i);
+        if(type == lua.types.NUMBER){
+            printf("%lf",lua.args.get_double(args,i));;
+        }
+        if(type == lua.types.STRING){
+            printf("%s",lua.args.get_str(args,i));
+        }
+    }
+    printf("\n");
+    return NULL;
 }
 
 
@@ -58,9 +72,9 @@ int main(int argc, char *argv[]){
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaEvaluation();
     lua.add_callback(l, "create_obj", create_obj);
+    lua.add_callback(l, "print", lua_print_func);
 
-    lua.evaluete_file(l, "teste.lua");
-    printf("%ld",lua.get_evaluation_long(l,"v.num"));
+    lua.evaluete_file(l,"teste.lua");
 
     if(lua.has_errors(l)){
         printf("error: %s\n", lua.get_error_message(l));
