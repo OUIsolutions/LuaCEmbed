@@ -6,13 +6,12 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
 
     bool its_meta_method = false;
 
-    /*
+
     if(strlen(name) > 2){
         if (name[0] == '_' && name[1] == '_'){
             its_meta_method = true;
         }
     }
-     */
     bool its_normal_method = !its_meta_method;
 
     if(its_normal_method){
@@ -20,7 +19,7 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     }
 
     if(its_meta_method){
-        luaL_newmetatable(self->main_object->state,"a");
+        luaL_newmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_META_METHOD_TABLE);
     }
 
     lua_pushstring(self->main_object->state,name);
@@ -38,7 +37,7 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
 
     if(its_meta_method){
         lua_getglobal(self->main_object->state,self->global_buffer);
-        luaL_setmetatable(self->main_object->state,"a");
+        luaL_setmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_META_METHOD_TABLE);
     }
 
 }

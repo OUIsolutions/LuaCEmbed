@@ -32,7 +32,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
 
     //creating the metatable
-    luaL_newmetatable(self->state,PRIVATE_LUA_CEMBED_META_TABLE);
+    luaL_newmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE);
 
     //seting the clojure key
     lua_pushstring(self->state,PRIVATE_LUA_CEMBED_DEL_PREFIX);
@@ -50,7 +50,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     lua_newtable(self->state);
     lua_setglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
 
-    luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_META_TABLE);
+    luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE);
 
 
     return  self;
