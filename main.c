@@ -18,11 +18,27 @@ LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
     return NULL;
 }
 
+LuaCEmbedResponse * increment2(LuaCEmbedTable *self,LuaCEmbed *args){
+
+
+    long value = lua.tables.get_long_prop(self,"num");
+    lua.tables.set_long_prop(self,"num",0+value);
+
+    long value_to_increment = lua.args.get_long(args,1);
+    if(lua.has_errors(args)){
+        return  lua.response.send_error(lua.get_error_message(args));
+    }
+
+    lua.tables.set_long_prop(self,"num",value_to_increment+value);
+    return NULL;
+}
 
 LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
     lua.tables.set_long_prop(t,"num",0);
-    lua.tables.set_method(t,"__add",increment);
+    lua.tables.set_method(t,"__index",increment);
+    lua.tables.set_method(t,"__add",increment2);
+
     return lua.response.send_table(t);
 }
 
