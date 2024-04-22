@@ -12,6 +12,7 @@ LuaCEmbedResponse *private_LuaCEmbedReturn_raw();
 
 LuaCEmbedResponse * LuaCEmbed_send_str(const char *text);
 
+LuaCEmbedResponse * LuaCEmbed_send_error(const char *text);
 
 
 LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code);

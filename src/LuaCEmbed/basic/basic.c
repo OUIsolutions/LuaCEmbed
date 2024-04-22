@@ -76,7 +76,7 @@ void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_message;
 }
-
+/*
 void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...){
 
     va_list args;
@@ -94,9 +94,8 @@ void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...){
         lua_error(self->state);
     }
 
-
 }
-
+*/
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
 
     if(LuaCEmbed_has_errors(self)){

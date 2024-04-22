@@ -20,6 +20,15 @@ LuaCEmbedResponse * LuaCEmbed_send_str(const char *text){
     self->string_val  = strdup(text);
     return self;
 }
+
+LuaCEmbedResponse * LuaCEmbed_send_error(const char *text){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_ERROR_RESPONSE;
+    self->string_val  = strdup(text);
+    return self;
+}
+
+
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_TABLE_RESPONSE;

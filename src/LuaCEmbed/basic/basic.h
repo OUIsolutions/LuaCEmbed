@@ -24,9 +24,9 @@ void private_LuaCembed_handle_timeout(int signum) ;
 
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...);
 
-
+/*
 void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...);
-
+*/
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 
 
