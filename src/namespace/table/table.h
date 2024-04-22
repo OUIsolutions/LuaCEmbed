@@ -12,6 +12,7 @@ typedef struct {
     double  (*get_double_prop)(LuaCEmbedTable *self , const char *name);
     bool  (*get_bool_prop)(LuaCEmbedTable *self , const char *name);
 
+    LuaCEmbedTable * (*new_anonymous_table)(LuaCEmbed *self);
 
     LuaCEmbedTable  *(*get_sub_table_auto_creating)(LuaCEmbedTable *self, const char *name);
     LuaCEmbedTable  *(*new_sub_table)(LuaCEmbedTable *self, const char *name);

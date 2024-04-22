@@ -17,7 +17,6 @@ typedef struct{
     void (*raise_jump_error)(LuaCEmbed *self, const char *error, ...);
     void (*set_timeout)(LuaCEmbed *self,int seconds);
     int (*evaluate_string)(LuaCEmbed *self, const char *code,...);
-    LuaCEmbedTable * (*new_anonymous_table)(LuaCEmbed *self);
     char * (*get_string_evaluation)(LuaCEmbed *self, char *code, ...);
     int  (*get_evaluation_type)(LuaCEmbed *self, char *code,...);
     long (*get_evaluation_size)(LuaCEmbed *self, char *code,...);

@@ -1,25 +1,31 @@
 
 #include "src/one.c"
-LuaCEmbedNamespace  lua_n;
+LuaCEmbedNamespace  lua;
 
 
-LuaCEmbedResponse  *test (LuaCEmbed *args){
+LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
 
-    LuaCEmbedTable *t1 = lua_n.new_anonymous_table(args);
-    lua_n.tables.set_string_prop(t1,"valor","vai se fuder");
-    return lua_n.response.send_table(t1);
+    long value = lua.tables.get_long_prop(self,"num");
+    long value_to_increment = lua.args.get_long(args,0);
+    lua.tables.set_long_prop(self,"num",value_to_increment+value);
 
 }
 
 
+LuaCEmbedResponse * create_obj(LuaCEmbed *args){
+    LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
+    lua.tables.set_long_prop(t,"num",0);
+    lua.tables.set_method(t,"increment",increment);
+    return lua.response.send_table(t);
+}
 
 int luaopen_minha_biblioteca(lua_State *L) {
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaLib(L,false);
+    lua =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua.newLuaLib(L, false);
+    lua.add_callback(l, "create_obj", create_obj);
 
-    lua_n.add_callback(l, "test", test);
 
-    lua_n.perform(l);
+    lua.perform(l);
     return 1;
 
 }
@@ -27,19 +33,18 @@ int luaopen_minha_biblioteca(lua_State *L) {
 
 int main(int argc, char *argv[]){
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l, "test", test);
+    lua =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua.newLuaEvaluation();
 
-    lua_n.evaluete_file(l,"teste.lua");
+    lua.evaluete_file(l, "teste.lua");
 
 
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(lua.has_errors(l)){
+        printf("error: %s\n", lua.get_error_message(l));
     }
 
     
-    lua_n.free(l);
+    lua.free(l);
 
     return 0;
 
