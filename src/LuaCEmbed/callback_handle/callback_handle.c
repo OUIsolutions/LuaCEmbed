@@ -6,6 +6,8 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     bool is_a_function = !is_a_method;
     LuaCEmbedResponse *possible_return = NULL;
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
+    self->total_args =  lua_gettop(self->state);
+
     const char *func_name =  lua_tostring(L,lua_upvalueindex(3));
     self->current_function = func_name;
     self->func_tables = (void*)newprivateLuaCEmbedTableArray();
@@ -36,7 +38,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         lua_pushstring(L, possible_return->string_val);
         private_LuaCEmbedResponse_free(possible_return);
         lua_error(self->state);
-        return PRIVATE_LUACEMBED_ONE_RETURN;
+        return PRIVATE_LUACEMBED_NO_RETURN;
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_LONG_RESPONSE){

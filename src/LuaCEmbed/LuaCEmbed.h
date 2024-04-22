@@ -5,7 +5,7 @@ typedef struct LuaCEmbed{
     const char *current_function;
     bool is_lib;
     bool public_functions;
-    void *opt_args;
+    int total_args;
     bool runing;
     void (*delelte_function)(struct  LuaCEmbed *self);
     void *global_tables;

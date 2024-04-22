@@ -1,6 +1,6 @@
 
 
-int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, int index){
+int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_converted_arg index){
 
     if(LuaCEmbed_has_errors(self)){
         return LUA_CEMBED_GENERIC_ERROR;
@@ -16,20 +16,21 @@ int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, int index){
 
 }
 
-int LuaCEmbed_ensure_arg_type(LuaCEmbed *self,int index, int arg_type) {
+int LuaCEmbed_ensure_arg_type(LuaCEmbed *self,private_lua_cembed_converted_arg index, int arg_type) {
 
     if (LuaCEmbed_ensure_arg_exist(self, index)) {
         return LUA_CEMBED_GENERIC_ERROR;
     }
+
     int type = LuaCEmbed_get_arg_type(self, index);
     if (type != arg_type) {
 
         privateLuaCEmbed_raise_error_not_jumping(self,
-                                                 PRIVATE_LUA_CEMBED_ARG_WRONG_TYPE,
-                                                 index + 1,
-                                                 self->current_function,
-                                                 LuaCembed_convert_arg_code(type),
-                                                 LuaCembed_convert_arg_code(arg_type)
+                 PRIVATE_LUA_CEMBED_ARG_WRONG_TYPE,
+                 index,
+                 self->current_function,
+                 LuaCembed_convert_arg_code(type),
+                 LuaCembed_convert_arg_code(arg_type)
         );
         return LUA_CEMBED_GENERIC_ERROR;
     }
