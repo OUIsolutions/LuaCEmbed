@@ -8,7 +8,7 @@ LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
     long value = lua.tables.get_long_prop(self,"num");
     long value_to_increment = lua.args.get_long(args,0);
     lua.tables.set_long_prop(self,"num",value_to_increment+value);
-
+    return NULL;
 }
 
 
@@ -35,9 +35,10 @@ int main(int argc, char *argv[]){
 
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaEvaluation();
+    lua.add_callback(l, "create_obj", create_obj);
 
     lua.evaluete_file(l, "teste.lua");
-
+    printf("%ld",lua.get_evaluation_long(l,"v.num"));
 
     if(lua.has_errors(l)){
         printf("error: %s\n", lua.get_error_message(l));

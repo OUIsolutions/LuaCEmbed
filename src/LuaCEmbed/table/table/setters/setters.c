@@ -8,10 +8,10 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     lua_pushstring(self->main_object->state,name);
 
     //creating the clojure
-    lua_pushlightuserdata(self->main_object->state,(void*)true);//is a method
+    lua_pushboolean(self->main_object->state,true);//is a method
     lua_pushlightuserdata(self->main_object->state,(void*)self->main_object); //self
-    lua_pushlightuserdata(self->main_object->state,(void*)name);//calback name
-    lua_pushlightuserdata(self->main_object->state,(void*)self);//table
+    lua_pushstring(self->main_object->state,name);//calback name
+    lua_pushstring(self->main_object->state,self->prop_name);//table
     lua_pushlightuserdata(self->main_object->state,(void*)callback);
 
     //add these clojure to be handled by the callbacks

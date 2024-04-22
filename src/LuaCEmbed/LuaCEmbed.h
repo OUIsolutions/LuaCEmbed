@@ -2,7 +2,7 @@
 typedef struct LuaCEmbed{
     lua_State *state;
     char *error_message;
-    char *current_function;
+    const char *current_function;
     bool is_lib;
     bool public_functions;
     void *opt_args;

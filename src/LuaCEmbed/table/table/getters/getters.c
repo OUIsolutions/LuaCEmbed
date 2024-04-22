@@ -87,7 +87,7 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
     while(lua_next(self->main_object->state,1)){
         if(total == converted_index){
             if(lua_type(self->main_object->state,-2) != LUA_CEMBED_STRING ){
-                privateLuaCEmbed_raise_error_not_jumping(
+                privateLuaCEmbed_raise_internal_error(
                         self->main_object,
                         PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY,
                         index,
@@ -106,7 +106,7 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
 
     }
 
-    privateLuaCEmbed_raise_error_not_jumping(
+    privateLuaCEmbed_raise_internal_error(
             self->main_object,
             PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY,
             index,
@@ -155,7 +155,7 @@ long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
 
     }
 
-    privateLuaCEmbed_raise_error_not_jumping(
+    privateLuaCEmbed_raise_internal_error(
             self->main_object,
             PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
             index,
@@ -186,7 +186,7 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
 
     }
 
-    privateLuaCEmbed_raise_error_not_jumping(
+    privateLuaCEmbed_raise_internal_error(
             self->main_object,
             PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
             index,
@@ -217,7 +217,7 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
 
     }
 
-    privateLuaCEmbed_raise_error_not_jumping(
+    privateLuaCEmbed_raise_internal_error(
             self->main_object,
             PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
             index,
@@ -248,7 +248,7 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
 
     }
 
-    privateLuaCEmbed_raise_error_not_jumping(
+    privateLuaCEmbed_raise_internal_error(
             self->main_object,
             PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
             index,

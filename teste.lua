@@ -1,5 +1,10 @@
-local x = require("minha_biblioteca")
 
-r = x.test()
 
-print(r.valor)
+v = create_obj()
+
+v.increment(1)
+v.increment(1)
+v.increment(1)
+v.increment(5)
+
+

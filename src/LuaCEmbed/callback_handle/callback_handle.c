@@ -2,19 +2,21 @@
 
 int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
-    bool is_a_method =  (bool)lua_touserdata(L, lua_upvalueindex(1));
+    bool is_a_method = lua_toboolean(L, lua_upvalueindex(1));
     bool is_a_function = !is_a_method;
     LuaCEmbedResponse *possible_return = NULL;
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
-    char *func_name =  (char*)lua_touserdata(L,lua_upvalueindex(3));
+    const char *func_name =  lua_tostring(L,lua_upvalueindex(3));
     self->current_function = func_name;
     self->func_tables = (void*)newprivateLuaCEmbedTableArray();
 
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
-        LuaCEmbedTable  *table = (LuaCEmbedTable*) lua_touserdata(L, lua_upvalueindex(4));
+        const char *table_name =  lua_tostring(L,lua_upvalueindex(4));
+        LuaCEmbedTable  *table = newLuaCembedTable(self,table_name);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
+        privateLuaCEmbedTable_free(table);
     }
 
     if(is_a_function){
@@ -114,9 +116,9 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
     //creating the clojure
 
     //creating the clojure
-    lua_pushlightuserdata(self->state,(void*)false);//is a method
+    lua_pushboolean(self->state,false);//is a method
     lua_pushlightuserdata(self->state,(void*)self); //self
-    lua_pushlightuserdata(self->state,(void*)callback_name);//calback name
+    lua_pushstring(self->state,callback_name);//calback name
     lua_pushlightuserdata(self->state,(void*)callback);//calback
 
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
@@ -137,10 +139,10 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
     //creating the clojure
-    lua_pushlightuserdata(self->state,(void*)false);//is a method
+    lua_pushboolean(self->state,false);//is a method
     lua_pushlightuserdata(self->state,(void*)self); //self
-    lua_pushlightuserdata(self->state,(void*)callback_name);//calback name
-    lua_pushlightuserdata(self->state,(void*)callback);
+    lua_pushstring(self->state,callback_name);//calback name
+    lua_pushlightuserdata(self->state,(void*)callback);//calback
 
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
     lua_setglobal(self->state, callback_name);
