@@ -41,13 +41,14 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
 LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
 
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
-
+    const char * location = "global";
     if(self->current_function){
         target =  (privateLuaCEmbedTableArray*)self->func_tables;
+        location = self->current_function;
     }
     char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
 
-    sprintf(buffer,PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE,target->size);
+    sprintf(buffer,PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE,location, target->size);
 
     lua_newtable(self->state);
     lua_setglobal(self->state,buffer);

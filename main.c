@@ -27,7 +27,6 @@ int luaopen_minha_biblioteca(lua_State *L) {
 
     lua.perform(l);
     return 1;
-
 }
 
 
