@@ -6,10 +6,11 @@ LuaCEmbedNamespace  lua;
 LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
 
     long value_to_increment = lua.args.get_long(args,0);
-    long value = lua.tables.get_long_prop(self,"num");
     if(lua.has_errors(args)){
         return  lua.response.send_error(lua.get_error_message(args));
     }
+    long value = lua.tables.get_long_prop(self,"num");
+
     lua.tables.set_long_prop(self,"num",value_to_increment+value);
     return NULL;
 }
