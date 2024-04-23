@@ -45,14 +45,14 @@ bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self , const char *name){
 }
 
 long  LuaCEmbedTable_get_size(LuaCEmbedTable *self){
-    lua_getglobal(self->main_object->state,self->global_name);
+    int index =lua_getglobal(self->main_object->state,self->global_name);
     long total = 0;
     lua_pushnil(self->main_object->state);
-    while(lua_next(self->main_object->state,1)){
+    while(lua_next(self->main_object->state,index)){
         total+=1;
-
         lua_pop(self->main_object->state,1);
     }
+
     return total;
 }
 long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self,long index){

@@ -21,6 +21,9 @@ const char * LuaCembed_convert_arg_code(int arg_code){
     if(arg_code == LUA_CEMBED_TABLE){
         return  PRIVATE_LUA_CEMBED_TABLE_STRING;
     }
+    if(arg_code == LUA_CEMBED_FUNCTION){
+        return PRIVATE_LUA_CEMBED_FUNCTION_STRING;
+    }
 
     return PRIVATE_LUA_CEMBED_UNKNOW_STRING;
 }

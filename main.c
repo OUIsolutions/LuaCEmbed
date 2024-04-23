@@ -9,6 +9,7 @@ LuaCEmbedResponse * add(LuaCEmbedTable *self, LuaCEmbed *args){
     lua.tables.set_long_prop(self,"num",0+value);
 
     long value_to_increment = lua.args.get_long(args,1);
+
     if(lua.has_errors(args)){
         return  lua.response.send_error(lua.get_error_message(args));
     }
@@ -37,12 +38,23 @@ LuaCEmbedResponse * delete44(LuaCEmbedTable *self,LuaCEmbed *args){
     printf("chamou o delete\n");
     return NULL;
 }
+LuaCEmbedResponse * cria_array(LuaCEmbedTable *self,LuaCEmbed *args){
+    LuaCEmbedTable *a = lua.tables.new_anonymous_table(args);
+    LuaCEmbedTable_append_string(a,"a1");
+    LuaCEmbedTable_append_string(a,"a2");
+    LuaCEmbedTable_append_string(a,"a3");
+    LuaCEmbedTable_append_string(a,"a4");
+
+    return lua.response.send_table(a);
+}
 
 LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
     lua.tables.set_long_prop(t,"num",0);
     lua.tables.set_method(t, "__add", add);
     lua.tables.set_method(t,"increment",increment);
+    lua.tables.set_method(t,"cria_array",cria_array);
+
     lua.tables.set_method(t,"__gc",delete44);
 
     return lua.response.send_table(t);
