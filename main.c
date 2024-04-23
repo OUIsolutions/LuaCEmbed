@@ -3,21 +3,6 @@
 LuaCEmbedNamespace  lua;
 
 
-LuaCEmbedResponse * add(LuaCEmbedTable *self, LuaCEmbed *args){
-
-    long value = lua.tables.get_long_prop(self,"num");
-    lua.tables.set_long_prop(self,"num",0+value);
-
-    long value_to_increment = lua.args.get_long(args,1);
-
-    if(lua.has_errors(args)){
-        return  lua.response.send_error(lua.get_error_message(args));
-    }
-
-    lua.tables.set_long_prop(self,"num",value_to_increment+value);
-    return NULL;
-}
-
 LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
 
 
@@ -38,23 +23,17 @@ LuaCEmbedResponse * delete44(LuaCEmbedTable *self,LuaCEmbed *args){
     printf("chamou o delete\n");
     return NULL;
 }
-LuaCEmbedResponse * cria_array(LuaCEmbedTable *self,LuaCEmbed *args){
-    LuaCEmbedTable *a = lua.tables.new_anonymous_table(args);
-    LuaCEmbedTable_append_string(a,"a1");
-    LuaCEmbedTable_append_string(a,"a2");
-    LuaCEmbedTable_append_string(a,"a3");
-    LuaCEmbedTable_append_string(a,"a4");
 
-    return lua.response.send_table(a);
-}
 
 LuaCEmbedResponse * create_obj(LuaCEmbed *args){
-    LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
-    lua.tables.set_long_prop(t,"num",0);
-    lua.tables.set_method(t, "__add", add);
-    lua.tables.set_method(t,"increment",increment);
-    lua.tables.set_method(t,"cria_array",cria_array);
+    long  start = 0;
+    if(lua.args.size(args) > 0){
+        start = lua.args.get_long(args,0);
+    }
 
+    LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
+    lua.tables.set_long_prop(t,"num",start);
+    lua.tables.set_method(t,"increment",increment);
     lua.tables.set_method(t,"__gc",delete44);
 
     return lua.response.send_table(t);
@@ -69,7 +48,7 @@ int luaopen_minha_biblioteca(lua_State *L) {
     return  lua.perform(l);
 }
 LuaCEmbedResponse * lua_print_func(LuaCEmbed *args){
-    int size = lua.args.get_total_args(args);
+    int size = lua.args.size(args);
     for(int i = 0; i < size; i++){
         int type = lua.args.get_type(args,i);
         if(type == lua.types.NUMBER){

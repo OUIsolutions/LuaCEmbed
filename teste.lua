@@ -1,11 +1,9 @@
 require("minha_biblioteca")
-v = create_obj()
-d=v+ 350
-d=v+ 350
+v = create_obj(100)
+v1 = create_obj(200)
 
-v.increment(5)
+v.increment(50)
 print(v.num)
 
-t4 = v.cria_array()
-
-print(t4[2])
+v1.increment(50)
+print(v1.num)
