@@ -19,7 +19,7 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     }
 
     if(its_meta_method){
-        luaL_newmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_META_METHOD_TABLE);
+        lua_getglobal(self->main_object->state,self->meta_name);
     }
 
     lua_pushstring(self->main_object->state,name);
@@ -37,7 +37,9 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
 
     if(its_meta_method){
         lua_getglobal(self->main_object->state,self->global_name);
-        luaL_setmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_META_METHOD_TABLE);
+        lua_pushvalue(self->main_object->state,-2);
+
+        lua_setmetatable(self->main_object->state,-2);
     }
 
 }

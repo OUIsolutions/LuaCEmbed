@@ -41,7 +41,6 @@ LuaCEmbedResponse * delete44(LuaCEmbedTable *self,LuaCEmbed *args){
 LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
     lua.tables.set_long_prop(t,"num",0);
-
     lua.tables.set_method(t, "__add", add);
     lua.tables.set_method(t,"increment",increment);
     lua.tables.set_method(t,"__gc",delete44);
