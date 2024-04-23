@@ -6,6 +6,9 @@ LuaCEmbedNamespace  lua;
 LuaCEmbedResponse * increment(LuaCEmbedTable *self,LuaCEmbed *args){
 
 
+
+    lua.tables.new_anonymous_table(args);
+
     long value = lua.tables.get_long_prop(self,"num");
     lua.tables.set_long_prop(self,"num",0+value);
 
@@ -32,29 +35,36 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     }
 
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
+
+    lua.tables.set_long_prop(t,"num",start);
+    lua.tables.set_method(t,"increment",increment);
+
     LuaCEmbedTable *valores = lua.tables.new_sub_table(t,"valores");
     lua.tables.append_long(valores,10);
 
     LuaCEmbedTable  *valores0 = lua.tables.new_anonymous_table(args);
     lua.tables.set_string_prop(valores0,"a","vai se fuder");
-    lua.tables.append_table(valores,valores0);
+
+   lua.tables.append_table(valores,valores0);
 
     lua.tables.append_evaluation(valores,"50 + 50");
 
-    lua.tables.set_evaluation_prop(t, "a", "10 +30");
 
-    lua.tables.set_long_prop(t,"num",start);
-    lua.tables.set_method(t,"increment",increment);
+    lua.tables.set_evaluation_prop(t, "a", "10 +30");
     lua.tables.set_method(t,"__gc",delete44);
     return lua.response.send_table(t);
 }
 
 
-
+LuaCEmbedResponse *test(LuaCEmbed *args){
+    //LuaCEmbedTable *t= lua.args.get_table(args,0);
+    return NULL;
+}
 int luaopen_minha_biblioteca(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaLib(L, true);
     lua.add_callback(l, "create_obj", create_obj);
+    lua.add_callback(l, "test", test);
 
     return  lua.perform(l);
 }

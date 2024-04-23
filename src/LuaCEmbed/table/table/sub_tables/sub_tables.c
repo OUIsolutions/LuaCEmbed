@@ -51,7 +51,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *name){
     char full_sub_table_name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(full_sub_table_name, PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
+    sprintf(full_sub_table_name, "%s%s", self->global_name, name);
 
 
     lua_newtable(self->main_object->state);

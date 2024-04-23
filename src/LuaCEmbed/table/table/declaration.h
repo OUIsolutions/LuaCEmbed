@@ -5,3 +5,4 @@
 #include "errors/errors.h"
 #include "sub_tables/sub_tables.h"
 #include "append/append.h"
+#include "destroy/destroy.h"

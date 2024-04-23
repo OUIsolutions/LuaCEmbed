@@ -2,12 +2,14 @@
 
 LuaCembedTableModule newLuaCembedTableModule(){
     LuaCembedTableModule self ={0};
+
     self.append_string = LuaCEmbedTable_append_string;
     self.append_bool = LuaCEmbedTable_append_bool;
     self.append_double = LuaCEmbedTable_append_double;
     self.append_long = LuaCEmbedTable_append_long;
     self.append_table = LuaCEmbedTable_append_table;
     self.append_evaluation = LuaCEmbedTable_append_evaluation;
+
     self.set_evaluation_prop = LuaCEmbedTable_set_evaluation_prop;
     self.set_method = LuaCEmbedTable_set_method;
     self.set_method = LuaCEmbedTable_set_method;
