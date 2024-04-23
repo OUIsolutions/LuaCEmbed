@@ -1,5 +1,6 @@
 
 
+void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table);
 
 
 void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value);

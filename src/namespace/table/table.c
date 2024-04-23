@@ -6,6 +6,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.append_bool = LuaCEmbedTable_append_bool;
     self.append_double = LuaCEmbedTable_append_double;
     self.append_long = LuaCEmbedTable_append_long;
+    self.append_table = LuaCEmbedTable_append_table;
 
     self.set_method = LuaCEmbedTable_set_method;
     self.set_bool_prop = LuaCEmbedTable_set_bool_prop;

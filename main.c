@@ -30,13 +30,24 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     if(lua.args.size(args) > 0){
         start = lua.args.get_long(args,0);
     }
+
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
+
+    LuaCEmbedTable *valores = lua.tables.new_sub_table(t,"valores");
+    lua.tables.append_long(valores,10);
+
+    LuaCEmbedTable  *valores0 = lua.tables.new_anonymous_table(args);
+    lua.tables.set_string_prop(valores0,"a","vai se fuder");
+
+    lua.tables.append_table(valores,valores0);
+
+
     lua.tables.set_long_prop(t,"num",start);
     lua.tables.set_method(t,"increment",increment);
     lua.tables.set_method(t,"__gc",delete44);
-
     return lua.response.send_table(t);
 }
+
 
 
 int luaopen_minha_biblioteca(lua_State *L) {
