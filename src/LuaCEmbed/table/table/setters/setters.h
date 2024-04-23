@@ -1,7 +1,6 @@
 
 
 
-LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...);
 
 
 void LuaCEmbedTable_set_method(LuaCEmbedTable *self, const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args));

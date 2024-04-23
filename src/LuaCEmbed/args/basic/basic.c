@@ -49,5 +49,5 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
 
     lua_pushvalue(self->state,index+1);
     lua_setglobal(self->state,buffer);
-    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,buffer);
+    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,false,buffer);
 }

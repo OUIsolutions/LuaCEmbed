@@ -9,7 +9,7 @@ LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,con
         return possible;
     }
 
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object, full_sub_name);
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,false, full_sub_name);
     creaeted->prop_name = strdup(name);
 
     privateLuaCEmbedTableArray_append(

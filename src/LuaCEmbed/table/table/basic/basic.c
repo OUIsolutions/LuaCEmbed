@@ -13,7 +13,7 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, bool always_recreate, 
     vsnprintf(name, sizeof(name), format, args);
     va_end(args);
 
-    char meta_name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    char meta_name[LUA_CEMBED_ARGS_BUFFER_SIZE+1000] = {0};
     sprintf(meta_name,PRIVATE_LUA_CEMBED_METANAME,name);
 
     self->meta_name = strdup(meta_name);
