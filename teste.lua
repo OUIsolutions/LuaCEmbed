@@ -1,6 +1,5 @@
 
-lib = require('minha_biblioteca')
-v = lib.create_obj()
+v = create_obj()
 d=v+ 350
 d=v+ 350
 
