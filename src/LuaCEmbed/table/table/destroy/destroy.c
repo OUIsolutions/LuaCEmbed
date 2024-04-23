@@ -35,7 +35,10 @@ void LuaCEmbedTable_destroy_by_index(LuaCEmbedTable *self, long index){
 
     }
 
-
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushnumber(self->main_object->state,total);
+    lua_pushnil(self->main_object->state);
+    lua_settable(self->main_object->state,-3);
 
 
 
