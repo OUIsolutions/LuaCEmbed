@@ -11,3 +11,4 @@
 #define PRIVATE_LUA_CEMBE_SUB_ARG_TABLE "private_lua_c_embed_table_arg_%s_%d"
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE "private_lua_c_embed_anononymous_table_%ld"
 #define PRIVATE_LUA_CEMBED_METANAME "%sMETA"
+#define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"

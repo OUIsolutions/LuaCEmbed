@@ -30,7 +30,6 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     if(lua.args.size(args) > 0){
         start = lua.args.get_long(args,0);
     }
-
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
     lua.tables.set_long_prop(t,"num",start);
     lua.tables.set_method(t,"increment",increment);
