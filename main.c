@@ -32,15 +32,16 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     }
 
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
-
     LuaCEmbedTable *valores = lua.tables.new_sub_table(t,"valores");
     lua.tables.append_long(valores,10);
 
     LuaCEmbedTable  *valores0 = lua.tables.new_anonymous_table(args);
     lua.tables.set_string_prop(valores0,"a","vai se fuder");
-
     lua.tables.append_table(valores,valores0);
 
+    lua.tables.append_evaluation(valores,"50 + 50");
+
+    lua.tables.set_evaluation_prop(t, "a", "10 +30");
 
     lua.tables.set_long_prop(t,"num",start);
     lua.tables.set_method(t,"increment",increment);

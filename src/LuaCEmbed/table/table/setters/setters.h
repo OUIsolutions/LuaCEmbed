@@ -14,4 +14,5 @@ void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self, const char *name, dou
 void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self, const char *name, bool value);
 
 
+void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...);
 

@@ -72,3 +72,24 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool
     lua_pushboolean(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
 }
+void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...){
+
+    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+    va_list  args;
+    va_start(args,code);
+    vsnprintf(buffer,sizeof(buffer),code,args);
+    va_end(args);
+
+    LuaCEmbed_evaluate_string_no_return(self->main_object,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            buffer
+    );
+    if(LuaCEmbed_has_errors(self->main_object)){
+        return;
+    }
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushstring(self->main_object->state,name);
+    lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+    lua_settable(self->main_object->state,-3);
+}

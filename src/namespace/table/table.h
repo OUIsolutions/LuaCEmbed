@@ -6,6 +6,9 @@ typedef struct {
     void  (*append_double)(LuaCEmbedTable *self, double  value);
     void  (*append_bool)(LuaCEmbedTable *self,  bool value);
     void  (*append_table)(LuaCEmbedTable *self, LuaCEmbedTable *table);
+    void  (*set_evaluation_prop)(LuaCEmbedTable *self, const char *name, const char *code, ...);
+    void  (*append_evaluation)(LuaCEmbedTable *self, const char *code, ...);
+
 
     void (*set_method)(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args));
     void  (*set_string_prop)(LuaCEmbedTable *self , const char *name, const char *value);
