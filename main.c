@@ -47,9 +47,7 @@ int luaopen_minha_biblioteca(lua_State *L) {
     LuaCEmbed * l = lua.newLuaLib(L, true);
     lua.add_callback(l, "create_obj", create_obj);
 
-
-    lua.perform(l);
-    return 1;
+    return  lua.perform(l);
 }
 LuaCEmbedResponse * lua_print_func(LuaCEmbed *args){
     int size = lua.args.get_total_args(args);

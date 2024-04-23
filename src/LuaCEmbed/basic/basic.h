@@ -13,7 +13,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
 
 void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
 
-void LuaCembed_perform(LuaCEmbed *self);
+int LuaCembed_perform(LuaCEmbed *self);
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self);
 

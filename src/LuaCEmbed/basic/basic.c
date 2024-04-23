@@ -14,6 +14,7 @@ void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(stru
 }
 
 int private_LuaCemb_internal_free(lua_State *L){
+
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
     if(self->delelte_function){
         self->delelte_function(self);
@@ -56,8 +57,9 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     return  self;
 }
 
-void LuaCembed_perform(LuaCEmbed *self){
+int LuaCembed_perform(LuaCEmbed *self){
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+    return 1;
 }
 
 void private_LuaCembed_handle_timeout(int signum) {

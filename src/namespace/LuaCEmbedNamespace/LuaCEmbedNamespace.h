@@ -9,7 +9,7 @@ typedef struct{
     LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();
-    void (*perform)(LuaCEmbed *self);
+    int (*perform)(LuaCEmbed *self);
     const char * (*convert_arg_code)(int arg_code);
 
     char * (*get_error_message)(LuaCEmbed *self);
