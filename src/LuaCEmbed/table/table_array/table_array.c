@@ -20,7 +20,7 @@ void privateLuaCEmbedTableArray_append(privateLuaCEmbedTableArray *self,LuaCEmbe
 LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_full_name(privateLuaCEmbedTableArray *self, const char *name){
     for(int i = 0; i < self->size;i++){
         LuaCEmbedTable  *current_table = self->tables[i];
-        if(strcmp(current_table->global_buffer,name) ==0){
+        if(strcmp(current_table->global_name, name) == 0){
             return  current_table;
         }
     }

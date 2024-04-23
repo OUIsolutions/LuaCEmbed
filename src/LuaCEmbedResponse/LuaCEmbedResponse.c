@@ -32,7 +32,7 @@ LuaCEmbedResponse * LuaCEmbed_send_error(const char *text){
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_TABLE_RESPONSE;
-    self->string_val = strdup(table->global_buffer);
+    self->string_val = strdup(table->global_name);
     return self;
 }
 

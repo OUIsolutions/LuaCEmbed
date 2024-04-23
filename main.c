@@ -39,6 +39,7 @@ LuaCEmbedResponse * delete44(LuaCEmbedTable *self,LuaCEmbed *args){
 }
 
 LuaCEmbedResponse * create_obj(LuaCEmbed *args){
+    LuaCembed_new_anonymous_table()
     LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
     lua.tables.set_long_prop(t,"num",0);
     lua.tables.set_method(t,"__index",increment);
@@ -48,21 +49,11 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
     return lua.response.send_table(t);
 }
 
-LuaCEmbedResponse * create_obj2(LuaCEmbed *args){
-    LuaCEmbedTable *t = lua.tables.new_anonymous_table(args);
-    lua.tables.set_long_prop(t,"num",0);
-    lua.tables.set_method(t,"__index",increment);
-    lua.tables.set_method(t,"__add",increment2);
-    lua.tables.set_method(t,"__gc",delete44);
-
-    return lua.response.send_table(t);
-}
 
 int luaopen_minha_biblioteca(lua_State *L) {
     lua =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua.newLuaLib(L, true);
     lua.add_callback(l, "create_obj", create_obj);
-    lua.add_callback(l, "create_obj2", create_obj2);
 
     return  lua.perform(l);
 }

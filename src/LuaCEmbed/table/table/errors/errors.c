@@ -10,7 +10,7 @@ int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char 
             self->main_object,
             PRIVATE_LUA_CEMBED_WRONG_TYPE_PROPETY,
             name,
-            self->global_buffer,
+            self->global_name,
             LuaCembed_convert_arg_code(type),
             LuaCembed_convert_arg_code(expected_type)
     );
@@ -26,7 +26,7 @@ int privateLuaCEmbedTable_ensure_type_with_index(LuaCEmbedTable *self,int index,
             self->main_object,
             PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
             index,
-            self->global_buffer,
+            self->global_name,
             LuaCembed_convert_arg_code(type),
             LuaCembed_convert_arg_code(expected_type)
     );

@@ -126,21 +126,19 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 }
 
 
-void * private_LuaCembed_get_table_or_create_internal(LuaCEmbed *self, const char *name){
+void * private_LuaCembed_get_table_or_create_internal(LuaCEmbed *self, bool always_recreate, const char *name){
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
 
     if(self->current_function){
         target =  (privateLuaCEmbedTableArray*)self->func_tables;
     }
 
-
-
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(target,name);
     if(possible){
         return possible;
     }
 
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self,"%s",name);
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self, always_recreate, "%s", name);
     creaeted->prop_name = strdup(name);
 
     privateLuaCEmbedTableArray_append(

@@ -15,7 +15,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
         const char *table_name =  lua_tostring(L,lua_upvalueindex(4));
-        LuaCEmbedTable  *table = newLuaCembedTable(self,table_name);
+        LuaCEmbedTable  *table = newLuaCembedTable(self, table_name);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
         privateLuaCEmbedTable_free(table);
