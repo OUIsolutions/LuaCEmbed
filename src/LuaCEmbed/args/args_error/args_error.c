@@ -1,6 +1,6 @@
 
 
-int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_converted_arg index){
+int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_arg index){
 
     if(LuaCEmbed_has_errors(self)){
         return LUA_CEMBED_GENERIC_ERROR;
@@ -16,7 +16,7 @@ int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_converted_arg
 
 }
 
-int LuaCEmbed_ensure_arg_type(LuaCEmbed *self,private_lua_cembed_converted_arg index, int arg_type) {
+int LuaCEmbed_ensure_arg_type(LuaCEmbed *self, private_lua_cembed_incremented_arg index, int arg_type) {
 
     if (LuaCEmbed_ensure_arg_exist(self, index)) {
         return LUA_CEMBED_GENERIC_ERROR;

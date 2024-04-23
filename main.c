@@ -60,7 +60,7 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
 
 LuaCEmbedResponse *test(LuaCEmbed *args){
     LuaCEmbedTable *t= lua.args.get_table(args,0);
-    lua.tables.destroy_prop(t,"b");
+    LuaCEmbedTable_destroy_by_index(t,0);
     return NULL;
 }
 int luaopen_minha_biblioteca(lua_State *L) {
@@ -106,4 +106,4 @@ int main(int argc, char *argv[]){
 
 }
 
-//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c 
+//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

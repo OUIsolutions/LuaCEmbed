@@ -9,8 +9,8 @@ require("minha_biblioteca")
 --print("valores 3",v1.valores[3])
 
 
-x = {a =30,b=40,c=50}
+x = {30,40,50}
 test(x)
-for key,val in pairs(x) do
-    print(key,val)
+for key,val in ipairs(x) do
+    print(val)
 end

@@ -60,7 +60,7 @@ long  LuaCEmbedTable_get_size(LuaCEmbedTable *self){
 
     return total;
 }
-long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self,long index){
+long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cembed_incremented_arg index){
     if(index >= 0){
         return  index;
     }
