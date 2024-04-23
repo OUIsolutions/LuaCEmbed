@@ -60,7 +60,11 @@ LuaCEmbedResponse * create_obj(LuaCEmbed *args){
 
 LuaCEmbedResponse *test(LuaCEmbed *args){
     LuaCEmbedTable *t= lua.args.get_table(args,0);
-    LuaCEmbedTable_destroy_by_index(t,1);
+    //LuaCEmbedTable_destroy_by_index(t,0);
+    long size = lua.tables.get_size(t);
+    for(int i = 0; i < size;i++){
+        printf("%s:%ld\n",lua.tables.get_key_by_index(t,i),lua.tables.get_long_by_index(t,i));
+    }
     return NULL;
 }
 int luaopen_minha_biblioteca(lua_State *L) {

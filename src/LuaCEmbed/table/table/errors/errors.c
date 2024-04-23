@@ -17,7 +17,7 @@ int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char 
     return LUA_CEMBED_GENERIC_ERROR;
 }
 
-int privateLuaCEmbedTable_ensure_type_with_index(LuaCEmbedTable *self,int index, int expected_type){
+int privateLuaCEmbedTable_ensure_type_with_index(LuaCEmbedTable *self, long index, int expected_type){
     int type = lua_type(self->main_object->state,-1);
     if(type == expected_type){
         return  LUA_CEMBED_OK;
