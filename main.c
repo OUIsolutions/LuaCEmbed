@@ -7,6 +7,7 @@ LuaCEmbedResponse *test(LuaCEmbed *args){
     LuaCEmbedTable *t= lua.args.get_table(args,0);
     lua.tables.append_long(t,20);
     lua.tables.append_string(t,"aaa");
+    lua.tables.set_long_by_index(t,1,50);
     return NULL;
 }
 int luaopen_minha_biblioteca(lua_State *L) {
