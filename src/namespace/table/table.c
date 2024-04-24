@@ -32,7 +32,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
 
     self.has_key = LuaCembedTable_has_key_at_index;
     self.get_key_by_index = LuaCembedTable_get_key_by_index;
-    self.get_size = LuaCEmbedTable_get_size;
+    self.get_size = LuaCEmbedTable_get_full_size;
     self.get_type_by_index = LuaCEmbedTable_get_type_by_index;
     self.get_long_by_index = LuaCEmbedTable_get_long_by_index;
     self.get_double_by_index = LuaCEmbedTable_get_double_by_index;

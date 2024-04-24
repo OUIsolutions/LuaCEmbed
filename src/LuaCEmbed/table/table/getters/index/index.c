@@ -1,50 +1,6 @@
 
 
-
-int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_getfield(self->main_object->state,-1,name);
-    return lua_type(self->main_object->state,-1);
-}
-
-char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_getfield(self->main_object->state,-1,name);
-    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_STRING)){
-        return NULL;
-    }
-    return (char*)lua_tostring(self->main_object->state,-1);
-}
-
-
-long  LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_getfield(self->main_object->state,-1,name);
-    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_NUMBER)){
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    return (long )lua_tonumber(self->main_object->state,-1);
-}
-
-double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_getfield(self->main_object->state,-1,name);
-    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_NUMBER)){
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    return (double )lua_tonumber(self->main_object->state,-1);
-}
-
-bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self , const char *name){
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_getfield(self->main_object->state,-1,name);
-    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_BOOL)){
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    return lua_toboolean(self->main_object->state,-1);
-}
-
-long  LuaCEmbedTable_get_size(LuaCEmbedTable *self){
+long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
 
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -54,18 +10,25 @@ long  LuaCEmbedTable_get_size(LuaCEmbedTable *self){
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,index)){
         total+=1;
-       // printf("%s\n", LuaCembed_convert_arg_code(lua_type(self->main_object->state,-1)));
+        // printf("%s\n", LuaCembed_convert_arg_code(lua_type(self->main_object->state,-1)));
         lua_pop(self->main_object->state,1);
     }
 
     return total;
 }
+
+long  LuaCEmbedTable_get_listable_size(LuaCEmbedTable *self){
+    lua_getglobal(self->main_object->state,self->global_name);
+    return (long)lua_rawlen(self->main_object->state,-1);
+}
+
+
 long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cembed_incremented_arg index){
     if(index >= 0){
         return  index;
     }
 
-    return LuaCEmbedTable_get_size(self) + index;
+    return LuaCEmbedTable_get_full_size(self) + index;
 }
 
 int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
