@@ -1,6 +1,4 @@
-adicionar suporte a append nas tableas 
-adicionar suporte a remove  nas tabelas
-
+adicionar o suporte ao set by index
 adicionar o compensador de index
 remover o vnsprintf 
 finalizar os testes
