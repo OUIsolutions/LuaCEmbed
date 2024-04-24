@@ -17,7 +17,15 @@ int luaopen_minha_biblioteca(lua_State *L) {
 
     return  lua.perform(l);
 }
+void teste(const char *format,...){
+    va_list  args;
+    va_start(args,format);
+    char *r = private_LuaCembed_format(format,args);
+    va_end(args);
+}
+int main(){
 
+}
 
 
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

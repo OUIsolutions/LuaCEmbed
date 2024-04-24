@@ -28,7 +28,9 @@ const char * LuaCembed_convert_arg_code(int arg_code){
     return PRIVATE_LUA_CEMBED_UNKNOW_STRING;
 }
 
-char * private_LuaCembed_format(char *expresion, va_list args){
-//    long required_size = vsnprintf(NULL, 0,expresion,args);
+char * private_LuaCembed_format(const char *expresion, va_list args){
+    long required_size = vsnprintf(NULL, 0,expresion,args);
+    printf("%ld",required_size);
+
     return NULL;
 }
