@@ -39,17 +39,18 @@ void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
 }
 
 void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, ...){
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     va_list  args;
     va_start(args,code);
-    vsnprintf(buffer,sizeof(buffer),code,args);
+     char *buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    LuaCEmbed_evaluate_string_no_return(self->main_object,
-                                        PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
-                                        PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-                                        buffer
+    LuaCEmbed_evaluate_string_no_return(
+            self->main_object,
+            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+            buffer
     );
+    free(buffer);
     if(LuaCEmbed_has_errors(self->main_object)){
         return;
     }

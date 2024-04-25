@@ -74,10 +74,10 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool
 }
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...){
 
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
+
     va_list  args;
     va_start(args,code);
-    vsnprintf(buffer,sizeof(buffer),code,args);
+    char *buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
     LuaCEmbed_evaluate_string_no_return(self->main_object,
@@ -85,6 +85,7 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
             buffer
     );
+    free(buffer);
     if(LuaCEmbed_has_errors(self->main_object)){
         return;
     }

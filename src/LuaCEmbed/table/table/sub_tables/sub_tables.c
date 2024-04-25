@@ -23,8 +23,7 @@ LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,con
 
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self, const char *name){
 
-    char full_sub_table_name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(full_sub_table_name, PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
+    char *full_sub_table_name =private_LuaCembed_format(PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
 
     //checking if exist a global object
     lua_getglobal(self->main_object->state,full_sub_table_name);
@@ -45,18 +44,15 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
 
         lua_settable(self->main_object->state,-3);
     }
-
+    free(full_sub_table_name);
     return privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
 }
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *name){
-    char full_sub_table_name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(full_sub_table_name, "%s%s", self->global_name, name);
-
-
+    char *full_sub_table_name = private_LuaCembed_format("%s%s", self->global_name, name);
     lua_newtable(self->main_object->state);
     lua_setglobal(self->main_object->state,full_sub_table_name);
-
+    free(full_sub_table_name);
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
@@ -70,14 +66,14 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
 
 void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table){
 
-    char full_sub_table_name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(full_sub_table_name, PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
+    char *full_sub_table_name =private_LuaCembed_format(PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
 
 
     //assagnin these prop as the same as sub table
     lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_setglobal(self->main_object->state,full_sub_table_name);
 
+    free(full_sub_table_name);
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
