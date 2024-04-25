@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
-It will produce 
+It will produce:
 
 <!--codeof:tests/main_test/evaluation/T_hello_world/expected.txt-->
 ~~~txt
@@ -63,6 +63,17 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_string_evalation/expected.txt-->
+~~~txt
+ 
+result: hello world
+
+~~~
+
+
+
 #### Evaluating a file 
 It's also possible to evaluate a file by using the **evaluete_file** method 
 
@@ -93,6 +104,17 @@ int main(int argc, char *argv[]){
     return 0;
 }
 ~~~
+
+
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_file_evaluation/expected.txt-->
+~~~txt
+ 
+hello world
+~~~
+
+
 
 #### Type Evaluation 
 You can determine the type of the evaluation by using the **get_evaluation_type** method 
