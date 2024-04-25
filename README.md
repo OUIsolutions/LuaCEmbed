@@ -145,6 +145,14 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_type_evaluation/expected.txt-->
+~~~txt
+ 
+result: string
+
+~~~
 ### Table Size 
 Its also possible to determine the size of a table by using the **get_evaluation_size** method 
 <!--codeof:exemples/evaluation/table_size.c-->
@@ -171,6 +179,14 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_table_size/expected.txt-->
+~~~txt
+ 
+size: 3
+
+~~~
 
 #### Evaluating Long
 
@@ -196,6 +212,14 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_long_return/expected.txt-->
+~~~txt
+ 
+result: 50
+
 ~~~
 
 #### Evaluating Double
@@ -224,6 +248,14 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_double_evaluation/expected.txt-->
+~~~txt
+ 
+result: 50.000000
+
+~~~
 
 #### Evaluating Bool
 
@@ -250,6 +282,16 @@ int main(int argc, char *argv[]){
     return 0;
 }
 ~~~
+
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_bool_evaluation/expected.txt-->
+~~~txt
+ 
+result: 1
+
+~~~
+
 
 ### Globals 
 Glbals can be fully handled by the LuaCEmbed Api
@@ -282,6 +324,15 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
+
+<!--codeof:tests/main_test/globals/T_get_string_global/expected.txt-->
+~~~txt
+ 
+result hello world
+
+~~~
+
 #### Getting a global bool
 
 <!--codeof:exemples/globals/get_bool_global.c-->
@@ -308,7 +359,14 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
 
+<!--codeof:tests/main_test/globals/T_get_bool_global/expected.txt-->
+~~~txt
+ 
+result 1
+
+~~~
 
 #### Getting a double global
 
@@ -335,6 +393,15 @@ int main(int argc, char *argv[]){
     return 0;
 }
 ~~~
+It will produce:
+
+<!--codeof:tests/main_test/globals/T_get_double_global/expected.txt-->
+~~~txt
+ 
+result 30.500000
+
+~~~
+
 
 #### Getting a long global
 
@@ -362,6 +429,14 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce:
+
+<!--codeof:tests/main_test/globals/T_get_long_global/expected.txt-->
+~~~txt
+ 
+result 30
+
+~~~
 
 #### Getting a type global
 <!--codeof:exemples/globals/get_type.c-->
@@ -387,6 +462,14 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/globals/T_get_type/expected.txt-->
+~~~txt
+ 
+result string
+
 ~~~
 
 #### Getting a table
@@ -414,6 +497,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
+~~~
+
+It will produce:
+
+<!--codeof:tests/main_test/globals/T_get_table_global/expected.txt-->
+~~~txt
+ 
+value of r.a = internal text
+
 ~~~
 
 

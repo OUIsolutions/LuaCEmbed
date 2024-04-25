@@ -30,7 +30,8 @@ test.generate_ouptut(reconstruct=False)
 test.start_test()
 create_exemples(TEST_NAME,OUTPUT_FULL)
 
-ct.include_code_in_markdown('README.md',save_file=True)
 
 with open(OUTPUT_FULL,'w') as arq:
     arq.write(r)
+
+ct.include_code_in_markdown('README.md',save_file=True)
