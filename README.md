@@ -508,9 +508,188 @@ value of r.a = internal text
 
 ~~~
 
-
 ### Setting Globals
 
+Its also possible to set global variables 
+
+#### Set Long
+<!--codeof:exemples/globals/set_long.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
 
 
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.globals.set_long(l,"r",30);
+    double result  = lua_n.globals.get_long(l,"r");
+    printf("result %lf\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce 
+
+<!--codeof:tests/main_test/globals/T_set_long/expected.txt-->
+~~~txt
+ 
+result 30.000000
+
+~~~
+
+
+#### Set Double
+<!--codeof:exemples/globals/set_double.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.globals.set_double(l,"r",30);
+    double result  = lua_n.globals.get_double(l,"r");
+    printf("result %lf\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce
+
+<!--codeof:tests/main_test/globals/T_set_double/expected.txt-->
+~~~txt
+ 
+result 30.000000
+
+~~~
+
+
+
+#### Set string
+<!--codeof:exemples/globals/set_string.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.globals.set_string(l,"r","hello world");
+    char *  result  = lua_n.globals.get_string(l,"r");
+    printf("result %s\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce
+
+<!--codeof:tests/main_test/globals/T_set_string/expected.txt-->
+~~~txt
+ 
+result hello world
+
+~~~
+
+
+
+#### Set Bool
+<!--codeof:exemples/globals/set_bool.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.globals.set_bool(l,"r",true);
+    bool result  = lua_n.globals.get_bool(l,"r");
+    printf("result %d\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce
+
+<!--codeof:tests/main_test/globals/T_set_bool/expected.txt-->
+~~~txt
+ 
+result 1
+
+~~~
+
+#### New Table
+its possible to create a new global table, the vallues will be automaticaly setted
+
+
+#### Set Bool
+<!--codeof:exemples/globals/set_table.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    LuaCEmbedTable *created = lua_n.globals.new_table(l,"r");
+    lua_n.tables.set_string_prop(created,"a","internal text");
+
+    char *a =  lua_n.tables.get_string_prop(created,"a");
+    printf("result of r.a %s\n",a);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce
+
+<!--codeof:tests/main_test/globals/T_set_table/expected.txt-->
+~~~txt
+ 
+result of r.a internal text
+
+~~~
 
