@@ -226,3 +226,51 @@ int main(int argc, char *argv[]){
 Glbals can be fully handled by the LuaCEmbed Api
 
 #### Retriving Globals 
+
+#### Getting a global string
+
+<!--codeof:exemples/globals/get_string_global.c-->
+~~~c
+~~~
+
+#### Getting a global bool
+
+<!--codeof:exemples/globals/get_bool_global.c-->
+~~~c
+~~~
+
+
+#### Getting a int global
+
+<!--codeof:exemples/globals/get_int_global.c-->
+~~~c
+~~~
+
+#### Getting a double global
+
+<!--codeof:exemples/globals/get_double_global.c-->
+~~~c
+~~~
+
+#### Getting a long global
+
+<!--codeof:exemples/globals/get_long_global.c-->
+~~~c
+~~~
+
+
+#### Getting a type global
+<!--codeof:exemples/globals/get_type_global.c-->
+~~~c
+~~~
+
+#### Getting a table
+Tables are by default auto created, so yoou can just use the **get_table_auto_creating**  method
+<!--codeof:exemples/globals/get_table_global.c-->
+~~~c
+~~~
+
+
+### Setting Globals
+
+
