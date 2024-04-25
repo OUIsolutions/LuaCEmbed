@@ -35,10 +35,9 @@ void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool va
 
 void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, long index, const char *code, ...){
     long formated_index = index+1;
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     va_list  args;
     va_start(args,code);
-    vsnprintf(buffer,sizeof(buffer),code,args);
+    char *  buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
     LuaCEmbed_evaluate_string_no_return(self->main_object,
@@ -46,6 +45,7 @@ void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, long index, c
                                         PRIVATE_LUA_CEMBED_EVALUATION_NAME,
                                         buffer
     );
+    free(buffer);
     if(LuaCEmbed_has_errors(self->main_object)){
         return;
     }

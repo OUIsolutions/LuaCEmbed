@@ -25,6 +25,9 @@ char* teste(const char *format,...){
     return r;
 }
 int main(){
+   char *result = teste("aaaaaa %ld , %s" ,30, "aaaaaa");
+   printf("%s",result);
+   free(result);
 }
 
 

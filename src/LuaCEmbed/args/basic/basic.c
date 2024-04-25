@@ -44,10 +44,11 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
         return NULL;
     }
 
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(buffer,PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,index+1);
+    char *buffer = private_LuaCembed_format(buffer,PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,index+1);
 
     lua_pushvalue(self->state,index+1);
     lua_setglobal(self->state,buffer);
-    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,false,buffer);
+    LuaCEmbedTable  *table = (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,false,buffer);
+    free(buffer);
+    return table;
 }

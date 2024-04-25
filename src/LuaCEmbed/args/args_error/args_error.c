@@ -7,9 +7,8 @@ int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_a
     }
 
     if(index > self->total_args){
-        char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-        sprintf(buffer,PRIVATE_LUA_CEMBED_ARG_NOT_PROVIDED,index,self->current_function);
-        privateLuaCEmbed_raise_error_not_jumping(self, buffer);
+
+        privateLuaCEmbed_raise_error_not_jumping(self, PRIVATE_LUA_CEMBED_ARG_NOT_PROVIDED,index,self->current_function);
         return LUA_CEMBED_GENERIC_ERROR;
     }
     return LUA_CEMBED_OK;

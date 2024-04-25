@@ -106,12 +106,9 @@ void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error
 
     va_list args;
     va_start(args,error);
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),error,args);
+    self->error_message = private_LuaCembed_format_vaarg(error,args);
     va_end(args);
 
-
-    self->error_message = strdup(formated_expresion);
 }
 
 

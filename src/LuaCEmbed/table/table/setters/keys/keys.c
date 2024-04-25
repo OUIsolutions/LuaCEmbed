@@ -72,6 +72,7 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool
     lua_pushboolean(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
 }
+
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...){
 
 

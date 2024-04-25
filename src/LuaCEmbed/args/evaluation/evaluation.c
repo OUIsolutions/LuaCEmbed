@@ -6,36 +6,38 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va
         return LUA_CEMBED_GENERIC_ERROR;
     }
 
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
+    char *formated_expresion = private_LuaCembed_format_vaarg(code,args);
 
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE + 1000] = {0};
-    sprintf(buffer,
+    char *buffer = private_LuaCembed_format(
             PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
             formated_expresion
     );
 
     if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
+        free(formated_expresion);
+        free(buffer);
         return  LUA_CEMBED_GENERIC_ERROR;
     }
+    free(buffer);
 
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
 
     int type = lua_type(self->state,-1);
 
     if(type != LUA_CEMBED_FUNCTION){
-        char buffer_func[LUA_CEMBED_ARGS_BUFFER_SIZE +1000]  = {0};
-        sprintf(buffer_func,PRIVATE_LUA_CEMBED_CODE_ITS_NOT_A_FUNCTION,formated_expresion);
+        privateLuaCEmbed_raise_error_not_jumping(self,PRIVATE_LUA_CEMBED_CODE_ITS_NOT_A_FUNCTION,formated_expresion);
+        free(formated_expresion);
+        return LUA_CEMBED_GENERIC_ERROR;
     }
 
+    free(formated_expresion);
     lua_pushvalue(self->state,index+1);
 
     if(lua_pcall(self->state,1,1,0)){
         const char *generated_error = lua_tostring(self->state,-1);
         privateLuaCEmbed_raise_error_not_jumping(self, generated_error);
     }
-
     return LUA_CEMBED_OK;
 }
 
@@ -44,15 +46,14 @@ int privateLuaCembed_ensure_arg_evaluation_type(LuaCEmbed *self,int index,int ex
     if(actual_type== expected_type){
         return LUA_CEMBED_OK;
     }
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(buffer,
-            PRIVATE_LUA_CEMBED_RESULT_EVALUATION_ARG_WRONG_TYPE,
-            self->current_function,
-            index,
-            LuaCembed_convert_arg_code(actual_type),
-            LuaCembed_convert_arg_code(expected_type)
-    );
-    privateLuaCEmbed_raise_error_not_jumping(self, buffer);
+
+    privateLuaCEmbed_raise_error_not_jumping(self,
+             PRIVATE_LUA_CEMBED_RESULT_EVALUATION_ARG_WRONG_TYPE,
+             self->current_function,
+             index,
+             LuaCembed_convert_arg_code(actual_type),
+             LuaCembed_convert_arg_code(expected_type)
+     );
     return LUA_CEMBED_GENERIC_ERROR;
 }
 long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,char *code,...){

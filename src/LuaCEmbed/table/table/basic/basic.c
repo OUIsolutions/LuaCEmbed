@@ -7,16 +7,13 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, bool always_recreate, 
     *self = (LuaCEmbedTable){0};
     self->main_object =main_embed;
 
-    char name[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
     va_list  args;
     va_start(args,format);
-    vsnprintf(name, sizeof(name), format, args);
+    char *name = private_LuaCembed_format_vaarg(format,args);
     va_end(args);
 
-    char meta_name[LUA_CEMBED_ARGS_BUFFER_SIZE+1000] = {0};
-    sprintf(meta_name,PRIVATE_LUA_CEMBED_METANAME,name);
-
-    self->meta_name = strdup(meta_name);
+    free(name);
+    self->meta_name = private_LuaCembed_format(PRIVATE_LUA_CEMBED_METANAME,name);
     self->global_name = strdup(name);
 
     self->sub_tables = (void*)newprivateLuaCEmbedTableArray();
@@ -29,10 +26,11 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, bool always_recreate, 
         lua_setglobal(main_embed->state,name);
     }
 
-    lua_getglobal(main_embed->state,meta_name);
+    lua_getglobal(main_embed->state,self->meta_name);
     if(lua_type(main_embed->state,-1) != LUA_CEMBED_TABLE || always_recreate){
         lua_newtable(main_embed->state);
-        lua_setglobal(main_embed->state,meta_name);
+        lua_setglobal(main_embed->state,self->meta_name
+        );
     }
 
     return self;
