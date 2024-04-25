@@ -29,8 +29,13 @@ const char * LuaCembed_convert_arg_code(int arg_code){
 }
 
 char * private_LuaCembed_format(const char *expresion, va_list args){
-    long required_size = vsnprintf(NULL, 0,expresion,args);
-    printf("%ld",required_size);
 
-    return NULL;
+    va_list args_copy;
+    va_copy(args_copy, args);
+    long required_size = vsnprintf(NULL, 0,expresion,args_copy);
+    va_end(args_copy);
+
+    char *buffer = (char*)malloc(sizeof(char) * required_size + 1);
+    vsnprintf(buffer, required_size,expresion,args);
+    return buffer;
 }
