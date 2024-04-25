@@ -1,0 +1,3 @@
+
+#define LUA_CEMBED_INDEX_DIF 1
+
