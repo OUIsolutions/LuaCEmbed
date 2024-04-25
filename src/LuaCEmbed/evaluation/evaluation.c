@@ -6,8 +6,7 @@ int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...){
 
     va_list args;
     va_start(args,code);
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),code,args);
+    char * formated_expresion = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
     self->runing = true;
@@ -16,6 +15,7 @@ int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...){
     if(error){
         self->error_message = strdup(lua_tostring(self->state,-1));
     }
+    free(formated_expresion);
     return error;
 
 }
@@ -35,18 +35,18 @@ int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
 
 int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code, va_list args){
 
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE -500] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion) -1000,code,args);
+    char * formated_expresion =private_LuaCembed_format_vaarg(code,args);
 
-
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(buffer,
+    char * buffer =private_LuaCembed_format(
             PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
             formated_expresion
     );
 
+
     if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
+        free(formated_expresion);
+        free(buffer);
         return  LUA_CEMBED_GENERIC_ERROR;
     }
 
@@ -60,6 +60,8 @@ int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code
             privateLuaCEmbed_raise_error_not_jumping(self, generated_error);
         }
     }
+    free(formated_expresion);
+    free(buffer);
     return LUA_CEMBED_OK;
 
 }
@@ -68,13 +70,14 @@ int private_LuaCEmbed_ensure_evaluation_type(LuaCEmbed *self,int type){
     if(actual_type== type){
         return LUA_CEMBED_OK;
     }
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(buffer,
-            PRIVATE_LUA_CEMBED_RESULT_EVALUATION_WRONG_TYPE,
-            LuaCembed_convert_arg_code(actual_type),
-            LuaCembed_convert_arg_code(type)
-            );
-    privateLuaCEmbed_raise_error_not_jumping(self, buffer);
+
+
+    privateLuaCEmbed_raise_error_not_jumping(self,
+         PRIVATE_LUA_CEMBED_RESULT_EVALUATION_WRONG_TYPE,
+         LuaCembed_convert_arg_code(actual_type),
+         LuaCembed_convert_arg_code(type)
+    );
+
     return LUA_CEMBED_GENERIC_ERROR;
 }
 

@@ -76,16 +76,14 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_EVALUATION){
-        char formated_function[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-        snprintf(
-                formated_function, sizeof(formated_function),
+        char *formated_function =private_LuaCembed_format(
                 PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
                 PRIVATE_LUA_CEMBED_EVALUATION_NAME,
                 possible_return->string_val
         );
 
         int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
-
+        free(formated_function);
 
         if(error_code){
             private_LuaCEmbedResponse_free(possible_return);

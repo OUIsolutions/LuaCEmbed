@@ -28,7 +28,7 @@ const char * LuaCembed_convert_arg_code(int arg_code){
     return PRIVATE_LUA_CEMBED_UNKNOW_STRING;
 }
 
-char * private_LuaCembed_format(const char *expresion, va_list args){
+char * private_LuaCembed_format_vaarg(const char *expresion, va_list args){
 
     va_list args_copy;
     va_copy(args_copy, args);
@@ -38,4 +38,11 @@ char * private_LuaCembed_format(const char *expresion, va_list args){
     char *buffer = (char*)malloc(sizeof(char) * required_size + 1);
     vsnprintf(buffer, required_size,expresion,args);
     return buffer;
+}
+char * private_LuaCembed_format(const char *expresion, ...){
+    va_list  args;
+    va_start(args,expresion);
+    char *result = private_LuaCembed_format_vaarg(expresion,args);
+    va_end(args);
+    return  result;
 }

@@ -45,10 +45,12 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
         target =  (privateLuaCEmbedTableArray*)self->func_tables;
     }
 
-    char buffer[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    sprintf(buffer,PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE, target->size);
-    return LuaCembed_new_global_table(self,buffer);
+    char *buffer= private_LuaCembed_format(PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE, target->size);
+    LuaCEmbedTable  *created_table =LuaCembed_new_global_table(self,buffer);
+    free(buffer);
+    return created_table;
 }
+
 
 
 LuaCEmbedTable * LuaCembed_get_global_table_auto_creating(LuaCEmbed *self, const char *name){

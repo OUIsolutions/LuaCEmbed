@@ -20,12 +20,11 @@ int luaopen_minha_biblioteca(lua_State *L) {
 char* teste(const char *format,...){
     va_list  args;
     va_start(args,format);
-    char *r = private_LuaCembed_format(format,args);
+    char *r = private_LuaCembed_format_vaarg(format, args);
     va_end(args);
     return r;
 }
 int main(){
-    printf("%s\n",result);
 }
 
 
