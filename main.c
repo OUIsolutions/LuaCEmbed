@@ -2,6 +2,7 @@
 #include "src/one.c"
 LuaCEmbedNamespace  lua;
 
+LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse *test(LuaCEmbed *args){
     LuaCEmbedTable *t= lua.args.get_table(args,0);
@@ -24,15 +25,16 @@ char* teste(const char *format,...){
     va_end(args);
     return r;
 }
-int main(){
-    LuaCEmbedNamespace lua_n =  newLuaCEmbedNamespace();
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 'hello world'");
 
-    char * result = lua_n.get_string_evaluation(l,"r");
-
-    //LuaCEmbed_get_evaluation_string()
-    printf("result: %s\n",result);
+    lua_n.evaluate_string(l,"r = {a='internal text'}");
+    LuaCEmbedTable *result  = lua_n.globals.get_table_auto_creating(l,"r");
+    char *a = lua_n.tables.get_string_prop(result,"a");
+    printf("value of r.a = %s\n",a);
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
@@ -40,6 +42,5 @@ int main(){
 
     return 0;
 }
-
 
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

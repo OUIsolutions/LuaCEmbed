@@ -231,43 +231,160 @@ Glbals can be fully handled by the LuaCEmbed Api
 
 <!--codeof:exemples/globals/get_string_global.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.evaluate_string(l,"r = 'hello world'");
+    char *  result  = lua_n.globals.get_string(l,"r");
+    printf("result %s\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 
 #### Getting a global bool
 
 <!--codeof:exemples/globals/get_bool_global.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.evaluate_string(l,"r = true");
+    bool  result  = lua_n.globals.get_bool(l,"r");
+    printf("result %d\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 
 
-#### Getting a int global
-
-<!--codeof:exemples/globals/get_int_global.c-->
-~~~c
-~~~
 
 #### Getting a double global
 
 <!--codeof:exemples/globals/get_double_global.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.evaluate_string(l,"r = 30.5");
+    double  result  = lua_n.globals.get_double(l,"r");
+    printf("result %lf\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 
 #### Getting a long global
 
 <!--codeof:exemples/globals/get_long_global.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.evaluate_string(l,"r = 30");
+    long  result  = lua_n.globals.get_long(l,"r");
+    printf("result %ld\n",result);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 
 
 #### Getting a type global
-<!--codeof:exemples/globals/get_type_global.c-->
+<!--codeof:exemples/globals/get_type.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.evaluate_string(l,"r = 'hello world'");
+    int type_code  = lua_n.globals.get_type(l,"r");
+    const char *converted_type = lua_n.convert_arg_code(type_code);
+    printf("result %s\n",converted_type);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 
 #### Getting a table
 Tables are by default auto created, so yoou can just use the **get_table_auto_creating**  method
 <!--codeof:exemples/globals/get_table_global.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+
+    lua_n.evaluate_string(l,"r = {a='internal text'}");
+    LuaCEmbedTable *r_table  = lua_n.globals.get_table_auto_creating(l,"r");
+    char *a = lua_n.tables.get_string_prop(r_table,"a");
+    printf("value of r.a = %s\n",a);
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 
 

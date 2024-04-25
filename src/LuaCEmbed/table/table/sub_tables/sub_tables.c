@@ -44,15 +44,15 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
 
         lua_settable(self->main_object->state,-3);
     }
+    LuaCEmbedTable  *created_table = privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
     free(full_sub_table_name);
-    return privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
+    return created_table;
 }
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *name){
     char *full_sub_table_name = private_LuaCembed_format("%s%s", self->global_name, name);
     lua_newtable(self->main_object->state);
     lua_setglobal(self->main_object->state,full_sub_table_name);
-    free(full_sub_table_name);
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
@@ -60,8 +60,9 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
 
     lua_settable(self->main_object->state,-3);
 
-    return privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
-
+    LuaCEmbedTable *created = privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
+    free(full_sub_table_name);
+    return created;
 }
 
 void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table){
@@ -73,7 +74,6 @@ void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbe
     lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_setglobal(self->main_object->state,full_sub_table_name);
 
-    free(full_sub_table_name);
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
@@ -82,5 +82,6 @@ void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbe
     lua_settable(self->main_object->state,-3);
 
     (void)privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
+    free(full_sub_table_name);
 
 }

@@ -9,21 +9,19 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, bool always_recreate, 
 
     va_list  args;
     va_start(args,format);
-    char *name = private_LuaCembed_format_vaarg(format,args);
+    self->global_name = private_LuaCembed_format_vaarg(format,args);
     va_end(args);
 
-    free(name);
-    self->meta_name = private_LuaCembed_format(PRIVATE_LUA_CEMBED_METANAME,name);
-    self->global_name = strdup(name);
+    self->meta_name = private_LuaCembed_format(PRIVATE_LUA_CEMBED_METANAME,self->global_name);
 
     self->sub_tables = (void*)newprivateLuaCEmbedTableArray();
 
 
     //create the tables if not exist
-    lua_getglobal(main_embed->state,name);
+    lua_getglobal(main_embed->state,self->global_name);
     if(lua_type(main_embed->state,-1) != LUA_CEMBED_TABLE || always_recreate){
         lua_newtable(main_embed->state);
-        lua_setglobal(main_embed->state,name);
+        lua_setglobal(main_embed->state,self->global_name);
     }
 
     lua_getglobal(main_embed->state,self->meta_name);

@@ -1,4 +1,4 @@
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -7,10 +7,9 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = {a='internal text'}");
-    LuaCEmbedTable *r_table  = lua_n.globals.get_table_auto_creating(l,"r");
-    char *a = lua_n.tables.get_string_prop(r_table,"a");
-    printf("value of r.a = %s\n",a);
+    lua_n.globals.set_long(l,"r",30);
+    double result  = lua_n.globals.get_long(l,"r");
+    printf("result %lf\n",result);
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
