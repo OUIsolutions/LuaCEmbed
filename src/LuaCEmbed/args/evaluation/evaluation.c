@@ -1,6 +1,7 @@
 
 
 int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va_list args){
+    int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(LuaCEmbed_ensure_arg_exist(self,index)){
         return LUA_CEMBED_GENERIC_ERROR;
@@ -32,7 +33,7 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va
     }
 
     free(formated_expresion);
-    lua_pushvalue(self->state,index+1);
+    lua_pushvalue(self->state,formatted_index);
 
     if(lua_pcall(self->state,1,1,0)){
         const char *generated_error = lua_tostring(self->state,-1);

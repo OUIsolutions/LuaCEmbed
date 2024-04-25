@@ -7,6 +7,8 @@ void LuaCembedTable_destroy_prop(LuaCEmbedTable *self, const char *name){
     lua_settable(self->main_object->state,-3);
 }
 void LuaCEmbedTable_destroy_by_index(LuaCEmbedTable *self, long index){
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
     if(LuaCembedTable_has_key_at_index(self,index)){
         char *key = LuaCembedTable_get_key_by_index(self,index);
         LuaCembedTable_destroy_prop(self,key);
@@ -15,7 +17,7 @@ void LuaCEmbedTable_destroy_by_index(LuaCEmbedTable *self, long index){
 
     lua_getglobal(self->main_object->state,self->global_name);
 
-    long converted_index = privateLuaCEmbedTable_convert_index(self,index+1);
+    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
     int table_index = lua_gettop(self->main_object->state);
     int total = 0;
 
