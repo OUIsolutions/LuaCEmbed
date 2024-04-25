@@ -4,7 +4,7 @@ from Build.exemple_build import create_exemples
 from Build.full_folder_zip import zip_folder
 from platform import system as osname
 
-STARTER = 'src/one.c'
+'''STARTER = 'src/one.c'
 TEST_NAME = 'LuaCEmbed.h'
 OUTPUT_FULL = 'LuaCEmbed.h'
 
@@ -29,8 +29,8 @@ test = ct.FolderTestPreset(
 test.generate_ouptut(reconstruct=False)
 test.start_test()
 create_exemples(TEST_NAME,OUTPUT_FULL)
-
+'''
 ct.include_code_in_markdown('README.md',save_file=True)
 
-with open(OUTPUT_FULL,'w') as arq:
-    arq.write(r)
+'''with open(OUTPUT_FULL,'w') as arq:
+    arq.write(r)'''

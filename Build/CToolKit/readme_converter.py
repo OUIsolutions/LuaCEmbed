@@ -92,7 +92,7 @@ def include_code_in_markdown(markdown_file:str,save_file:bool=True,modifier:Call
     text = ''
     with open(markdown_file,'r') as arq:
         lexer = parse_readme_lexer(arq.read())
-
+        
         for l in lexer:
             if l['type'] == 'block':
                 text+=l['text']

@@ -25,6 +25,13 @@ int main(int argc, char *argv[]){
 }
 ~~~
 
+It will produce 
+
+<!--codeof:tests/main_test/evaluation/T_hello_world/expected.txt-->
+~~~txt
+ 
+result 50
+~~~
 
 ### Evaluation
 To evaluate Lua Code from C, you can use all the evaluation methods, provided by the lib 
@@ -389,5 +396,7 @@ int main(int argc, char *argv[]){
 
 
 ### Setting Globals
+
+
 
 
