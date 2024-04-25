@@ -43,7 +43,6 @@ int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code
             formated_expresion
     );
 
-
     if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
         free(formated_expresion);
         free(buffer);
@@ -90,6 +89,7 @@ char * LuaCEmbed_get_evaluation_string(LuaCEmbed *self, char *code, ...){
     if(possible_error){
         return  NULL;
     }
+
     if(private_LuaCEmbed_ensure_evaluation_type(self,LUA_CEMBED_STRING)){
         return NULL;
     }

@@ -25,9 +25,20 @@ char* teste(const char *format,...){
     return r;
 }
 int main(){
-   char *result = teste("aaaaaa %ld , %s" ,30, "aaaaaa");
-   printf("%s",result);
-   free(result);
+    LuaCEmbedNamespace lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.evaluate_string(l,"r = 'hello world'");
+
+    char * result = lua_n.get_string_evaluation(l,"r");
+
+    //LuaCEmbed_get_evaluation_string()
+    printf("result: %s\n",result);
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
 }
 
 

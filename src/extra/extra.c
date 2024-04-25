@@ -34,9 +34,8 @@ char * private_LuaCembed_format_vaarg(const char *expresion, va_list args){
     va_copy(args_copy, args);
     long required_size = vsnprintf(NULL, 0,expresion,args_copy);
     va_end(args_copy);
-
-    char *buffer = (char*)malloc(sizeof(char) * required_size + 1);
-    vsnprintf(buffer, required_size,expresion,args);
+    char *buffer = (char*)malloc(sizeof(char) * required_size + 2);
+    vsnprintf(buffer,sizeof (char) * required_size+1,expresion,args);
     return buffer;
 }
 char * private_LuaCembed_format(const char *expresion, ...){
