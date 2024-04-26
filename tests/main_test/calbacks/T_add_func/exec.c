@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%lf\n",result);
-    
+
     lua_n.free(l);
 
     return 0;
