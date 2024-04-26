@@ -3,32 +3,16 @@
 LuaCEmbedNamespace  lua_n;
 
 
-LuaCEmbedResponse  * print_func(LuaCEmbed *args){
-    long size = lua_n.args.size(args);
-   for(int index =0;index < size;index++ ){
-       int arg_type = lua_n.args.get_type(args,index);
+LuaCEmbedResponse  * add_func(LuaCEmbed *args){
 
-       if(arg_type  == lua_n.types.NUMBER){
-           printf("%lf\n",lua_n.args.get_double(args,index));
-       }
+    double num1 = lua_n.args.get_double(args,0);
+    double num2 = lua_n.args.get_double(args,1);
 
-       else if(arg_type  == lua_n.types.STRING){
-           printf("%s\n",lua_n.args.get_str(args,index));
-       }
-
-       else if(arg_type  == lua_n.types.BOOL){
-           bool result = lua_n.args.get_bool(args,index);
-           char *converted_bool = result? "true":"false";
-           printf("%s\n", converted_bool);
-       }
-       else{
-           const char *converted_to_str = lua_n.convert_arg_code(arg_type);
-           printf("%s\n",converted_to_str);
-       }
-
-   }
-
-
+    if(lua_n.has_errors(args)){
+        char *error_message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(error_message);
+    }
+    return lua_n.response.send_double(num1+num2);
     return NULL;
 }
 
@@ -36,15 +20,16 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"print",print_func);
+    lua_n.add_callback(l,"add",add_func);
 
 
-    lua_n.evaluate_string(l,"print(10,30,'aa',true,{a=30})");
-
+   double result = lua_n.get_evaluation_double(l,"add(10,20)");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
+   printf("resullt :%lf\n",result);
+    
     lua_n.free(l);
 
     return 0;
