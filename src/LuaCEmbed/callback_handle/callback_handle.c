@@ -48,6 +48,12 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
+    
+    if(possible_return->type == PRIVATE_LUA_CEMBED_BOOL_RESPONSE){
+        lua_pushboolean(L, (bool)possible_return->num_val);
+        private_LuaCEmbedResponse_free(possible_return);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+    }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE){
         lua_pushnumber(L, possible_return->num_val);
