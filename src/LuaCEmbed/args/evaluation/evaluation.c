@@ -3,7 +3,7 @@
 int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va_list args){
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
-    if(LuaCEmbed_ensure_arg_exist(self,index)){
+    if(LuaCEmbed_ensure_arg_exist(self,formatted_index)){
         return LUA_CEMBED_GENERIC_ERROR;
     }
 

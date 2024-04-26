@@ -39,7 +39,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     if(possible_return->type == PRIVATE_LUA_CEMBED_ERROR_RESPONSE){
         lua_pushstring(L, possible_return->string_val);
         private_LuaCEmbedResponse_free(possible_return);
-        lua_error(self->state);
+        lua_error(L);
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
 

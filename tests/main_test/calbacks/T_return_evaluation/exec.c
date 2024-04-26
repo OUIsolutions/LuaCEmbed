@@ -4,7 +4,7 @@ LuaCEmbedNamespace  lua_n;
 
 
 LuaCEmbedResponse  * test_func(LuaCEmbed *args){
-    return lua_n.response.send_evaluation_function("function() return 'func result' end")
+    return lua_n.response.send_evaluation_function("function() return 'func result' end");
 }
 int main(int argc, char *argv[]){
 

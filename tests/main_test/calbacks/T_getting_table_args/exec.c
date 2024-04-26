@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
 
 
    double result = lua_n.get_evaluation_double(l,"add({num1=10, num2=30})");
-
+    LuaCEmbed_get_evaluation_double()
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }

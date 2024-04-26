@@ -18,40 +18,29 @@ int luaopen_minha_biblioteca(lua_State *L) {
 
     return  lua.perform(l);
 }
-
-
-
-LuaCEmbedResponse  * add_func(LuaCEmbed *args){
-
-
-    double num1 = lua_n.args.get_double_arg_clojure_evalation(args,0,"function(t) return t.num1  end ");
-    double num2 = lua_n.args.get_double_arg_clojure_evalation(args,1,"function(t) return t.num2  end ");
-    //LuaCEmbed_get_double_arg_clojure_evalation()
-  //  private_LuaCembed_run_code_with_args()
-    if(lua_n.has_errors(args)){
-        char *error_message = lua_n.get_error_message(args);
-        return lua_n.response.send_error(error_message);
-    }
-
-    return lua_n.response.send_double(num1+num2);
-    return NULL;
+char* teste(const char *format,...){
+    va_list  args;
+    va_start(args,format);
+    char *r = private_LuaCembed_format_vaarg(format, args);
+    va_end(args);
+    return r;
 }
 
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"add",add_func);
 
-
-    double result = lua_n.get_evaluation_double(l,"add({num1=10, num2=30})");
+    lua_n.evaluate_string(l,"r = {a='internal text'}");
+    LuaCEmbedTable *result  = lua_n.globals.get_table_auto_creating(l,"r");
+    char *a = lua_n.tables.get_string_prop(result,"a");
+    printf("value of r.a = %s\n",a);
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
-    printf("resullt :%lf\n",result);
-
     lua_n.free(l);
 
     return 0;
 }
+
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua
