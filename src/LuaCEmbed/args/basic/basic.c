@@ -54,7 +54,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
         return NULL;
     }
 
-    char *buffer = private_LuaCembed_format(buffer,PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,formatted_index);
+    char *buffer = private_LuaCembed_format(PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,formatted_index);
 
     lua_pushvalue(self->state,formatted_index);
     lua_setglobal(self->state,buffer);
