@@ -332,7 +332,7 @@ It will produce:
 
 #### Evaluating arguments
 
-its also possible to modify callbacks by lua code , by using the evaluation args mechanism.
+it's also possible to modify callbacks by lua code , by using the evaluation args mechanism.
 
 <!--codeof:exemples/calbacks/evaluating_args.c-->
 ~~~c
@@ -343,6 +343,20 @@ It will produce:
 ~~~txt
 ~~~
 
+#### Table Arguments
+you can control table arguments easly with the **get_table** method, where you can retrive a 
+**LuaCEmbedTable** object 
+
+
+<!--codeof:exemples/calbacks/getting_table_args.c-->
+~~~c
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_getting_table_args/expected.txt-->
+~~~txt
+~~~
+### Callbacks Response 
 
 
 
