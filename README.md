@@ -292,6 +292,60 @@ result: 1
 
 ~~~
 
+### Callbacks 
+Callbacks i'ts a way to make c functions assesible in lua code, this it's the most basic callback:
+
+<!--codeof:exemples/calbacks/basic_callback.c-->
+~~~c
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_basic_callback/expected.txt-->
+~~~txt
+~~~
+
+
+#### CallBack args
+you can accept callback arguments into your function,check their types, and make operations with them.
+
+<!--codeof:exemples/calbacks/args_retriving.c-->
+~~~c
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_args_retriving/expected.txt-->
+~~~txt
+~~~
+
+#### Creating a basic print function
+
+in these example, we are creating an 'print' function ,to allow print values 
+
+<!--codeof:exemples/calbacks/print_func.c-->
+~~~c
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_print_func/expected.txt-->
+~~~txt
+~~~
+
+#### Evaluating arguments
+
+its also possible to modify callbacks by lua code , by using the evaluation args mechanism.
+
+<!--codeof:exemples/calbacks/evaluating_args.c-->
+~~~c
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_evaluating_args/expected.txt-->
+~~~txt
+~~~
+
+
+
+
 
 ### Globals 
 Glbals can be fully handled by the LuaCEmbed Api
