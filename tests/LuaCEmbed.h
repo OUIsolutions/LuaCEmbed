@@ -23567,7 +23567,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
         return NULL;
     }
 
-    char *buffer = private_LuaCembed_format(buffer,PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,formatted_index);
+    char *buffer = private_LuaCembed_format(PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,formatted_index);
 
     lua_pushvalue(self->state,formatted_index);
     lua_setglobal(self->state,buffer);
@@ -23581,7 +23581,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
 int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va_list args){
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
-    if(LuaCEmbed_ensure_arg_exist(self,index)){
+    if(LuaCEmbed_ensure_arg_exist(self,formatted_index)){
         return LUA_CEMBED_GENERIC_ERROR;
     }
 
@@ -24675,7 +24675,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     if(possible_return->type == PRIVATE_LUA_CEMBED_ERROR_RESPONSE){
         lua_pushstring(L, possible_return->string_val);
         private_LuaCEmbedResponse_free(possible_return);
-        lua_error(self->state);
+        lua_error(L);
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
 

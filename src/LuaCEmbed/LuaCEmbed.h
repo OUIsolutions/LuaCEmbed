@@ -1,15 +1,14 @@
 
 typedef struct LuaCEmbed{
     lua_State *state;
-    char *error_message;
     const char *current_function;
     bool is_lib;
     bool public_functions;
     int total_args;
+    char *error_msg;
 
     bool runing;
-    void (*delelte_function)(struct  LuaCEmbed *self);
-    void *current_table;
+    void (*delete_function)(struct  LuaCEmbed *self);
     void *global_tables;
     void *func_tables;
 }LuaCEmbed;

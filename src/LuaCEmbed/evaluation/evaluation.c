@@ -13,8 +13,9 @@ int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...){
     int error = luaL_dostring(self->state,formated_expresion);
     self->runing = false;
     if(error){
-        self->error_message = strdup(lua_tostring(self->state,-1));
+        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
     }
+
     free(formated_expresion);
     return error;
 
@@ -26,7 +27,7 @@ int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
     int error =luaL_dofile(self->state,file);
     self->runing = false;
     if(error){
-        self->error_message = strdup(lua_tostring(self->state,-1));
+        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
     }
 
     return error;

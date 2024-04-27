@@ -10,14 +10,14 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
 
 
 void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self)){
-    self->delelte_function = delelte_function;
+    self->delete_function = delelte_function;
 }
 
 int private_LuaCemb_internal_free(lua_State *L){
 
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
-    if(self->delelte_function){
-        self->delelte_function(self);
+    if(self->delete_function){
+        self->delete_function(self);
     }
     LuaCEmbed_free(self);
     return 0;
@@ -76,37 +76,16 @@ void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
 }
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
-    return self->error_message;
+    return self->error_msg;
 }
-/*
-void LuaCEmbed_raise_error_jumping(LuaCEmbed *self, const char *error, ...){
 
-    va_list args;
-    va_start(args,error);
-    char formated_expresion[LUA_CEMBED_ARGS_BUFFER_SIZE] = {0};
-    vsnprintf(formated_expresion, sizeof(formated_expresion),error,args);
-    va_end(args);
-    if(LuaCEmbed_has_errors(self)){
-        free(self->error_message);
-    }
-    self->error_message = strdup(formated_expresion);
-
-    if(self->current_function){ // means its in protected mode
-        lua_pushstring(self->state,formated_expresion);
-        lua_error(self->state);
-    }
-
-}
-*/
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
-
-    if(LuaCEmbed_has_errors(self)){
-        return;
+    if(self->error_msg){
+        free(self->error_msg);
     }
-
     va_list args;
     va_start(args,error);
-    self->error_message = private_LuaCembed_format_vaarg(error,args);
+    self->error_msg = private_LuaCembed_format_vaarg(error, args);
     va_end(args);
 
 }
@@ -115,7 +94,7 @@ void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error
 
 bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
-    if(self->error_message){
+    if(self->error_msg){
         return  true;
     }
 
@@ -152,8 +131,8 @@ void LuaCEmbed_free(LuaCEmbed *self){
     if(!self->is_lib){ //se for do próprio lua, o lua cuidará de limpar
         lua_close(self->state); // Fecha o estado Lua
     }
-    if(self->error_message){
-        free(self->error_message);
+    if(self->error_msg){
+        free(self->error_msg);
     }
 
     free(self);
