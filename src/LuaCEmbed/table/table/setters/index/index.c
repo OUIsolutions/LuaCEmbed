@@ -1,6 +1,9 @@
 
 
 void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const char *value){
+    if(!self){
+        return ;
+    }
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushnumber(self->main_object->state,(double)formatted_index);
@@ -9,6 +12,9 @@ void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const
 }
 
 void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  value){
+    if(!self){
+        return ;
+    }
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushnumber(self->main_object->state,(double)formatted_index);
@@ -17,6 +23,9 @@ void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  v
 }
 
 void  LuaCEmbedTable_set_double_by_index(LuaCEmbedTable *self, long index, double  value){
+    if(!self){
+        return ;
+    }
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushnumber(self->main_object->state,(double)formatted_index);
@@ -25,6 +34,9 @@ void  LuaCEmbedTable_set_double_by_index(LuaCEmbedTable *self, long index, doubl
 }
 
 void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool value){
+    if(!self){
+        return ;
+    }
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushnumber(self->main_object->state,(double)formatted_index);
@@ -34,6 +46,9 @@ void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool va
 
 
 void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, long index, const char *code, ...){
+    if(!self){
+        return ;
+    }
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     va_list  args;
     va_start(args,code);

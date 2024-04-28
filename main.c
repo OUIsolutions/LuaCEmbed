@@ -8,6 +8,7 @@ LuaCEmbedNamespace  lua_n;
 LuaCEmbedResponse  * show_table(LuaCEmbed *args){
 
     LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
+
     if(lua_n.has_errors(args)){
         char *menssage = lua_n.get_error_message(args);
         return  lua_n.response.send_error(menssage);

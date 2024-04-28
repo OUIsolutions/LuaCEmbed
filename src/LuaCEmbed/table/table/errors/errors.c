@@ -2,6 +2,9 @@
 
 
 int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char *name, int expected_type){
+    if(!self){
+        return LUA_CEMBED_GENERIC_ERROR;
+    }
     int type = lua_type(self->main_object->state,-1);
     if(type == expected_type){
         return  LUA_CEMBED_OK;
@@ -18,6 +21,9 @@ int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char 
 }
 
 int privateLuaCEmbedTable_ensure_type_with_index(LuaCEmbedTable *self, long index, int expected_type){
+    if(!self){
+        return LUA_CEMBED_GENERIC_ERROR;
+    }
     int type = lua_type(self->main_object->state,-1);
     if(type == expected_type){
         return  LUA_CEMBED_OK;

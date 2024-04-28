@@ -36,6 +36,9 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, bool always_recreate, 
 
 
 void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
+    if(!self){
+        return ;
+    }
     free(self->global_name);
     free(self->meta_name);
 

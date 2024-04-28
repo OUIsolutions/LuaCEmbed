@@ -1,6 +1,8 @@
 
 LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,const char *full_sub_name,const char *name){
-
+    if(!self){
+        return NULL;
+    }
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
             (privateLuaCEmbedTableArray *) self->sub_tables,
             name
@@ -22,7 +24,9 @@ LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,con
 
 
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self, const char *name){
-
+    if(!self){
+        return NULL;
+    }
     char *full_sub_table_name =private_LuaCembed_format(PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
 
     //checking if exist a global object
@@ -50,6 +54,9 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
 }
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *name){
+    if(!self){
+        return NULL;
+    }
     char *full_sub_table_name = private_LuaCembed_format("%s%s", self->global_name, name);
     lua_newtable(self->main_object->state);
     lua_setglobal(self->main_object->state,full_sub_table_name);
@@ -66,7 +73,9 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
 }
 
 void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table){
-
+    if(!self){
+        return ;
+    }
     char *full_sub_table_name =private_LuaCembed_format(PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
 
 

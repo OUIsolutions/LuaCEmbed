@@ -26,14 +26,12 @@ typedef struct {
     long  (*get_long_prop)(LuaCEmbedTable *self , const char *name);
     double  (*get_double_prop)(LuaCEmbedTable *self , const char *name);
     bool  (*get_bool_prop)(LuaCEmbedTable *self , const char *name);
-
     LuaCEmbedTable * (*new_anonymous_table)(LuaCEmbed *self);
     void (*destroy_prop)(LuaCEmbedTable *self, const char *name);
 
     LuaCEmbedTable  *(*get_sub_table_auto_creating)(LuaCEmbedTable *self, const char *name);
     LuaCEmbedTable  *(*new_sub_table)(LuaCEmbedTable *self, const char *name);
     void (*set_sub_table)(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table);
-
     char *(*get_key_by_index)(LuaCEmbedTable *self, long index);
     bool (*has_key)(LuaCEmbedTable *self,long index);
 

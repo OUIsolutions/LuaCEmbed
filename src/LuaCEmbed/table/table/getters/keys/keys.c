@@ -1,11 +1,17 @@
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
+    if(!self){
+        return LUA_CEMBED_GENERIC_ERROR;
+    }
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
     return lua_type(self->main_object->state,-1);
 }
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
+    if(!self){
+        return NULL;
+    }
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_STRING)){
@@ -16,6 +22,9 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
 
 
 long  LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
+    if(!self){
+        return LUA_CEMBED_GENERIC_ERROR;
+    }
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_NUMBER)){
@@ -25,6 +34,9 @@ long  LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
 }
 
 double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
+    if(!self){
+        return LUA_CEMBED_GENERIC_ERROR;
+    }
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_NUMBER)){
@@ -34,6 +46,9 @@ double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
 }
 
 bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self , const char *name){
+    if(!self){
+        return false;
+    }
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_BOOL)){
