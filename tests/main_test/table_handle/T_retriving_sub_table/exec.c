@@ -12,7 +12,7 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
     long size = lua_n.tables.get_size(t1);
     for(int i = 0; i < size; i++){
 
-        LuaCEmbedTable *current = lua_n.tables.get_sub_table_auto_creating(t1,i);
+        LuaCEmbedTable *current = lua_n.tables.getsub(t1,i);
         char *name  = lua_n.tables.get_string_prop(t1,"name");
         long age = lua_n.tables.get_long_prop(t1,"age");
 

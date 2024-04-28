@@ -1,29 +1,8 @@
 
-LuaCEmbedTable  *privateLuaCEmbedTable_append_or_create(LuaCEmbedTable *self,const char *full_sub_name,const char *name){
-    if(!self){
-        return NULL;
-    }
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
-            (privateLuaCEmbedTableArray *) self->sub_tables,
-            name
-    );
-    if(possible){
-        return possible;
-    }
-
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self->main_object,false, full_sub_name);
-    creaeted->prop_name = strdup(name);
-
-    privateLuaCEmbedTableArray_append(
-            (privateLuaCEmbedTableArray*)self->sub_tables,
-            creaeted
-    );
-    return creaeted;
-}
 
 
 
-LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self, const char *name){
+LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating_by_key(LuaCEmbedTable *self, const char *name){
     if(!self){
         return NULL;
     }
@@ -48,7 +27,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating(LuaCEmbedTable *self
 
         lua_settable(self->main_object->state,-3);
     }
-    LuaCEmbedTable  *created_table = privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
+    LuaCEmbedTable  *created_table = privateLuaCEmbedTable_append_or_create_by_name(self, full_sub_table_name, name);
     free(full_sub_table_name);
     return created_table;
 }
@@ -67,12 +46,58 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table(LuaCEmbedTable *self, const char *
 
     lua_settable(self->main_object->state,-3);
 
-    LuaCEmbedTable *created = privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
+    LuaCEmbedTable *created = privateLuaCEmbedTable_append_or_create_by_name(self, full_sub_table_name, name);
     free(full_sub_table_name);
     return created;
 }
 
-void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbedTable *sub_table){
+LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index_auto_creating(LuaCEmbedTable *self, int index){
+    if(!self){
+        return NULL;
+    }
+    int formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    char *full_sub_table_name =private_LuaCembed_format(PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT_INDEX, self->global_name, index);
+
+    //checking if exist a global object
+    lua_getglobal(self->main_object->state,full_sub_table_name);
+
+    if(lua_type(self->main_object->state,-1) != LUA_CEMBED_TABLE){
+        lua_newtable(self->main_object->state);
+        lua_setglobal(self->main_object->state,full_sub_table_name);
+    }
+
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    int table_index = lua_gettop(self->main_object->state);
+    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+    int total = 1;
+
+
+    lua_pushnil(self->main_object->state);
+    while(lua_next(self->main_object->state,table_index)){
+        if(total == converted_index){
+            int type = lua_type(self->main_object->state,-1);
+
+            if(type == LUA_CEMBED_TABLE){
+                lua_pop(self->main_object->state,1);
+                break;
+            }
+            lua_getglobal(self->main_object->state,self->global_name);
+            lua_pushnumber(self->main_object->state,(double)converted_index);
+            lua_getglobal(self->main_object->state,full_sub_table_name);
+            lua_settable(self->main_object->state,-3);
+
+        }
+        lua_pop(self->main_object->state,1);
+        total+=1;
+    }
+
+    LuaCEmbedTable  *created_table = privateLuaCEmbedTable_append_or_create_by_name(self, full_sub_table_name, name);
+    free(full_sub_table_name);
+    return created_table;
+}
+
+void LuaCEmbedTable_set_sub_table_by_key(LuaCEmbedTable *self, const char *name, LuaCEmbedTable *sub_table){
     if(!self){
         return ;
     }
@@ -90,7 +115,7 @@ void LuaCEmbedTable_set_sub_table(LuaCEmbedTable *self,const char *name,LuaCEmbe
 
     lua_settable(self->main_object->state,-3);
 
-    (void)privateLuaCEmbedTable_append_or_create(self,full_sub_table_name,name);
+    (void) privateLuaCEmbedTable_append_or_create_by_name(self, full_sub_table_name, name);
     free(full_sub_table_name);
 
 }

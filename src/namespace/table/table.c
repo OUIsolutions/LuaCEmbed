@@ -18,9 +18,9 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.set_long_prop = LuaCEmbedTable_set_long_prop;
     self.set_string_prop = LuaCEmbedTable_set_string_prop;
 
-    self.get_sub_table_auto_creating = LuaCEmbedTable_get_sub_table_auto_creating;
+    self.get_sub_table_auto_creating = LuaCEmbedTable_get_sub_table_auto_creating_by_key;
     self.new_sub_table = LuaCEmbedTable_new_sub_table;
-    self.set_sub_table = LuaCEmbedTable_set_sub_table;
+    self.set_sub_table = LuaCEmbedTable_set_sub_table_by_key;
     self.new_anonymous_table = LuaCembed_new_anonymous_table;
 
     self.get_bool_prop = LuaCembedTable_get_bool_prop;
