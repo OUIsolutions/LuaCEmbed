@@ -15,10 +15,12 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
     long size = lua_n.tables.get_size(t1);
     for(int i = 0; i <size;i++){
         printf("index: %d\n",i);
+        const char *key= "Not provided";
         if(lua_n.tables.has_key(t1,i)){
-            char *key = lua_n.tables.get_key_by_index(t1,i);
-            printf("key: %s\n",key);
+            key = lua_n.tables.get_key_by_index(t1,i);
         }
+        printf("key: %s\n",key);
+
         int type= lua_n.tables.get_type_by_index(t1,i);
         printf("type %s\n",lua_n.convert_arg_code(type));
 
@@ -45,7 +47,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"show_table", show_table);
-    lua_n.evaluate_string(l,"show_table({name='mateus',age=27})");
+    lua_n.evaluate_string(l,"show_table({name='Mateus',age=27,single=true,'indexable random string'})");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

@@ -45,6 +45,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.get_long_by_index = LuaCEmbedTable_get_long_by_index;
     self.get_double_by_index = LuaCEmbedTable_get_double_by_index;
     self.get_bool_by_index = LuaCEmbedTable_get_bool_by_index;
+    self.get_string_by_index= LuaCEmbedTable_get_string_by_index;
 
     return self;
 }

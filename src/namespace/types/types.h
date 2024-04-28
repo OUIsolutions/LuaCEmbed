@@ -7,6 +7,7 @@ typedef struct {
     int BOOL;
     int NILL;
     int TABLE;
+    int FUNCTION;
 
 
 }LuaCEmbedTypeModule;
