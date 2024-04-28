@@ -4,7 +4,7 @@ LuaCEmbedNamespace  lua_n;
 
 
 LuaCEmbedResponse  * test_func(LuaCEmbed *args){
-    return lua_n.response.send_error("aaaaaa");
+    return lua_n.response.send_error("my custom error menssage");
 }
 int main(int argc, char *argv[]){
 

@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"add",add_func);
 
 
-   double result = lua_n.get_evaluation_double(l,"add(num1=10, num2=30})");
+   double result = lua_n.get_evaluation_double(l,"add({num1=10, num2=30})");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

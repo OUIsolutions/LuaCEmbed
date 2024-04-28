@@ -1,2 +1,2 @@
  
-error: aaaaaa
+error: my custom error menssage

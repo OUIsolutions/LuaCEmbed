@@ -508,7 +508,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"add",add_func);
 
 
-   double result = lua_n.get_evaluation_double(l,"add(num1=10, num2=30})");
+   double result = lua_n.get_evaluation_double(l,"add({num1=10, num2=30})");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -525,8 +525,7 @@ It will produce:
 <!--codeof:tests/main_test/calbacks/T_evaluating_args/expected.txt-->
 ~~~txt
  
-error: [string "private_lua_c_embed_evaluation = add(num1=10,..."]:1: ')' expected near '='
-resullt :-1.000000
+resullt :40.000000
 
 ~~~
 
@@ -815,7 +814,7 @@ LuaCEmbedNamespace  lua_n;
 
 
 LuaCEmbedResponse  * test_func(LuaCEmbed *args){
-    return lua_n.response.send_error("aaaaaa");
+    return lua_n.response.send_error("my custom error menssage");
 }
 int main(int argc, char *argv[]){
 
@@ -840,7 +839,7 @@ It will produce:
 <!--codeof:tests/main_test/calbacks/T_return_error/expected.txt-->
 ~~~txt
  
-error: aaaaaa
+error: my custom error menssage
 
 ~~~
 

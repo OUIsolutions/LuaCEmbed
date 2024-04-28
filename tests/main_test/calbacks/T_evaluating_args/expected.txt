@@ -1,3 +1,2 @@
  
-error: [string "private_lua_c_embed_evaluation = add(num1=10,..."]:1: ')' expected near '='
-resullt :-1.000000
+resullt :40.000000
