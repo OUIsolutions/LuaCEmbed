@@ -4,6 +4,7 @@ LuaCEmbedNamespace  lua;
 
 LuaCEmbedNamespace  lua_n;
 
+
 LuaCEmbedResponse  * show_table(LuaCEmbed *args){
 
     LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
@@ -11,18 +12,32 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
         char *menssage = lua_n.get_error_message(args);
         return  lua_n.response.send_error(menssage);
     }
+    long size = lua_n.tables.get_size(t1);
+    for(int i = 0; i <size;i++){
+        printf("index: %d\n",i);
+        if(lua_n.tables.has_key(t1,i)){
+            char *key = lua_n.tables.get_key_by_index(t1,i);
+            printf("key: %s\n",key);
+        }
+        int type= lua_n.tables.get_type_by_index(t1,i);
+        printf("type %s\n",lua_n.convert_arg_code(type));
 
-    char *name  = lua_n.tables.get_string_prop(t1,"name");
-    long age = lua_n.tables.get_long_prop(t1,"age");
+        if(type == lua_n.types.NUMBER){
+            double value = lua_n.tables.get_double_by_index(t1,i);
+            printf("value: %lf\n",value);
+        }
 
-    if(lua_n.has_errors(args)){
-        char *menssage = lua_n.get_error_message(args);
-        return  lua_n.response.send_error(menssage);
+        if(type == lua_n.types.STRING){
+            char * value = lua_n.tables.get_string_by_index(t1,i);
+            printf("value: %s\n",value);
+        }
+
+        if(type == lua_n.types.BOOL){
+            bool value = lua_n.tables.get_bool_by_index(t1,i);
+            printf("value: %d\n",value);
+        }
+        printf("===================================\n");
     }
-
-    printf("name : %s\n",name);
-    printf("age: %ld\n",age);
-
     return NULL;
 }
 int main(int argc, char *argv[]){
@@ -30,7 +45,8 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"show_table", show_table);
-    lua_n.evaluate_string(l,"show_table({name='teste'})");
+    lua_n.evaluate_string(l,"show_table({name='mateus',age=27})");
+
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
@@ -38,5 +54,4 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

@@ -10,7 +10,26 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
     }
     long size = lua_n.tables.get_size(t1);
     for(int i = 0; i <size;i++){
+         printf("index: %d\n",i);
+        if(lua_n.tables.has_key(t1,i)){
+             char *key = lua_n.tables.get_key_by_index(t1,i);
+             printf("key: %s\n",key);
+         }
+         int type= lua_n.tables.get_type_by_index(t1,i);
+        if(type == lua_n.types.NUMBER){
+            double value = lua_n.tables.get_double_by_index(t1,i);
+            printf("value: %lf\n",value);
+        }
+        if(type == lua_n.types.STRING){
+            char * value = lua_n.tables.get_string_by_index(t1,i);
+            printf("value: %s\n",value);
+        }
 
+        if(type == lua_n.types.BOOL){
+            bool value = lua_n.tables.get_bool_by_index(t1,i);
+            printf("value: %d\n",value);
+        }
+        printf("\n");
     }
     return NULL;
 }>
