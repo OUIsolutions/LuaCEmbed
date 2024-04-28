@@ -38,6 +38,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
 
     self.get_listable_size = LuaCEmbedTable_get_listable_size;
 
+    self.new_sub_table_appending = LuaCEmbedTable_new_sub_table_appending;
     self.has_key = LuaCembedTable_has_key_at_index;
     self.get_key_by_index = LuaCembedTable_get_key_by_index;
     self.get_size = LuaCEmbedTable_get_full_size;

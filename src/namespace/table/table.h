@@ -15,6 +15,7 @@ typedef struct {
     void  (*set_bool_by_index)(LuaCEmbedTable *self, long index, bool value);
     void  (*set_evaluation_by_index)(LuaCEmbedTable *self, long index, const char *code, ...);
     long  (*get_listable_size)(LuaCEmbedTable *self);
+    LuaCEmbedTable  *(*new_sub_table_appending)(LuaCEmbedTable *self);
 
     void (*set_method)(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args));
     void  (*set_string_prop)(LuaCEmbedTable *self , const char *name, const char *value);

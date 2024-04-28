@@ -3,6 +3,6 @@
 #include "getters/declaration.h"
 #include "setters/declaration.h"
 #include "errors/errors.h"
-#include "sub_tables/sub_tables.h"
+#include "sub_tables/declaration.h"
 #include "append/append.h"
 #include "destroy/destroy.h"
