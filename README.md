@@ -591,6 +591,258 @@ resullt :40.000000
 ~~~
 ### Callbacks Response 
 
+You also can return  values or errors, with the **response** methods 
+
+#### Returning a Long 
+
+
+<!--codeof:exemples/calbacks/return_long.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    return lua_n.response.send_long(30);
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+   long result = lua_n.get_evaluation_long(l,"test()");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+   printf("resullt :%ld\n",result);
+    
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_long/expected.txt-->
+~~~txt
+ 
+resullt :30
+
+~~~
+
+#### Returning a Double
+
+
+<!--codeof:exemples/calbacks/return_double.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    return lua_n.response.send_double(30);
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+   double result = lua_n.get_evaluation_double(l,"test()");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+   printf("resullt :%lf\n",result);
+    
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_double/expected.txt-->
+~~~txt
+ 
+resullt :30.000000
+
+~~~
+
+#### Returning a String
+
+
+<!--codeof:exemples/calbacks/return_string.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    return lua_n.response.send_str("str return");
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+   char * result = lua_n.get_string_evaluation(l,"test()");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+   printf("resullt :%s\n",result);
+    
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_string/expected.txt-->
+~~~txt
+ 
+resullt :str return
+
+~~~
+
+#### Returning a Bool
+
+
+<!--codeof:exemples/calbacks/return_bool.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    return lua_n.response.send_bool(true);
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+   bool result = lua_n.get_evaluation_bool (l,"test()");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+   printf("resullt :%d\n",result);
+    
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_bool/expected.txt-->
+~~~txt
+ 
+resullt :1
+
+~~~
+
+
+#### Returning a Table
+
+
+<!--codeof:exemples/calbacks/return_table.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    LuaCEmbedTable *created = lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(created,"a","test message");
+    return lua_n.response.send_table(created);
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+    lua_n.evaluate_string(l,"created_table = test()");
+    LuaCEmbedTable *created = lua_n.globals.get_table_auto_creating(l,"created_table");
+    char *a = lua_n.tables.get_string_prop(created,"a");
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+   printf("value of created.a = %s\n",a);
+    
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_table/expected.txt-->
+~~~txt
+ 
+value of created.a = test message
+
+~~~
+
+
+#### Returning a a Error
+you can "raise" a error by returning a error in the function
+
+<!--codeof:exemples/calbacks/return_error.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    return lua_n.response.send_error("aaaaaa");
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+   lua_n.evaluate_string(l,"test()");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_error/expected.txt-->
+~~~txt
+ 
+error: aaaaaa
+
+~~~
 
 
 
