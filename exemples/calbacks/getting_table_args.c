@@ -1,5 +1,5 @@
 
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 
