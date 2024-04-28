@@ -6,5 +6,6 @@ typedef struct {
     char  *global_name;
     char *meta_name;
     void *sub_tables;
+    long index;
 
 }LuaCEmbedTable;

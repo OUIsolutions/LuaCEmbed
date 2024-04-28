@@ -2,6 +2,7 @@
 
 void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table);
 
+
 void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, ...);
 
 void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value);

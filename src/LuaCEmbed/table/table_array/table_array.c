@@ -39,13 +39,24 @@ LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_prop_name(privateLuaCEmbedTa
     return NULL;
 }
 
+LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_internal_index(privateLuaCEmbedTableArray *self, long internal_index){
+    for(int i = 0; i < self->size;i++){
+        LuaCEmbedTable  *current_table = self->tables[i];
+        if(current_table->index == internal_index){
+            return current_table;
+        }
+    }
+    return NULL;
+}
+
 
 void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self){
+
     for(int i = 0; i < self->size;i++){
         LuaCEmbedTable  *current_table = self->tables[i];
         privateLuaCEmbedTable_free(current_table);
-
     }
+
     free(self->tables);
     free(self);
 }
