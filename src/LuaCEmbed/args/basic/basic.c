@@ -54,11 +54,31 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
         return NULL;
     }
 
-    char *buffer = private_LuaCembed_format(PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,formatted_index);
+    char *full_table_name = private_LuaCembed_format(PRIVATE_LUA_CEMBE_SUB_ARG_TABLE,self->current_function,formatted_index);
 
     lua_pushvalue(self->state,formatted_index);
-    lua_setglobal(self->state,buffer);
-    LuaCEmbedTable  *table = (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,false,buffer);
-    free(buffer);
-    return table;
+    lua_setglobal(self->state,full_table_name);
+
+
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
+
+    if(self->current_function){
+        target =  (privateLuaCEmbedTableArray*)self->func_tables;
+    }
+
+
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(target,full_table_name);
+    if(possible){
+        free(full_table_name);
+        return possible;
+    }
+
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self, "%s", full_table_name);
+
+    privateLuaCEmbedTableArray_append(
+            target,
+            creaeted
+    );
+    free(full_table_name);
+    return creaeted;
 }

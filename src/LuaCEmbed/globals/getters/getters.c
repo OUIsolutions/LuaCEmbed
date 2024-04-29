@@ -72,7 +72,6 @@ LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name){
     }
 
     LuaCEmbedTable  *creaeted = newLuaCembedTable(self, "%s", name);
-    creaeted->prop_name = strdup(name);
 
     privateLuaCEmbedTableArray_append(
             target,
@@ -97,7 +96,6 @@ LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
     }
 
     LuaCEmbedTable  *creaeted = newLuaCembedTable(self, "%s", name);
-    creaeted->prop_name = strdup(name);
 
     privateLuaCEmbedTableArray_append(
             target,
