@@ -9,6 +9,7 @@ typedef struct {
     void  (*set_evaluation_prop)(LuaCEmbedTable *self, const char *name, const char *code, ...);
     void  (*append_evaluation)(LuaCEmbedTable *self, const char *code, ...);
 
+    void (*set_sub_table_by_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table);
     void  (*set_string_by_index)(LuaCEmbedTable *self, long index, const char *value);
     void  (*set_long_by_index)(LuaCEmbedTable *self, long index, long  value);
     void  (*set_double_by_index)(LuaCEmbedTable *self, long index, double  value);

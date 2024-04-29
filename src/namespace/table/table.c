@@ -23,6 +23,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.set_sub_table_prop = LuaCEmbedTable_set_sub_table_prop;
     self.new_anonymous_table = LuaCembed_new_anonymous_table;
 
+    self.set_sub_table_by_index = LuaCEmbedTable_set_sub_table_by_index;
     self.get_bool_prop = LuaCembedTable_get_bool_prop;
     self.get_double_prop = LuaCembedTable_get_double_prop;
     self.get_long_prop = LuaCembedTable_get_long_prop;
