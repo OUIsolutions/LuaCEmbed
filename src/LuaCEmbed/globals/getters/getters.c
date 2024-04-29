@@ -91,7 +91,6 @@ LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
         target =  (privateLuaCEmbedTableArray*)self->func_tables;
     }
 
-
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(target,name);
     if(possible){
         return possible;

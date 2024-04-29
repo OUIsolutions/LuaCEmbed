@@ -21,3 +21,7 @@ void LuaCEmbed_set_global_bool(LuaCEmbed *self, const char *name, bool value){
 }
 
 
+void LuaCEmbed_set_global_table(LuaCEmbed *self, const char *name, LuaCEmbedTable *table){
+    lua_getglobal(self->state,table->global_name);
+    lua_setglobal(self->state,name);
+}

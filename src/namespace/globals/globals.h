@@ -8,6 +8,8 @@ typedef struct {
     double (*get_double)(LuaCEmbed *self,const char *name);
     bool (*get_bool)(LuaCEmbed *self,const char *name);
     char * (*get_string)(LuaCEmbed *self,const char *name);
+    void (*set_table)(LuaCEmbed *self, const char *name, LuaCEmbedTable *table);
+
 
     void (*set_string)(LuaCEmbed *self,const char *name,const  char *value);
     void (*set_long)(LuaCEmbed *self,const char *name,long value);

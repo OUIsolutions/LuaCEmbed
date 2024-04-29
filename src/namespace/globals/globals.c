@@ -10,7 +10,7 @@ LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     self.get_bool = LuaCEmbed_get_global_bool;
     self.get_type = LuaCEmbed_get_global_type;
 
-
+    self.set_table = LuaCEmbed_set_global_table;
     self.set_string = LuaCEmbed_set_global_string;
     self.set_bool =LuaCEmbed_set_global_bool;
     self.set_double = LuaCEmbed_set_global_double;
