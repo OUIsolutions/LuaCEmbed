@@ -94,25 +94,22 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating_by_key(LuaCEmbedTabl
 
 
 void LuaCEmbedTable_set_sub_table_by_key(LuaCEmbedTable *self, const char *name, LuaCEmbedTable *sub_table){
-    /*
+
     if(!self){
         return ;
     }
-    char *full_sub_table_name =private_LuaCembed_format(PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT, self->global_name, name);
-
-
-    //assagnin these prop as the same as sub table
-    lua_getglobal(self->main_object->state,sub_table->global_name);
-    lua_setglobal(self->main_object->state,full_sub_table_name);
-
-
+    //equivalent of  table.name = sub_table;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
-    lua_getglobal(self->main_object->state,full_sub_table_name);
-
+    lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_settable(self->main_object->state,-3);
 
-    (void) privateLuaCEmbedTable_append_or_create_by_name(self, full_sub_table_name, name);
+
+    //equivalent of full_sub_table_name = table.sub_table
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_getfield(self->main_object->state,-1,name);
+    char *full_sub_table_name = private_LuaCembed_format("%s_%s", self->global_name, name);
+    lua_setglobal(self->main_object->state,full_sub_table_name);
     free(full_sub_table_name);
-*/
+
 }
