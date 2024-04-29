@@ -77,12 +77,6 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
 
         if(total == converted_index){
             if(lua_type(self->main_object->state,-2) != LUA_CEMBED_STRING ){
-                privateLuaCEmbed_raise_error_not_jumping(
-                        self->main_object,
-                        PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY,
-                        index,
-                        self->global_name
-                );
                 lua_pop(self->main_object->state,1);
                 return NULL;
             }
@@ -96,12 +90,6 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
 
     }
 
-    privateLuaCEmbed_raise_error_not_jumping(
-            self->main_object,
-            PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY,
-            index,
-            self->global_name
-    );
     return NULL;
 }
 bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){

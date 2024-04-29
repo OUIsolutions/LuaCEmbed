@@ -39,3 +39,86 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
     free(full_sub_table_name);
     return created;
 }
+
+LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, long index){
+
+    if(!self){
+        return NULL;
+    }
+
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    int table_index = lua_gettop(self->main_object->state);
+    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+    int total = 1;
+
+    lua_pushnil(self->main_object->state);
+    while(lua_next(self->main_object->state,table_index)){
+        if(total == converted_index){
+
+            if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_TABLE)){
+                lua_pop(self->main_object->state,1);
+                return NULL;
+            }
+
+            //equivalent of full_sub_table_name = table[index]
+            char *full_sub_table_name = private_LuaCembed_format("%s_%d", self->global_name, index);
+            lua_setglobal(self->main_object->state,full_sub_table_name);
+
+            LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_internal_index(
+                    (privateLuaCEmbedTableArray *) self->sub_tables,
+                    index
+            );
+
+            if(possible){
+                free(full_sub_table_name);
+                lua_pop(self->main_object->state,1);
+                return possible;
+            }
+
+            LuaCEmbedTable  *created = newLuaCembedTable(self->main_object,false, full_sub_table_name);
+            created->index = index;
+
+            privateLuaCEmbedTableArray_append(
+                    (privateLuaCEmbedTableArray*)self->sub_tables,
+                    created
+            );
+
+            free(full_sub_table_name);
+            lua_pop(self->main_object->state,1);
+            return created;
+        }
+        lua_pop(self->main_object->state,1);
+        total+=1;
+
+    }
+
+    privateLuaCEmbed_raise_error_not_jumping(
+            self->main_object,
+            PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
+            index,
+            self->global_name,
+            LuaCembed_convert_arg_code(LUA_CEMBED_NIL),
+            LuaCembed_convert_arg_code(LUA_CEMBED_TABLE)
+    );
+    return NULL;
+}
+
+void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table){
+
+
+    char *possible_key = LuaCembedTable_get_key_by_index(self,index);
+    if(possible_key){
+        LuaCEmbedTable_set_sub_table_prop(self,possible_key,sub_table);
+        return;
+    }
+    if(!self){
+        return ;
+    }
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushnumber(self->main_object->state,(double)formatted_index);
+    lua_getglobal(self->main_object->state,sub_table->global_name);
+    lua_settable(self->main_object->state,-3);
+}
