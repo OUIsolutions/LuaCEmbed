@@ -849,12 +849,53 @@ you can easly handle tables, with the getters and setters methods
 
 <!--codeof:exemples/table_handle/retriving_props.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
 
+LuaCEmbedResponse  * show_table(LuaCEmbed *args){
+
+    LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
+    if(lua_n.has_errors(args)){
+        char *menssage = lua_n.get_error_message(args);
+        return  lua_n.response.send_error(menssage);
+    }
+
+    char *name  = lua_n.tables.get_string_prop(t1,"name");
+    long age = lua_n.tables.get_long_prop(t1,"age");
+
+    if(lua_n.has_errors(args)){
+        char *menssage = lua_n.get_error_message(args);
+        return  lua_n.response.send_error(menssage);
+    }
+
+    printf("name : %s\n",name);
+    printf("age: %ld\n",age);
+
+    return NULL;
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"show_table", show_table);
+    lua_n.evaluate(l,"show_table({name='mateus',age=27})");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 It will produce:
 
 <!--codeof:tests/main_test/table_handle/T_retriving_props/expected.txt-->
 ~~~txt
+ 
+name : mateus
+age: 27
+
 ~~~
 
 #### Retriving Sub Tables
@@ -862,24 +903,155 @@ It will produce:
 
 <!--codeof:exemples/table_handle/retriving_sub_table.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
 
+LuaCEmbedResponse  * show_table(LuaCEmbed *args){
+
+    LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
+    if(lua_n.has_errors(args)){
+        char *menssage = lua_n.get_error_message(args);
+        return  lua_n.response.send_error(menssage);
+    }
+
+    long size = lua_n.tables.get_size(t1);
+    for(int i = 0; i < size; i++){
+
+        LuaCEmbedTable *current = lua_n.tables.get_sub_table_by_index(t1,i);
+        char *name  = lua_n.tables.get_string_prop(current,"name");
+        long age = lua_n.tables.get_long_prop(current,"age");
+
+        if(lua_n.has_errors(args)){
+            char *menssage = lua_n.get_error_message(args);
+            return  lua_n.response.send_error(menssage);
+        }
+
+        printf("name : %s\n",name);
+        printf("age: %ld\n",age);
+
+        printf("------------------------------------------\n");
+    }
+    
+    return NULL;
+
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"show_table", show_table);
+    lua_n.evaluate(l,"show_table({{name='mateus',age=27},{name='john',age=30}} )");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 ~~~
 It will produce:
 
-<!--codeof:tests/main_test/calbacks/S_retriving_sub_table/expected.txt-->
+<!--codeof:tests/main_test/table_handle/S_retriving_sub_table/expected.txt-->
 ~~~txt
+ 
+name : mateus
+age: 27
+------------------------------------------
+name : john
+age: 30
+------------------------------------------
+
 ~~~
 
 #### Iterating over table
 
 <!--codeof:exemples/table_handle/iterating_over_table.c-->
 ~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+
+LuaCEmbedResponse  * show_table(LuaCEmbed *args){
+
+    LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
+    if(lua_n.has_errors(args)){
+        char *menssage = lua_n.get_error_message(args);
+        return  lua_n.response.send_error(menssage);
+    }
+    long size = lua_n.tables.get_size(t1);
+    for(int i = 0; i <size;i++){
+        printf("index: %d\n",i);
+        const char *key= "Not provided";
+        if(lua_n.tables.has_key(t1,i)){
+            key = lua_n.tables.get_key_by_index(t1,i);
+        }
+        printf("key: %s\n",key);
+
+        int type= lua_n.tables.get_type_by_index(t1,i);
+        printf("type %s\n",lua_n.convert_arg_code(type));
+
+        if(type == lua_n.types.NUMBER){
+            double value = lua_n.tables.get_double_by_index(t1,i);
+            printf("value: %lf\n",value);
+        }
+
+        if(type == lua_n.types.STRING){
+            char * value = lua_n.tables.get_string_by_index(t1,i);
+            printf("value: %s\n",value);
+        }
+
+        if(type == lua_n.types.BOOL){
+            bool value = lua_n.tables.get_bool_by_index(t1,i);
+            printf("value: %d\n",value);
+        }
+        printf("------------------------------------------\n");
+    }
+    return NULL;
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"show_table", show_table);
+    lua_n.evaluate(l,"show_table({name='Mateus',age=27,single=true,'indexable random string'})");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
 
 ~~~
 It will produce:
 
 <!--codeof:tests/main_test/table_handle/S_iterating_over_table/expected.txt-->
 ~~~txt
+ 
+index: 0
+key: Not provided
+type string
+value: indexable random string
+------------------------------------------
+index: 1
+key: name
+type string
+value: Mateus
+------------------------------------------
+index: 2
+key: single
+type boolean
+value: 1
+------------------------------------------
+index: 3
+key: age
+type number
+value: 27.000000
+------------------------------------------
+
 ~~~
 
 
