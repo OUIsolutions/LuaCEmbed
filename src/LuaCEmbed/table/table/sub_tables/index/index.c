@@ -14,7 +14,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
 
     //equivalent of: table[index] = full_sub_table_name
     lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushnumber(self->main_object->state,(double)index);
+    lua_pushinteger(self->main_object->state,index);
     lua_getglobal(self->main_object->state,full_sub_table_name);
     lua_settable(self->main_object->state,-3);
 
@@ -28,7 +28,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
         return possible;
     }
 
-    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object,false, full_sub_table_name);
+    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object, full_sub_table_name);
     created->index = index;
 
     privateLuaCEmbedTableArray_append(
@@ -77,7 +77,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
                 return possible;
             }
 
-            LuaCEmbedTable  *created = newLuaCembedTable(self->main_object,false, full_sub_table_name);
+            LuaCEmbedTable  *created = newLuaCembedTable(self->main_object, full_sub_table_name);
             created->index = index;
 
             privateLuaCEmbedTableArray_append(
@@ -118,7 +118,7 @@ void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaC
     }
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushnumber(self->main_object->state,(double)formatted_index);
+    lua_pushinteger(self->main_object->state,formatted_index);
     lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_settable(self->main_object->state,-3);
 }

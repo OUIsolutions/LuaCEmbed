@@ -53,10 +53,56 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
 
 
 
-LuaCEmbedTable * LuaCembed_get_global_table_auto_creating(LuaCEmbed *self, const char *name){
-    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,false,name);
+LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name){
+
+    if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_TABLE)){
+        return  NULL;
+    }
+
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
+
+    if(self->current_function){
+        target =  (privateLuaCEmbedTableArray*)self->func_tables;
+    }
+
+
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(target,name);
+    if(possible){
+        return possible;
+    }
+
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self, "%s", name);
+    creaeted->prop_name = strdup(name);
+
+    privateLuaCEmbedTableArray_append(
+            target,
+            creaeted
+    );
+    return creaeted;
 }
 
 LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
-    return (LuaCEmbedTable*)private_LuaCembed_get_table_or_create_internal(self,true,name);
+
+    lua_newtable(self->state);
+    lua_setglobal(self->state,name);
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
+
+    if(self->current_function){
+        target =  (privateLuaCEmbedTableArray*)self->func_tables;
+    }
+
+
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(target,name);
+    if(possible){
+        return possible;
+    }
+
+    LuaCEmbedTable  *creaeted = newLuaCembedTable(self, "%s", name);
+    creaeted->prop_name = strdup(name);
+
+    privateLuaCEmbedTableArray_append(
+            target,
+            creaeted
+    );
+    return creaeted;
 }

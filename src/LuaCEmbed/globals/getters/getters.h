@@ -13,6 +13,6 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name);
 LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self);
 
 
-LuaCEmbedTable * LuaCembed_get_global_table_auto_creating(LuaCEmbed *self, const char *name);
+LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name);
 
 LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name);

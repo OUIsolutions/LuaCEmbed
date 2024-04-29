@@ -30,7 +30,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const
         return possible;
     }
 
-    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object,false, full_sub_table_name);
+    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object, full_sub_table_name);
     created->prop_name = strdup(name);
 
     privateLuaCEmbedTableArray_append(
@@ -71,7 +71,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const
         return possible;
     }
 
-    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object,false, full_sub_table_name);
+    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object, full_sub_table_name);
     created->prop_name = strdup(name);
 
     privateLuaCEmbedTableArray_append(
