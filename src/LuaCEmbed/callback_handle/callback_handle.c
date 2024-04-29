@@ -17,7 +17,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         lua_pushvalue(L, lua_upvalueindex(4));
         lua_setglobal(L,PRIVATE_LUA_CEMBED_SELFNAME);
 
-        LuaCEmbedTable  *table = newLuaCembedTable(self,false, PRIVATE_LUA_CEMBED_SELFNAME);
+        LuaCEmbedTable  *table = private_newLuaCembedTable(self, false, PRIVATE_LUA_CEMBED_SELFNAME);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
         privateLuaCEmbedTable_free(table);

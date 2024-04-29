@@ -28,7 +28,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
         return possible;
     }
 
-    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object, full_sub_table_name);
+    LuaCEmbedTable  *created = private_newLuaCembedTable(self->main_object, full_sub_table_name);
     created->index = index;
 
     privateLuaCEmbedTableArray_append(
@@ -77,7 +77,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
                 return possible;
             }
 
-            LuaCEmbedTable  *created = newLuaCembedTable(self->main_object, full_sub_table_name);
+            LuaCEmbedTable  *created = private_newLuaCembedTable(self->main_object, full_sub_table_name);
             created->index = index;
 
             privateLuaCEmbedTableArray_append(

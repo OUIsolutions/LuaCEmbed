@@ -6,23 +6,8 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     if(!self){
         return ;
     }
-    bool its_meta_method = false;
 
-
-    if(strlen(name) > 2){
-        if (name[0] == '_' && name[1] == '_'){
-            its_meta_method = true;
-        }
-    }
-    bool its_normal_method = !its_meta_method;
-
-    if(its_normal_method){
-        lua_getglobal(self->main_object->state,self->global_name);
-    }
-
-    if(its_meta_method){
-        lua_getglobal(self->main_object->state,self->meta_name);
-    }
+    lua_getglobal(self->main_object->state,self->global_name);
 
     lua_pushstring(self->main_object->state,name);
 
@@ -37,12 +22,6 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     lua_pushcclosure(self->main_object->state,privateLuaCEmbed_main_callback_handler,5);
     lua_settable(self->main_object->state,-3);
 
-    if(its_meta_method){
-        lua_getglobal(self->main_object->state,self->global_name);
-        lua_pushvalue(self->main_object->state,-2);
-
-        lua_setmetatable(self->main_object->state,-2);
-    }
 
 }
 

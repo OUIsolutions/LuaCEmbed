@@ -2,7 +2,7 @@
 
 
 
-LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...){
+LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...){
     LuaCEmbedTable  *self = (LuaCEmbedTable*)malloc(sizeof (LuaCEmbedTable));
     *self = (LuaCEmbedTable){0};
     self->main_object =main_embed;
@@ -12,7 +12,6 @@ LuaCEmbedTable * newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ..
     self->global_name = private_LuaCembed_format_vaarg(format,args);
     va_end(args);
 
-    self->meta_name = private_LuaCembed_format(PRIVATE_LUA_CEMBED_METANAME,self->global_name);
     self->sub_tables = (void*)newprivateLuaCEmbedTableArray();
 
     return self;
@@ -24,7 +23,6 @@ void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
         return ;
     }
     free(self->global_name);
-    free(self->meta_name);
 
     if(self->prop_name){
         free(self->prop_name);

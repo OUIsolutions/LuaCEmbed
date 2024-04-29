@@ -5,12 +5,14 @@ LuaCEmbedNamespace  lua;
 LuaCEmbedNamespace  lua_n;
 
 
+
 LuaCEmbedResponse  * create_table(LuaCEmbed *args) {
 
     LuaCEmbedTable *t1 = lua_n.tables.new_anonymous_table(args);
     LuaCEmbedTable *t2 = lua_n.tables.new_anonymous_table(args);
     lua_n.tables.set_string_prop(t2, "test", "value of created\n");
     lua_n.tables.set_sub_table_prop(t1, "a", t2);
+
 
     return lua_n.response.send_table(t1);
 }

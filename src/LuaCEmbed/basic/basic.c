@@ -79,6 +79,7 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_msg;
 }
 
+
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
     if(self->error_msg){
         free(self->error_msg);

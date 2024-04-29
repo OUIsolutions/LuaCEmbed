@@ -73,7 +73,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
         return possible;
     }
 
-    LuaCEmbedTable  *creaeted = newLuaCembedTable(self, "%s", full_table_name);
+    LuaCEmbedTable  *creaeted = private_newLuaCembedTable(self, "%s", full_table_name);
 
     privateLuaCEmbedTableArray_append(
             target,
