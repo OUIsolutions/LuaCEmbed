@@ -50,7 +50,6 @@ LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_internal_index(privateLuaCEm
     return NULL;
 }
 
-
 void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self){
 
     for(int i = 0; i < self->size;i++){

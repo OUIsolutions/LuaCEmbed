@@ -60,14 +60,10 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     lua_setglobal(self->state,full_table_name);
 
 
-    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
-
-    if(self->current_function){
-        target =  (privateLuaCEmbedTableArray*)self->func_tables;
-    }
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
 
 
-    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(target,full_table_name);
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_global_name(target,full_table_name);
     if(possible){
         free(full_table_name);
         return possible;

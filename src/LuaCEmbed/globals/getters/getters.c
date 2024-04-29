@@ -40,10 +40,7 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
 
 LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
 
-    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
-    if(self->current_function){
-        target =  (privateLuaCEmbedTableArray*)self->func_tables;
-    }
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
 
     char *buffer= private_LuaCembed_format(PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE, target->size);
     LuaCEmbedTable  *created_table =LuaCembed_new_global_table(self,buffer);
@@ -59,12 +56,7 @@ LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name){
         return  NULL;
     }
 
-    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
-
-    if(self->current_function){
-        target =  (privateLuaCEmbedTableArray*)self->func_tables;
-    }
-
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
 
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_global_name(target,name);
     if(possible){
@@ -84,11 +76,7 @@ LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
 
     lua_newtable(self->state);
     lua_setglobal(self->state,name);
-    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)self->global_tables;
-
-    if(self->current_function){
-        target =  (privateLuaCEmbedTableArray*)self->func_tables;
-    }
+    privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
 
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_global_name(target,name);
     if(possible){

@@ -79,7 +79,12 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_msg;
 }
 
-
+void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
+    if(self->current_function){
+       return  self->func_tables;
+    }
+    return self->global_tables;
+}
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
     if(self->error_msg){
         free(self->error_msg);
