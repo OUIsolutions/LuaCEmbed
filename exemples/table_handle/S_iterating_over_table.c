@@ -1,8 +1,8 @@
-
-#include "src/one.c"
-LuaCEmbedNamespace  lua;
-
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
+
+
+
 LuaCEmbedResponse  * show_table(LuaCEmbed *args){
 
     LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
@@ -36,7 +36,7 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
             bool value = lua_n.tables.get_bool_by_index(t1,i);
             printf("value: %d\n",value);
         }
-        printf("---------------------------------\n");
+        printf("===================================\n");
     }
     return NULL;
 }
@@ -54,5 +54,3 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-
-//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

@@ -2,5 +2,5 @@
 no argument providided
 number: 10.000000
 str: hello
-type: boolean
+bool: 1
 type: table

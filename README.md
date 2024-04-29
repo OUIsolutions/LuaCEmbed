@@ -400,7 +400,7 @@ It will produce:
 no argument providided
 number: 10.000000
 str: hello
-type: boolean
+bool: 1
 type: table
 
 ~~~
@@ -471,7 +471,7 @@ It will produce:
 10.000000
 30.000000
 aa
-boolean
+true
 table
 
 ~~~
@@ -780,7 +780,7 @@ int main(int argc, char *argv[]){
 
 
     lua_n.evaluate_string(l,"created_table = test()");
-    LuaCEmbedTable *created = lua_n.globals.get_table_auto_creating(l,"created_table");
+    LuaCEmbedTable *created = lua_n.globals.get_table(l,"created_table");
     char *a = lua_n.tables.get_string_prop(created,"a");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -1038,7 +1038,7 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
     lua_n.evaluate_string(l,"r = {a='internal text'}");
-    LuaCEmbedTable *r_table  = lua_n.globals.get_table_auto_creating(l,"r");
+    LuaCEmbedTable *r_table  = lua_n.globals.get_table(l,"r");
     char *a = lua_n.tables.get_string_prop(r_table,"a");
     printf("value of r.a = %s\n",a);
 

@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 
 
     lua_n.evaluate_string(l,"created_table = test()");
-    LuaCEmbedTable *created = lua_n.globals.get_table_auto_creating(l,"created_table");
+    LuaCEmbedTable *created = lua_n.globals.get_table(l,"created_table");
     char *a = lua_n.tables.get_string_prop(created,"a");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

@@ -2,5 +2,5 @@
 10.000000
 30.000000
 aa
-boolean
+true
 table
