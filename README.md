@@ -842,6 +842,45 @@ It will produce:
 error: my custom error menssage
 
 ~~~
+### Table Handling 
+you can easly handle tables, with the getters and setters methods
+
+#### Retriving table props 
+
+<!--codeof:exemples/table_handle/retriving_props.c-->
+~~~c
+
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_retriving_props/expected.txt-->
+~~~txt
+~~~
+
+#### Retriving Sub Tables
+
+
+<!--codeof:exemples/table_handle/retriving_sub_table.c-->
+~~~c
+
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/S_retriving_sub_table/expected.txt-->
+~~~txt
+~~~
+
+#### Iterating over table
+
+<!--codeof:exemples/table_handle/iterating_over_table.c-->
+~~~c
+
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/S_iterating_over_table/expected.txt-->
+~~~txt
+~~~
 
 
 
