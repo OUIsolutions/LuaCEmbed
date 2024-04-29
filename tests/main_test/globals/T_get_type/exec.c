@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = 'hello world'");
+    lua_n.evaluate(l,"r = 'hello world'");
     int type_code  = lua_n.globals.get_type(l,"r");
     const char *converted_type = lua_n.convert_arg_code(type_code);
     printf("result %s\n",converted_type);

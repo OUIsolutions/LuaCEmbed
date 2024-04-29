@@ -23040,7 +23040,7 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
 
 
-int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...);
+int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...);
 
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file);
 
@@ -23235,7 +23235,7 @@ typedef struct{
     char * (*get_error_message)(LuaCEmbed *self);
     bool (*has_errors)(LuaCEmbed *self);
     void (*set_timeout)(LuaCEmbed *self,int seconds);
-    int (*evaluate_string)(LuaCEmbed *self, const char *code,...);
+    int (*evaluate)(LuaCEmbed *self, const char *code, ...);
     char * (*get_string_evaluation)(LuaCEmbed *self, char *code, ...);
     int  (*get_evaluation_type)(LuaCEmbed *self, char *code,...);
     long (*get_evaluation_size)(LuaCEmbed *self, char *code,...);
@@ -23593,7 +23593,7 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va
             formated_expresion
     );
 
-    if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
+    if(LuaCEmbed_evaluate(self, buffer)){
         free(formated_expresion);
         free(buffer);
         return  LUA_CEMBED_GENERIC_ERROR;
@@ -24169,10 +24169,10 @@ void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, long index, c
     char *  buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    LuaCEmbed_evaluate_string_no_return(self->main_object,
-                                        PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
-                                        PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-                                        buffer
+    LuaCEmbed_evaluate(self->main_object,
+                       PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+                       PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+                       buffer
     );
     free(buffer);
     if(LuaCEmbed_has_errors(self->main_object)){
@@ -24263,10 +24263,10 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     char *buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    LuaCEmbed_evaluate_string_no_return(self->main_object,
-            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
-            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-            buffer
+    LuaCEmbed_evaluate(self->main_object,
+                       PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+                       PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+                       buffer
     );
     free(buffer);
     if(LuaCEmbed_has_errors(self->main_object)){
@@ -24621,7 +24621,7 @@ void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, .
      char *buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    LuaCEmbed_evaluate_string_no_return(
+    LuaCEmbed_evaluate(
             self->main_object,
             PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
             PRIVATE_LUA_CEMBED_EVALUATION_NAME,
@@ -24999,7 +24999,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
                 possible_return->string_val
         );
 
-        int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
+        int error_code = LuaCEmbed_evaluate(self, formated_function);
         free(formated_function);
 
         if(error_code){
@@ -25092,7 +25092,7 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
 
 
-int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...){
+int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
 
     va_list args;
     va_start(args,code);
@@ -25134,7 +25134,7 @@ int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code
             formated_expresion
     );
 
-    if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
+    if(LuaCEmbed_evaluate(self, buffer)){
         free(formated_expresion);
         free(buffer);
         return  LUA_CEMBED_GENERIC_ERROR;
@@ -25470,7 +25470,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.get_error_message = LuaCEmbed_get_error_message;
     self.has_errors = LuaCEmbed_has_errors;
     self.set_timeout = LuaCEmbed_set_timeout;
-    self.evaluate_string = LuaCEmbed_evaluate_string_no_return;
+    self.evaluate = LuaCEmbed_evaluate;
     self.get_string_evaluation = LuaCEmbed_get_evaluation_string;
     self.get_evaluation_type = LuaCEmbed_get_evaluation_type;
     self.get_evaluation_size = LuaCEmbed_get_evaluation_table_size;

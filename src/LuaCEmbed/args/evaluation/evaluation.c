@@ -15,7 +15,7 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,char *code,va
             formated_expresion
     );
 
-    if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
+    if(LuaCEmbed_evaluate(self, buffer)){
         free(formated_expresion);
         free(buffer);
         return  LUA_CEMBED_GENERIC_ERROR;

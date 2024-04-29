@@ -2,7 +2,7 @@
 
 
 
-int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...){
+int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
 
     va_list args;
     va_start(args,code);
@@ -44,7 +44,7 @@ int private_LuaCEmbed_evaluate_puting_on_top_of_stack(LuaCEmbed *self,char *code
             formated_expresion
     );
 
-    if(LuaCEmbed_evaluate_string_no_return(self, buffer)){
+    if(LuaCEmbed_evaluate(self, buffer)){
         free(formated_expresion);
         free(buffer);
         return  LUA_CEMBED_GENERIC_ERROR;

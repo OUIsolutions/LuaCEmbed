@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"hello",hello);
 
-    lua_n.evaluate_string(l,"hello()");
+    lua_n.evaluate(l,"hello()");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

@@ -17,7 +17,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.get_error_message = LuaCEmbed_get_error_message;
     self.has_errors = LuaCEmbed_has_errors;
     self.set_timeout = LuaCEmbed_set_timeout;
-    self.evaluate_string = LuaCEmbed_evaluate_string_no_return;
+    self.evaluate = LuaCEmbed_evaluate;
     self.get_string_evaluation = LuaCEmbed_get_evaluation_string;
     self.get_evaluation_type = LuaCEmbed_get_evaluation_type;
     self.get_evaluation_size = LuaCEmbed_get_evaluation_table_size;

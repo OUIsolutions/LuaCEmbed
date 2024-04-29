@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"print",print_func);
 
 
-    lua_n.evaluate_string(l,"print(10,30,'aa',true,{a=30})");
+    lua_n.evaluate(l,"print(10,30,'aa',true,{a=30})");
 
 
     if(lua_n.has_errors(l)){

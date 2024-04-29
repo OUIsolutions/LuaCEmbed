@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 'hello world'");
+    lua_n.evaluate(l,"r = 'hello world'");
 
     char * result = lua_n.get_string_evaluation(l,"r");
     printf("result: %s\n",result);

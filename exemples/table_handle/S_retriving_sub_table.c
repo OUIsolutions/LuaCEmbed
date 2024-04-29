@@ -24,8 +24,9 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
         printf("name : %s\n",name);
         printf("age: %ld\n",age);
 
+        printf("------------------------------------------\n");
     }
-
+    
     return NULL;
 
 }
@@ -34,7 +35,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"show_table", show_table);
-    lua_n.evaluate_string(l,"show_table({{name='mateus',age=27},{name='john',age=30}} )");
+    lua_n.evaluate(l,"show_table({{name='mateus',age=27},{name='john',age=30}} )");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

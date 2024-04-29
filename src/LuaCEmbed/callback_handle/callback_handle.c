@@ -91,7 +91,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
                 possible_return->string_val
         );
 
-        int error_code = LuaCEmbed_evaluate_string_no_return(self, formated_function);
+        int error_code = LuaCEmbed_evaluate(self, formated_function);
         free(formated_function);
 
         if(error_code){

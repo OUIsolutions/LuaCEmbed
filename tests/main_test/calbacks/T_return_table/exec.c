@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"test",test_func);
 
 
-    lua_n.evaluate_string(l,"created_table = test()");
+    lua_n.evaluate(l,"created_table = test()");
     LuaCEmbedTable *created = lua_n.globals.get_table(l,"created_table");
     char *a = lua_n.tables.get_string_prop(created,"a");
     if(lua_n.has_errors(l)){

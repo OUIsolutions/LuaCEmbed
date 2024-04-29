@@ -1,7 +1,7 @@
 
 
 
-int LuaCEmbed_evaluate_string_no_return(LuaCEmbed *self, const char *code,...);
+int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...);
 
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file);
 

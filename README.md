@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
     
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 30");
+    lua_n.evaluate(l,"r = 30");
     long calc = lua_n.get_evaluation_long(l,"r + 20");
     printf("result %ld",calc);
     
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 'hello world'");
+    lua_n.evaluate(l,"r = 'hello world'");
 
     char * result = lua_n.get_string_evaluation(l,"r");
     printf("result: %s\n",result);
@@ -131,7 +131,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 'hello world'");
+    lua_n.evaluate(l,"r = 'hello world'");
 
     int r_type = lua_n.get_evaluation_type(l,"r");
     const char*converted =  lua_n.convert_arg_code(r_type);
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = {1,2,3}");
+    lua_n.evaluate(l,"r = {1,2,3}");
 
     long result = lua_n.get_evaluation_size(l,"r");
     printf("size: %ld\n",result);
@@ -201,7 +201,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 20 + 30");
+    lua_n.evaluate(l,"r = 20 + 30");
 
     long result = lua_n.get_evaluation_long(l,"r");
     printf("result: %ld\n",result);
@@ -235,7 +235,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = 20 + 30");
+    lua_n.evaluate(l,"r = 20 + 30");
 
     double result = lua_n.get_evaluation_double(l,"r");
     printf("result: %lf\n",result);
@@ -270,7 +270,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = true");
+    lua_n.evaluate(l,"r = true");
 
     bool result = lua_n.get_evaluation_bool(l,"r");
     printf("result: %d\n",result);
@@ -313,7 +313,7 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"hello",hello);
 
-    lua_n.evaluate_string(l,"hello()");
+    lua_n.evaluate(l,"hello()");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -377,11 +377,11 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"test",test_func);
 
-    lua_n.evaluate_string(l,"test()");
-    lua_n.evaluate_string(l,"test(10)");
-    lua_n.evaluate_string(l,"test('hello')");
-    lua_n.evaluate_string(l,"test(true)");
-    lua_n.evaluate_string(l,"test({a=30})");
+    lua_n.evaluate(l,"test()");
+    lua_n.evaluate(l,"test(10)");
+    lua_n.evaluate(l,"test('hello')");
+    lua_n.evaluate(l,"test(true)");
+    lua_n.evaluate(l,"test({a=30})");
 
 
     if(lua_n.has_errors(l)){
@@ -452,7 +452,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"print",print_func);
 
 
-    lua_n.evaluate_string(l,"print(10,30,'aa',true,{a=30})");
+    lua_n.evaluate(l,"print(10,30,'aa',true,{a=30})");
 
 
     if(lua_n.has_errors(l)){
@@ -779,7 +779,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"test",test_func);
 
 
-    lua_n.evaluate_string(l,"created_table = test()");
+    lua_n.evaluate(l,"created_table = test()");
     LuaCEmbedTable *created = lua_n.globals.get_table(l,"created_table");
     char *a = lua_n.tables.get_string_prop(created,"a");
     if(lua_n.has_errors(l)){
@@ -823,7 +823,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"test",test_func);
 
 
-   lua_n.evaluate_string(l,"test()");
+   lua_n.evaluate(l,"test()");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
@@ -863,7 +863,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = 'hello world'");
+    lua_n.evaluate(l,"r = 'hello world'");
     char *  result  = lua_n.globals.get_string(l,"r");
     printf("result %s\n",result);
 
@@ -898,7 +898,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = true");
+    lua_n.evaluate(l,"r = true");
     bool  result  = lua_n.globals.get_bool(l,"r");
     printf("result %d\n",result);
 
@@ -933,7 +933,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = 30.5");
+    lua_n.evaluate(l,"r = 30.5");
     double  result  = lua_n.globals.get_double(l,"r");
     printf("result %lf\n",result);
 
@@ -968,7 +968,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = 30");
+    lua_n.evaluate(l,"r = 30");
     long  result  = lua_n.globals.get_long(l,"r");
     printf("result %ld\n",result);
 
@@ -1002,7 +1002,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = 'hello world'");
+    lua_n.evaluate(l,"r = 'hello world'");
     int type_code  = lua_n.globals.get_type(l,"r");
     const char *converted_type = lua_n.convert_arg_code(type_code);
     printf("result %s\n",converted_type);
@@ -1037,7 +1037,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = {a='internal text'}");
+    lua_n.evaluate(l,"r = {a='internal text'}");
     LuaCEmbedTable *r_table  = lua_n.globals.get_table(l,"r");
     char *a = lua_n.tables.get_string_prop(r_table,"a");
     printf("value of r.a = %s\n",a);

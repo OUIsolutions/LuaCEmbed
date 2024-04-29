@@ -37,11 +37,11 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"test",test_func);
 
-    lua_n.evaluate_string(l,"test()");
-    lua_n.evaluate_string(l,"test(10)");
-    lua_n.evaluate_string(l,"test('hello')");
-    lua_n.evaluate_string(l,"test(true)");
-    lua_n.evaluate_string(l,"test({a=30})");
+    lua_n.evaluate(l,"test()");
+    lua_n.evaluate(l,"test(10)");
+    lua_n.evaluate(l,"test('hello')");
+    lua_n.evaluate(l,"test(true)");
+    lua_n.evaluate(l,"test({a=30})");
 
 
     if(lua_n.has_errors(l)){

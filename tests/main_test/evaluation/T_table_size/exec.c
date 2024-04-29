@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate_string(l,"r = {1,2,3}");
+    lua_n.evaluate(l,"r = {1,2,3}");
 
     long result = lua_n.get_evaluation_size(l,"r");
     printf("size: %ld\n",result);

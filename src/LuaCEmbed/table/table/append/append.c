@@ -62,7 +62,7 @@ void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, .
      char *buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    LuaCEmbed_evaluate_string_no_return(
+    LuaCEmbed_evaluate(
             self->main_object,
             PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
             PRIVATE_LUA_CEMBED_EVALUATION_NAME,

@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"test",test_func);
 
 
-   lua_n.evaluate_string(l,"test()");
+   lua_n.evaluate(l,"test()");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

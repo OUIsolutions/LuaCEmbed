@@ -76,10 +76,10 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     char *buffer = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    LuaCEmbed_evaluate_string_no_return(self->main_object,
-            PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
-            PRIVATE_LUA_CEMBED_EVALUATION_NAME,
-            buffer
+    LuaCEmbed_evaluate(self->main_object,
+                       PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
+                       PRIVATE_LUA_CEMBED_EVALUATION_NAME,
+                       buffer
     );
     free(buffer);
     if(LuaCEmbed_has_errors(self->main_object)){

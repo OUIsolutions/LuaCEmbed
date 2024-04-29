@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
 
-    lua_n.evaluate_string(l,"r = true");
+    lua_n.evaluate(l,"r = true");
     bool  result  = lua_n.globals.get_bool(l,"r");
     printf("result %d\n",result);
 

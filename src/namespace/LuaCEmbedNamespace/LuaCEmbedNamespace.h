@@ -15,7 +15,7 @@ typedef struct{
     char * (*get_error_message)(LuaCEmbed *self);
     bool (*has_errors)(LuaCEmbed *self);
     void (*set_timeout)(LuaCEmbed *self,int seconds);
-    int (*evaluate_string)(LuaCEmbed *self, const char *code,...);
+    int (*evaluate)(LuaCEmbed *self, const char *code, ...);
     char * (*get_string_evaluation)(LuaCEmbed *self, char *code, ...);
     int  (*get_evaluation_type)(LuaCEmbed *self, char *code,...);
     long (*get_evaluation_size)(LuaCEmbed *self, char *code,...);
