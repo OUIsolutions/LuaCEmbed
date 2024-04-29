@@ -5,17 +5,19 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const
         return NULL;
     }
 
-    //equivalent of: table_sub_table = {}
-    char *full_sub_table_name = private_LuaCembed_format("%s_%s", self->global_name, name);
-    lua_newtable(self->main_object->state);
-    lua_setglobal(self->main_object->state,full_sub_table_name);
-
-
-    //equivalent of: table.sub_table = table_sub_table
+    //equivalent of: table.sub_table = {}
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
-    lua_getglobal(self->main_object->state,full_sub_table_name);
+    lua_newtable(self->main_object->state);
     lua_settable(self->main_object->state,-3);
+
+
+    //equivalent of full_sub_table_name = table.sub_table
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_getfield(self->main_object->state,-1,name);
+    char *full_sub_table_name = private_LuaCembed_format("%s_%s", self->global_name, name);
+    lua_setglobal(self->main_object->state,full_sub_table_name);
+
 
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
             (privateLuaCEmbedTableArray *) self->sub_tables,
@@ -51,16 +53,45 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating_by_key(LuaCEmbedTabl
     bool sub_table_not_exist = lua_type(self->main_object->state,-1) !=LUA_CEMBED_TABLE;
 
     if(sub_table_not_exist){
-        return LuaCEmbedTable_new_sub_table_by_key(self, name);
+        //equivalent of: table.sub_table = {}
+        lua_getglobal(self->main_object->state,self->global_name);
+        lua_pushstring(self->main_object->state,name);
+        lua_newtable(self->main_object->state);
+        lua_settable(self->main_object->state,-3);
     }
 
+    //equivalent of full_sub_table_name = table.sub_table
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_getfield(self->main_object->state,-1,name);
+    char *full_sub_table_name = private_LuaCembed_format("%s_%s", self->global_name, name);
+    lua_setglobal(self->main_object->state,full_sub_table_name);
 
+
+    LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_prop_name(
+            (privateLuaCEmbedTableArray *) self->sub_tables,
+            name
+    );
+
+
+    if(possible){
+        free(full_sub_table_name);
+        return possible;
+    }
+
+    LuaCEmbedTable  *created = newLuaCembedTable(self->main_object,false, full_sub_table_name);
+    created->prop_name = strdup(name);
+
+    privateLuaCEmbedTableArray_append(
+            (privateLuaCEmbedTableArray*)self->sub_tables,
+            created
+    );
+
+    free(full_sub_table_name);
+    return created;
 
 }
 
-LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index_auto_creating(LuaCEmbedTable *self, int index){
 
-}
 
 void LuaCEmbedTable_set_sub_table_by_key(LuaCEmbedTable *self, const char *name, LuaCEmbedTable *sub_table){
     /*

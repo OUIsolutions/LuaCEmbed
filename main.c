@@ -8,9 +8,11 @@ LuaCEmbedNamespace  lua_n;
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){
 
     LuaCEmbedTable * t1 = lua_n.tables.new_anonymous_table(args);
-    LuaCEmbedTable   *t2 = lua_n.tables.new_sub_table_appending(t1);
+    LuaCEmbedTable   *t2 = lua_n.tables.get_sub_table_auto_creating_by_ke(t1, "a");
     lua_n.tables.set_string_prop(t2,"test","value of test\n");
 
+    LuaCEmbedTable   *t3 = lua_n.tables.get_sub_table_auto_creating_by_ke(t1, "a");
+    lua_n.tables.set_string_prop(t3,"test","value of test t5\n");
     return lua_n.response.send_table(t1);
 }
 int main(int argc, char *argv[]){
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]){
     lua_n.add_callback(l,"create", create_table);
     lua_n.evaluate_string(l,"r = create()");
 
-    char *test = lua_n.get_string_evaluation(l,"r[2].test");
+    char *test = lua_n.get_string_evaluation(l,"r.a.test");
     if(lua_n.has_errors(l)){
         printf("%s\n",lua_n.get_error_message(l));
     }
