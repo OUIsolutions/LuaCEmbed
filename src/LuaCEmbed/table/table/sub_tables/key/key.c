@@ -43,23 +43,16 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const
 }
 
 
-LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_auto_creating_by_key(LuaCEmbedTable *self, const char *name){
+LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const char *name){
     if(!self){
         return NULL;
     }
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
-    bool sub_table_not_exist = lua_type(self->main_object->state,-1) !=LUA_CEMBED_TABLE;
-
-    if(sub_table_not_exist){
-        //equivalent of: table.sub_table = {}
-        lua_getglobal(self->main_object->state,self->global_name);
-        lua_pushstring(self->main_object->state,name);
-        lua_newtable(self->main_object->state);
-        lua_settable(self->main_object->state,-3);
+    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_TABLE)){
+        return NULL;
     }
-
     //equivalent of full_sub_table_name = table.sub_table
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
