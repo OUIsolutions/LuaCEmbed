@@ -2,7 +2,6 @@
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
-
     char *name = lua_n.tables.get_string_prop(self,"name");
     long age  = lua_n.tables.get_long_prop(self,"age");
     double height = lua_n.tables.get_double_prop(self,"height");
@@ -12,6 +11,7 @@ LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
     printf("age: %ld\n",age);
     printf("height: %lf\n",height);
     printf("married %d\n",married);
+    return NULL;
 
 }
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){

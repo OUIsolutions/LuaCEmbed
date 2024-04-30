@@ -1,8 +1,8 @@
 #include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
-LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
 
+LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
     char *name = lua_n.tables.get_string_prop(self,"name");
     long age  = lua_n.tables.get_long_prop(self,"age");
     double height = lua_n.tables.get_double_prop(self,"height");
@@ -12,6 +12,7 @@ LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
     printf("age: %ld\n",age);
     printf("height: %lf\n",height);
     printf("married %d\n",married);
+    return NULL;
 
 }
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){
@@ -40,8 +41,8 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"create_table", create_table);
-    lua_n.evaluate(l,"r = create_custom_table('test',30,1.4,true)");
+    lua_n.add_callback(l,"create_person", create_table);
+    lua_n.evaluate(l,"r = create_person('test',30,1.4,true)");
     lua_n.evaluate(l,"r.describe()");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

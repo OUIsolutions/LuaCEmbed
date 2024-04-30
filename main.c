@@ -14,6 +14,7 @@ LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
     printf("age: %ld\n",age);
     printf("height: %lf\n",height);
     printf("married %d\n",married);
+    return NULL;
 
 }
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){

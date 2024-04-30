@@ -24204,16 +24204,16 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     if(!self){
         return ;
     }
-
     lua_getglobal(self->main_object->state,self->global_name);
-
     lua_pushstring(self->main_object->state,name);
 
     //creating the clojure
+
     lua_pushboolean(self->main_object->state,true);//is a method
+
     lua_pushlightuserdata(self->main_object->state,(void*)self->main_object); //self
     lua_pushstring(self->main_object->state,name);//calback name
-    lua_getglobal(self->main_object->state,self->prop_name);//table
+    lua_getglobal(self->main_object->state,self->global_name);//table
     lua_pushlightuserdata(self->main_object->state,(void*)callback);
 
     //add these clojure to be handled by the callbacks
@@ -24933,10 +24933,12 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
+
+        //equivalent of PRIVATE_LUA_CEMBED_SELFNAME = index[4]
         lua_pushvalue(L, lua_upvalueindex(4));
         lua_setglobal(L,PRIVATE_LUA_CEMBED_SELFNAME);
 
-        LuaCEmbedTable  *table = private_newLuaCembedTable(self, false, PRIVATE_LUA_CEMBED_SELFNAME);
+        LuaCEmbedTable  *table = private_newLuaCembedTable(self, PRIVATE_LUA_CEMBED_SELFNAME);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
         privateLuaCEmbedTable_free(table);
