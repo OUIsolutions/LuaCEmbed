@@ -6,9 +6,25 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     if(!self){
         return ;
     }
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushstring(self->main_object->state,name);
 
+    bool is_meta = false;
+
+    if(strlen(name) > 3){
+        if(name[0] == '_' && name[1] == '_' ){
+            is_meta = true;
+        }
+    }
+    bool is_normal = !is_meta;
+
+    if(is_meta){
+        luaL_newmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_TABLE_META_NAME);
+    }
+    if(is_normal){
+        lua_getglobal(self->main_object->state,self->global_name);
+    }
+
+
+    lua_pushstring(self->main_object->state,name);
     //creating the clojure
 
     lua_pushboolean(self->main_object->state,true);//is a method
@@ -22,6 +38,10 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     lua_pushcclosure(self->main_object->state,privateLuaCEmbed_main_callback_handler,5);
     lua_settable(self->main_object->state,-3);
 
+    if(is_meta){
+        lua_getglobal(self->main_object->state,self->global_name);
+        luaL_setmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_TABLE_META_NAME);
+    }
 
 }
 
