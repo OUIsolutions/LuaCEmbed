@@ -10,7 +10,7 @@ int privateLuaCEmbed_start_func_evaluation(lua_State *state){
 
     int evaluation_type = lua_tointeger(state, lua_upvalueindex(1));
     char *text_value = (char*)lua_touserdata(state,lua_upvalueindex(2));
-    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(3));
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(state,lua_upvalueindex(3));
     global_current_lua_embed_object = self;
     if(self->timeout){
         signal(SIGALRM, private_LuaCembed_handle_timeout);
@@ -23,10 +23,11 @@ int privateLuaCEmbed_start_func_evaluation(lua_State *state){
     if(evaluation_type == PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE){
         error = luaL_dostring(self->state,text_value);
     }
-    lua_pushinteger(self->state,error);
     if(error){
         privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
     }
+    lua_pushinteger(self->state,error);
+
     return 1;
 
 }

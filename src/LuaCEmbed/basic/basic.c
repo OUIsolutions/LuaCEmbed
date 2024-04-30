@@ -66,7 +66,9 @@ int LuaCembed_perform(LuaCEmbed *self){
 }
 
 
-
+void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
+    self->timeout = seconds;
+}
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     if(!self){
