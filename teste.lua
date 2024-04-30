@@ -1,1 +1,0 @@
-t = 'a';while true do t = t .. t  end
