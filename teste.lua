@@ -1,9 +1,1 @@
-
-i = 0;
-limit = 10000;
-valores = {}
-while i < limit do
-i = i +1
-valores[i] = 'aaaaaaaaaa'
-end
-print('terminou')
+t = 'a';while true do t = t .. t  end
