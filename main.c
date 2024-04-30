@@ -1,36 +1,40 @@
 
-#include "src/one.c"
+#include "LuaCEmbed.h"
 
 LuaCEmbedNamespace  lua_n;
 
 
-LuaCEmbedResponse  * test_func(LuaCEmbed *args){
-    return lua_n.response.send_str(" executed after timeout error\n");
+LuaCEmbedResponse  *add_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
+
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
+    }
+    double result = first_num + second_num;
+    return lua_n.response.send_double(result);
 }
-int main(int argc, char *argv[]){
+LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"test",test_func);
-    lua_n.set_timeout(l,2);
-
-    lua_n.evaluate(l,"while true do end ;");
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
     }
-    lua_n.clear_errors(l);
-    char *teste =lua_n.get_string_evaluation(l,"test()");
+    double result = first_num - second_num;
+    return lua_n.response.send_double(result);
+}
+int luaopen_my_lib(lua_State *state){
+    lua_n = newLuaCEmbedNamespace();
+    //functions will be only assescible by the required reciver
+    bool set_functions_as_public  = false;
+    LuaCEmbed * l  = lua_n.newLuaLib(state,set_functions_as_public);
+    lua_n.add_callback(l,"add",add_cfunc);
+    lua_n.add_callback(l,"sub",sub_cfunc);
 
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
-    }
+    return lua_n.perform(l);
 
-    else{
-        printf("%s",teste);
-    }
-    lua_n.free(l);
-
-    return 0;
 }
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

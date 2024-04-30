@@ -32,6 +32,68 @@ It will produce:
  
 result 50
 ~~~
+### Making a library 
+in the same way we can execute lua from C, we also can generate dll/so to be acessible by lua as a library 
+
+~~~c
+
+#include "LuaCEmbed.h"
+
+LuaCEmbedNamespace  lua_n;
+
+
+    LuaCEmbedResponse  *add_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
+
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
+    }
+    double result = first_num + second_num;
+    return lua_n.response.send_double(result);
+}
+LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
+
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
+    }
+    double result = first_num - second_num;
+    return lua_n.response.send_double(result);
+}
+int luaopen_my_lib(lua_State *state){
+    lua_n = newLuaCEmbedNamespace();
+    //functions will be only assescible by the required reciver
+    bool set_functions_as_public  = false;
+    LuaCEmbed * l  = lua_n.newLuaLib(state,set_functions_as_public);
+    lua_n.add_callback(l,"add",add_cfunc);
+    lua_n.add_callback(l,"sub",sub_cfunc);
+
+return lua_n.perform(l);
+
+}
+~~~
+Compile the code with:
+~~~shell
+gcc -Wall -shared -fpic -o my_lib.so  main.c 
+~~~
+
+than you can call into your lua code 
+
+~~~lua 
+
+local lib = require("my_lib")
+
+x = lib.add(10,20)
+y = lib.sub(20,5)
+print("x",x)
+print("y",y)
+
+~~~
+
 
 ### Evaluation
 To evaluate Lua Code from C, you can use all the evaluation methods, provided by the lib 
@@ -289,6 +351,58 @@ It will produce:
 ~~~txt
  
 result: 1
+
+~~~
+### Timeout 
+You can set timeout to your functions, by using the timeout method:
+
+<!--codeof:exemples/evaluation/timeout.c-->
+~~~c
+#include "LuaCEmbed.h"
+
+
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    return lua_n.response.send_str(" executed after timeout error\n");
+}
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+    int seconds = 2;
+    lua_n.set_timeout(l,seconds);
+
+    lua_n.evaluate(l,"while true do end ;");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.clear_errors(l);
+    char *teste =lua_n.get_string_evaluation(l,"test()");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+    else{
+        printf("%s",teste);
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_timeout/expected.txt-->
+~~~txt
+ 
+error: timeout error
+ executed after timeout error
 
 ~~~
 
