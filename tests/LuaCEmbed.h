@@ -22662,10 +22662,14 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBED_WRONG_TYPE_PROPETY "propety %s at object %s its %s instead of %s"
 #define PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX "index %d at object %s its %s instead of %s"
 #define PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY "index %d at object %s not have a key"
+#define PRIVVATE_LUA_CEMBED_TIMEOUT_ERROR "timeout error"
 
 
 #define LUA_CEMBED_INDEX_DIF 1
 
+#define PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE 1
+#define PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE 2
+#define LUA_CEMBED_DEFAULT_TIMEOUT 10
 
 
 
@@ -22712,8 +22716,7 @@ typedef struct LuaCEmbed{
     bool public_functions;
     int total_args;
     char *error_msg;
-
-    bool runing;
+    int timeout;
     void (*delete_function)(struct  LuaCEmbed *self);
     void *global_tables;
     void *func_tables;
@@ -22748,7 +22751,6 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
 void LuaCEmbed_clear_errors(LuaCEmbed *self);
 
-void private_LuaCembed_handle_timeout(int signum) ;
 
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...);
 
@@ -22970,6 +22972,8 @@ void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self);
 
 
 
+
+
 int  LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_arg index);
 
 int LuaCEmbed_ensure_arg_type(LuaCEmbed *self, private_lua_cembed_incremented_arg index, int arg_type);
@@ -23072,6 +23076,9 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
 
 
+void private_LuaCembed_handle_timeout(int signum) ;
+
+int privateLuaCEmbed_start_func_evaluation(lua_State *state);
 
 int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...);
 
@@ -23131,6 +23138,9 @@ bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self, char *code, ...);
     if(LuaCEmbed_has_errors(self)){     \
         return NULL; \
     }
+
+
+
 
 
 
@@ -23401,6 +23411,7 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     *self = (LuaCEmbed){0};
     self->state = luaL_newstate();
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
+    self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
     return self;
 }
 
@@ -23460,24 +23471,16 @@ int LuaCembed_perform(LuaCEmbed *self){
     return 1;
 }
 
-void private_LuaCembed_handle_timeout(int signum) {
-    if(global_current_lua_embed_object->runing){
-        privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
-    }
-
-}
 
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
-    PRIVATE_LUA_CEMBED_PROTECT_VOID
-    global_current_lua_embed_object = self;
-    signal(SIGALRM, private_LuaCembed_handle_timeout);
-    alarm(seconds);
+    self->timeout = seconds;
 }
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     if(!self){
         return NULL;
     }
+
     return self->error_msg;
 }
 void LuaCEmbed_clear_errors(LuaCEmbed *self){
@@ -23487,6 +23490,7 @@ void LuaCEmbed_clear_errors(LuaCEmbed *self){
 
     if(self->error_msg){
         free(self->error_msg);
+        self->error_msg = NULL;
     }
 }
 void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
@@ -23499,9 +23503,7 @@ void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error
     if(!self){
         return;
     }
-    if(self->error_msg){
-        free(self->error_msg);
-    }
+    LuaCEmbed_clear_errors(self);
     va_list args;
     va_start(args,error);
     self->error_msg = private_LuaCembed_format_vaarg(error, args);
@@ -25199,9 +25201,38 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
 
 
 
+void private_LuaCembed_handle_timeout(int signum) {
 
+    privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    lua_pushstring(global_current_lua_embed_object->state,PRIVVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    lua_error(global_current_lua_embed_object->state);
+}
 
+int privateLuaCEmbed_start_func_evaluation(lua_State *state){
 
+    int evaluation_type = lua_tointeger(state, lua_upvalueindex(1));
+    char *text_value = (char*)lua_touserdata(state,lua_upvalueindex(2));
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(state,lua_upvalueindex(3));
+    global_current_lua_embed_object = self;
+    if(self->timeout){
+        signal(SIGALRM, private_LuaCembed_handle_timeout);
+        alarm(self->timeout);
+    }
+    int error  = 0;
+    if(evaluation_type == PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE){
+        error =luaL_dofile(self->state,text_value);
+    }
+    if(evaluation_type == PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE){
+        error = luaL_dostring(self->state,text_value);
+    }
+    if(error){
+        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
+    }
+    lua_pushinteger(self->state,error);
+
+    return 1;
+
+}
 int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
@@ -25209,14 +25240,12 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     va_start(args,code);
     char * formated_expresion = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
-
-    self->runing = true;
-    int error = luaL_dostring(self->state,formated_expresion);
-    self->runing = false;
-    if(error){
-        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
-    }
-
+    lua_pushinteger(self->state,PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE);
+    lua_pushlightuserdata(self->state,(void*)formated_expresion); //code
+    lua_pushlightuserdata(self->state,(void*)self); //code
+    lua_pushcclosure(self->state,privateLuaCEmbed_start_func_evaluation,3);
+    lua_pcall(self->state,0,1,0);
+    int error = lua_tointeger(self->state,-1);
     free(formated_expresion);
     return error;
 
@@ -25225,13 +25254,13 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
-    self->runing = true;
-    int error =luaL_dofile(self->state,file);
-    self->runing = false;
-    if(error){
-        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
-    }
 
+    lua_pushinteger(self->state,PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE);
+    lua_pushlightuserdata(self->state,(void*)file); //code
+    lua_pushlightuserdata(self->state,(void*)self); //code
+    lua_pushcclosure(self->state,privateLuaCEmbed_start_func_evaluation,3);
+    lua_pcall(self->state,0,1,0);
+    int error = lua_tointeger(self->state,-1);
     return error;
 
 }

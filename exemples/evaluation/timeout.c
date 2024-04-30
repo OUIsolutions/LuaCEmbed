@@ -1,5 +1,5 @@
+#include "LuaCEmbed.h"
 
-#include "src/one.c"
 
 LuaCEmbedNamespace  lua_n;
 
@@ -33,4 +33,3 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-//gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua
