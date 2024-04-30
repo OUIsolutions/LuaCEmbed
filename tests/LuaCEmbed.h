@@ -22643,13 +22643,11 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBED_MAIN_META_TABLE "private_lua_c_embed_main_meta_table"
 
 
-#define PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT "private_lua_c_embed%s_%s"
-#define PRIVATE_LUA_CEMBED_SUB_TABLE_FORMAT_INDEX "private_lua_c_embed%s_%dd"
-
 #define PRIVATE_LUA_CEMBE_SUB_ARG_TABLE "private_lua_c_embed_table_arg_%s_%d"
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE "private_lua_c_embed_anononymous_table_%ld"
-#define PRIVATE_LUA_CEMBED_METANAME "%sMETA"
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
+#define PRIVATE_LUA_CEMBED_TABLE_META_NAME "private_sub_table_anon_meta_name"
+
 
 
 
@@ -24204,9 +24202,25 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     if(!self){
         return ;
     }
-    lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushstring(self->main_object->state,name);
 
+    bool is_meta = false;
+
+    if(strlen(name) > 3){
+        if(name[0] == '_' && name[1] == '_' ){
+            is_meta = true;
+        }
+    }
+    bool is_normal = !is_meta;
+
+    if(is_meta){
+        luaL_newmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_TABLE_META_NAME);
+    }
+    if(is_normal){
+        lua_getglobal(self->main_object->state,self->global_name);
+    }
+
+
+    lua_pushstring(self->main_object->state,name);
     //creating the clojure
 
     lua_pushboolean(self->main_object->state,true);//is a method
@@ -24220,6 +24234,10 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
     lua_pushcclosure(self->main_object->state,privateLuaCEmbed_main_callback_handler,5);
     lua_settable(self->main_object->state,-3);
 
+    if(is_meta){
+        lua_getglobal(self->main_object->state,self->global_name);
+        luaL_setmetatable(self->main_object->state,PRIVATE_LUA_CEMBED_TABLE_META_NAME);
+    }
 
 }
 
