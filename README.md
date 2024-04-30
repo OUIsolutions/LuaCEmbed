@@ -14,7 +14,9 @@ providing any methods to control Lua Code from C
 
 
 
-### Hello World
+### Instalation
+Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
+into your project, and compile with gcc/clang
 <!--codeof:exemples/evaluation/hello_world.c-->
 ~~~c
 #include "LuaCEmbed.h"

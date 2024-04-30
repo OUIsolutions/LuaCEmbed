@@ -23316,7 +23316,7 @@ typedef struct{
     char * (*get_string_evaluation)(LuaCEmbed *self, char *code, ...);
     int  (*get_evaluation_type)(LuaCEmbed *self, char *code,...);
     long (*get_evaluation_size)(LuaCEmbed *self, char *code,...);
-    long (*get_evaluation_long)(LuaCEmbed *self, char *code,...);
+    long (*get_evaluation_long)(LuaCEmbed *self, onst char *code,...);
     double (*get_evaluation_double)(LuaCEmbed *self, char *code,...);
     bool (*get_evaluation_bool)(LuaCEmbed *self, char *code,...);
 
