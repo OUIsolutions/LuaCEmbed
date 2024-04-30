@@ -1,4 +1,15 @@
 
+
+#ifdef _WIN32
+VOID CALLBACK TimerHandler(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) {
+
+    privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    lua_pushstring(global_current_lua_embed_object->state,PRIVVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    lua_error(global_current_lua_embed_object->state);
+}
+
+#else 
+
 void private_LuaCembed_handle_timeout(int signum) {
 
     privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
@@ -6,16 +17,27 @@ void private_LuaCembed_handle_timeout(int signum) {
     lua_error(global_current_lua_embed_object->state);
 }
 
+#endif 
+
+
+
 int privateLuaCEmbed_start_func_evaluation(lua_State *state){
 
     int evaluation_type = lua_tointeger(state, lua_upvalueindex(1));
     char *text_value = (char*)lua_touserdata(state,lua_upvalueindex(2));
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(state,lua_upvalueindex(3));
     global_current_lua_embed_object = self;
-    if(self->timeout){
-        signal(SIGALRM, private_LuaCembed_handle_timeout);
-        alarm(self->timeout);
-    }
+        #ifdef _WIN32
+            if (self->timeout > 0) {
+                SetTimer(NULL, 0, self->timeout * 1000, TimerHandler);
+            }
+        #else
+            if (self->timeout > 0) {
+                signal(SIGALRM, private_LuaCembed_handle_timeout);
+                alarm(self->timeout);
+            }
+        #endif
+
     int error  = 0;
     if(evaluation_type == PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE){
         error =luaL_dofile(self->state,text_value);

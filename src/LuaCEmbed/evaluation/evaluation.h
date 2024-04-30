@@ -1,6 +1,12 @@
 
 
-void private_LuaCembed_handle_timeout(int signum) ;
+#ifdef _WIN32
+VOID CALLBACK TimerHandler(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
+#else 
+
+void private_LuaCembed_handle_timeout(int signum);
+
+#endif 
 
 int privateLuaCEmbed_start_func_evaluation(lua_State *state);
 
