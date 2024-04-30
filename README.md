@@ -430,6 +430,9 @@ by using the method **set_memory_limit** you can control the max ram usage of lu
 AND IT WILL KILL THE APPLICATION 
 
 </h5>
+
+
+
 <!--codeof:exemples/evaluation/memory_usage.c-->
 ~~~c
 #include "LuaCEmbed.h"
