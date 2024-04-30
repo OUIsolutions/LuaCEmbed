@@ -22664,8 +22664,9 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY "index %d at object %s not have a key"
 #define PRIVVATE_LUA_CEMBED_TIMEOUT_ERROR "timeout error"
 
-
+#ifndef LUA_CEMBED_INDEX_DIF
 #define LUA_CEMBED_INDEX_DIF 1
+#endif
 
 #define PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE 1
 #define PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE 2
