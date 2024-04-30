@@ -17,12 +17,12 @@ typedef struct{
     bool (*has_errors)(LuaCEmbed *self);
     void (*set_timeout)(LuaCEmbed *self,int seconds);
     int (*evaluate)(LuaCEmbed *self, const char *code, ...);
-    char * (*get_string_evaluation)(LuaCEmbed *self, char *code, ...);
-    int  (*get_evaluation_type)(LuaCEmbed *self, char *code,...);
-    long (*get_evaluation_size)(LuaCEmbed *self, char *code,...);
-    long (*get_evaluation_long)(LuaCEmbed *self, char *code,...);
-    double (*get_evaluation_double)(LuaCEmbed *self, char *code,...);
-    bool (*get_evaluation_bool)(LuaCEmbed *self, char *code,...);
+    char * (*get_string_evaluation)(LuaCEmbed *self,const char *code, ...);
+    int  (*get_evaluation_type)(LuaCEmbed *self,const char *code,...);
+    long (*get_evaluation_size)(LuaCEmbed *self,const char *code,...);
+    long (*get_evaluation_long)(LuaCEmbed *self,const char *code,...);
+    double (*get_evaluation_double)(LuaCEmbed *self,const char *code,...);
+    bool (*get_evaluation_bool)(LuaCEmbed *self, const char *code,...);
 
 
     int (*evaluete_file)(LuaCEmbed *self, const char *file);
