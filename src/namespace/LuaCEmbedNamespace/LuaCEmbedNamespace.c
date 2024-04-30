@@ -6,7 +6,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.newLuaEvaluation = newLuaCEmbedEvaluation;
     self.set_delete_function = LuaCembed_set_delete_function;
     self.perform = LuaCembed_perform;
-
+    self.set_memory_limit = LuaCEmbed_set_memory_limit;
     self.clear_errors = LuaCEmbed_clear_errors;
     self.convert_arg_code = LuaCembed_convert_arg_code;
     self.tables = newLuaCembedTableModule();
