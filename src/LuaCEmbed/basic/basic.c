@@ -11,7 +11,7 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
     return self;
 }
-void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, long limit){
+void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit){
     self->memory_limit = limit;
 }
 

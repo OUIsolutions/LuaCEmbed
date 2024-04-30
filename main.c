@@ -7,6 +7,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.set_memory_limit(l,10);
     lua_n.evaluate(l,"r = 30");
     long calc = lua_n.get_evaluation_long(l,"r + 20");
     printf("result %ld",calc);
