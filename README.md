@@ -1055,6 +1055,384 @@ value: 27.000000
 ~~~
 
 
+### Table setting
+its possible to set values of table in a lot of different ways
+
+#### Seting  basic Props
+<!--codeof:exemples/table_handle/setting_props.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
+
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(custom_table,"name","Mateus");
+    lua_n.tables.set_long_prop(custom_table,"age",27);
+    lua_n.tables.set_double_prop(custom_table,"height",1.82);
+    lua_n.tables.set_bool_prop(custom_table,"married",false);
+    return lua_n.response.send_table(custom_table);
+
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"create_person", create_table);
+    lua_n.evaluate(l,"r = create_person()");
+
+    char *name = lua_n.get_string_evaluation(l,"r.name");
+    long age  = lua_n.get_evaluation_long(l,"r.age");
+    double height = lua_n.get_evaluation_double(l,"r.height");
+    bool married = lua_n.get_evaluation_bool(l,"r.married");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    if(!lua_n.has_errors(l)){
+        printf("name: %s\n",name);
+        printf("age: %ld\n",age);
+        printf("height: %lf\n",height);
+        printf("married %d\n",married);
+    }
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_setting_props/expected.txt-->
+~~~txt
+ 
+name: Mateus
+age: 27
+height: 1.820000
+married 0
+
+~~~
+
+#### Setting Methods
+you also can set a method to a table, passing a callback function for it 
+
+<!--codeof:exemples/table_handle/setting_method.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
+    char *name = lua_n.tables.get_string_prop(self,"name");
+    long age  = lua_n.tables.get_long_prop(self,"age");
+    double height = lua_n.tables.get_double_prop(self,"height");
+    bool married = lua_n.tables.get_bool_prop(self,"married");
+    printf("person description:\n");
+    printf("name: %s\n",name);
+    printf("age: %ld\n",age);
+    printf("height: %lf\n",height);
+    printf("married %d\n",married);
+    return NULL;
+
+}
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
+
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(custom_table,"name","Mateus");
+    lua_n.tables.set_long_prop(custom_table,"age",27);
+    lua_n.tables.set_double_prop(custom_table,"height",1.82);
+    lua_n.tables.set_bool_prop(custom_table,"married",false);
+    lua_n.tables.set_method(custom_table,"describe",describe);
+    return lua_n.response.send_table(custom_table);
+
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"create_person", create_table);
+    lua_n.evaluate(l,"r = create_person()");
+    lua_n.evaluate(l,"r.describe()");
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_setting_method/expected.txt-->
+~~~txt
+ 
+person description:
+name: Mateus
+age: 27
+height: 1.820000
+married 0
+
+~~~
+
+
+#### Setting Meta Methods
+Meta methods like **__gc** or **__index** works fine tool
+
+<!--codeof:exemples/table_handle/meta_method.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+
+LuaCEmbedNamespace  lua_n;
+
+
+
+LuaCEmbedResponse * index_callback(LuaCEmbedTable *self, LuaCEmbed *args){
+
+
+
+
+    int value_type = lua_n.args.get_type(args,1);
+
+    if(value_type == lua_n.types.NUMBER){
+        printf("index-value: %lf\n",lua_n.args.get_double(args,1));
+    }
+
+    else if(value_type == lua_n.types.STRING){
+        printf("index-value: %s\n",lua_n.args.get_str(args,1));
+    }
+
+
+    return NULL;
+}
+
+LuaCEmbedResponse * deletion_callback(LuaCEmbedTable *self, LuaCEmbed *args){
+
+    printf("called the delete function\n");
+    return NULL;
+}
+
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
+
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_method(custom_table,"__gc",deletion_callback);
+    lua_n.tables.set_method(custom_table,"__index",index_callback);
+    return lua_n.response.send_table(custom_table);
+
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"create_object", create_table);
+    lua_n.evaluate(l,"r = create_object()");
+    lua_n.evaluate(l,"v = r[10]");
+    lua_n.evaluate(l,"v = r['sss']");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+    lua_n.free(l);
+
+    return 0;
+}
+
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_meta_method/expected.txt-->
+~~~txt
+ 
+index-value: 10.000000
+index-value: sss
+called the delete function
+
+~~~
+
+### Full Object construction 
+
+in these example we are creating a **full class ** of a person 
+
+<!--codeof:exemples/table_handle/full_person.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
+    char *name = lua_n.tables.get_string_prop(self,"name");
+    long age  = lua_n.tables.get_long_prop(self,"age");
+    double height = lua_n.tables.get_double_prop(self,"height");
+    bool married = lua_n.tables.get_bool_prop(self,"married");
+    printf("person description:\n");
+    printf("name: %s\n",name);
+    printf("age: %ld\n",age);
+    printf("height: %lf\n",height);
+    printf("married %d\n",married);
+    return NULL;
+
+}
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
+
+    char *name = lua_n.args.get_str(args,0);
+    long age  = lua_n.args.get_long(args,1);
+    double height = lua_n.args.get_double(args,2);
+    bool maried = lua_n.args.get_bool(args,3);
+
+    if(lua_n.has_errors(args)){
+      const char *error_message = lua_n.get_error_message(args);
+      return lua_n.response.send_error(error_message);
+    }
+
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(custom_table,"name",name);
+    lua_n.tables.set_long_prop(custom_table,"age",age);
+    lua_n.tables.set_double_prop(custom_table,"height",height);
+    lua_n.tables.set_bool_prop(custom_table,"married",maried);
+    lua_n.tables.set_method(custom_table,"describe",describe);
+    return lua_n.response.send_table(custom_table);
+
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"create_person", create_table);
+    lua_n.evaluate(l,"r = create_person('test',30,1.4,true)");
+    lua_n.evaluate(l,"r.describe()");
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_full_person/expected.txt-->
+~~~txt
+ 
+person description:
+name: test
+age: 30
+height: 1.400000
+married 1
+
+~~~
+
+### Appending Props
+you also can work with arrays , by using the **append** methods 
+
+<!--codeof:exemples/table_handle/appending_props.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
+
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.append_string(custom_table,"test1");
+    lua_n.tables.append_string(custom_table,"test2");
+    lua_n.tables.append_string(custom_table,"test3");
+
+    return lua_n.response.send_table(custom_table);
+
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"create_string_array", create_table);
+    lua_n.evaluate(l,"r = create_string_array()");
+    LuaCEmbedTable *table = lua_n.globals.get_table(l,"r");
+    long size =lua_n.tables.get_size(table);
+
+    for(int i = 0; i < size; i++){
+        char  *current = lua_n.tables.get_string_by_index(table,i);
+        if(!lua_n.has_errors(l)){
+            printf("%s\n",current);
+        }
+    }
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_appending_props/expected.txt-->
+~~~txt
+ 
+test1
+test2
+test3
+
+~~~
+
+### Setting sub tables
+sub tables can be constructed, setted and autocreated 
+
+<!--codeof:exemples/table_handle/setting_sub_table.c-->
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
+
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    LuaCEmbedTable *sub_table = lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(sub_table,"test","custom text");
+    lua_n.tables.set_sub_table_prop(custom_table,"sub_table",sub_table);
+
+    return lua_n.response.send_table(custom_table);
+
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"create_table", create_table);
+    lua_n.evaluate(l,"r = create_table()");
+
+    char *test = lua_n.get_string_evaluation(l,"r.sub_table.test");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    if(!lua_n.has_errors(l)){
+        printf("%s\n",test);
+    }
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/table_handle/T_setting_sub_table/expected.txt-->
+~~~txt
+ 
+custom text
+
+~~~
+
+
 
 ### Globals 
 Glbals can be fully handled by the LuaCEmbed Api
