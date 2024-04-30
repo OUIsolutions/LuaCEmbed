@@ -37,8 +37,12 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     va_start(args,code);
     char * formated_expresion = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
-
-    
+    lua_pushinteger(self->state,PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE);
+    lua_pushlightuserdata(self->state,(void*)formated_expresion); //code
+    lua_pushlightuserdata(self->state,(void*)self); //code
+    lua_pushcclosure(self->state,privateLuaCEmbed_start_func_evaluation,3);
+    lua_pcall(self->state,0,1,0);
+    int error = lua_tointeger(self->state,-1);
     free(formated_expresion);
     return error;
 
