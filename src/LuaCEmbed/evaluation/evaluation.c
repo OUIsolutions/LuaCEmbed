@@ -2,18 +2,32 @@
 void private_LuaCembed_handle_timeout(int signum) {
 
     privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
-
-
+    lua_pushstring(global_current_lua_embed_object->state,PRIVVATE_LUA_CEMBED_TIMEOUT_ERROR);
+    lua_error(global_current_lua_embed_object->state);
 }
 
 int privateLuaCEmbed_start_func_evaluation(lua_State *state){
 
     int evaluation_type = lua_tointeger(state, lua_upvalueindex(1));
     char *text_value = (char*)lua_touserdata(state,lua_upvalueindex(2));
-    PRIVATE_LUA_CEMBED_PROTECT_VOID
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(3));
     global_current_lua_embed_object = self;
-    signal(SIGALRM, private_LuaCembed_handle_timeout);
-    alarm(seconds);
+    if(self->timeout){
+        signal(SIGALRM, private_LuaCembed_handle_timeout);
+        alarm(self->timeout);
+    }
+    int error  = 0;
+    if(evaluation_type == PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE){
+        error =luaL_dofile(self->state,text_value);
+    }
+    if(evaluation_type == PRIVATE_LUA_EMBED_STRING_EVALUATION_TYPE){
+        error = luaL_dostring(self->state,text_value);
+    }
+    lua_pushinteger(self->state,error);
+    if(error){
+        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
+    }
+    return 1;
 
 }
 int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
@@ -24,11 +38,7 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     char * formated_expresion = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    int error = luaL_dostring(self->state,formated_expresion);
-    if(error){
-        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
-    }
-
+    
     free(formated_expresion);
     return error;
 
