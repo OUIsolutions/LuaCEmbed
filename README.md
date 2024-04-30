@@ -17,6 +17,8 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 [Link to Web Site](oui.tec.br)
 
 #### Download Link
+[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.1/LuaCEmbed.h)
+
 
 ### Instalation
 Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
