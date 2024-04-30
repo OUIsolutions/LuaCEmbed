@@ -5,6 +5,7 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     *self = (LuaCEmbed){0};
     self->state = luaL_newstate();
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
+    self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
     return self;
 }
 
@@ -64,19 +65,8 @@ int LuaCembed_perform(LuaCEmbed *self){
     return 1;
 }
 
-void private_LuaCembed_handle_timeout(int signum) {
-    if(global_current_lua_embed_object->runing){
-        privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
-    }
 
-}
 
-void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
-    PRIVATE_LUA_CEMBED_PROTECT_VOID
-    global_current_lua_embed_object = self;
-    signal(SIGALRM, private_LuaCembed_handle_timeout);
-    alarm(seconds);
-}
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     if(!self){

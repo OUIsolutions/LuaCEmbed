@@ -1,7 +1,21 @@
 
+void private_LuaCembed_handle_timeout(int signum) {
+
+    privateLuaCEmbed_raise_error_not_jumping(global_current_lua_embed_object, PRIVATE_LUA_CEMBED_TIMEOUT_ERROR);
 
 
+}
 
+int privateLuaCEmbed_start_func_evaluation(lua_State *state){
+
+    int evaluation_type = lua_tointeger(state, lua_upvalueindex(1));
+    char *text_value = (char*)lua_touserdata(state,lua_upvalueindex(2));
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
+    global_current_lua_embed_object = self;
+    signal(SIGALRM, private_LuaCembed_handle_timeout);
+    alarm(seconds);
+
+}
 int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
@@ -10,9 +24,7 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     char * formated_expresion = private_LuaCembed_format_vaarg(code,args);
     va_end(args);
 
-    self->runing = true;
     int error = luaL_dostring(self->state,formated_expresion);
-    self->runing = false;
     if(error){
         privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
     }
@@ -25,9 +37,7 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
-    self->runing = true;
     int error =luaL_dofile(self->state,file);
-    self->runing = false;
     if(error){
         privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
     }

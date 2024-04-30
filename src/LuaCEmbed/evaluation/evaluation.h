@@ -1,5 +1,8 @@
 
 
+void private_LuaCembed_handle_timeout(int signum) ;
+
+int privateLuaCEmbed_start_func_evaluation(lua_State *state);
 
 int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...);
 
