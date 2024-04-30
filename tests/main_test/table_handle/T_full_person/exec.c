@@ -40,8 +40,8 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"create_table", create_table);
-    lua_n.evaluate(l,"r = create_custom_table('test',30,1.4,true)");
+    lua_n.add_callback(l,"create_person", create_table);
+    lua_n.evaluate(l,"r = create_person('test',30,1.4,true)");
     lua_n.evaluate(l,"r.describe()");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

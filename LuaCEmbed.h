@@ -22748,6 +22748,8 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self);
 
 bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
+void LuaCEmbed_clear_errors(LuaCEmbed *self);
+
 void private_LuaCembed_handle_timeout(int signum) ;
 
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...);
@@ -23226,6 +23228,7 @@ typedef struct{
     LuaCembedArgsModule args;
     LuaCEmbedGlobalModule  globals;
     LuaCembedTableModule tables;
+    void (*clear_errors)(LuaCEmbed *self);
     LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();
@@ -23407,7 +23410,15 @@ void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_msg;
 }
+void LuaCEmbed_clear_errors(LuaCEmbed *self){
+    if(!self){
+        return;
+    }
 
+    if(self->error_msg){
+        free(self->error_msg);
+    }
+}
 void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
     if(self->current_function){
        return  self->func_tables;
@@ -25460,7 +25471,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.set_delete_function = LuaCembed_set_delete_function;
     self.perform = LuaCembed_perform;
 
-
+    self.clear_errors = LuaCEmbed_clear_errors;
     self.convert_arg_code = LuaCembed_convert_arg_code;
     self.tables = newLuaCembedTableModule();
     self.args = newLuaCembedArgsModule();

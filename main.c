@@ -3,56 +3,45 @@
 LuaCEmbedNamespace  lua;
 
 LuaCEmbedNamespace  lua_n;
-LuaCEmbedResponse  * show_table(LuaCEmbed *args){
 
-    LuaCEmbedTable * t1 = lua_n.args.get_table(args,0);
-    if(lua_n.has_errors(args)){
-        char *menssage = lua_n.get_error_message(args);
-        return  lua_n.response.send_error(menssage);
-    }
-    long size = lua_n.tables.get_size(t1);
-    for(int i = 0; i <size;i++){
-        printf("index: %d\n",i);
-        const char *key= "Not provided";
-        if(lua_n.tables.has_key(t1,i)){
-            key = lua_n.tables.get_key_by_index(t1,i);
-        }
-        printf("key: %s\n",key);
 
-        int type= lua_n.tables.get_type_by_index(t1,i);
-        printf("type %s\n",lua_n.convert_arg_code(type));
 
-        if(type == lua_n.types.NUMBER){
-            double value = lua_n.tables.get_double_by_index(t1,i);
-            printf("value: %lf\n",value);
-        }
+LuaCEmbedResponse  * create_table(LuaCEmbed *args){
 
-        if(type == lua_n.types.STRING){
-            char * value = lua_n.tables.get_string_by_index(t1,i);
-            printf("value: %s\n",value);
-        }
+    LuaCEmbedTable *custom_table =  lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.set_string_prop(custom_table,"name","Mateus");
+    lua_n.tables.set_long_prop(custom_table,"age",27);
+    lua_n.tables.set_double_prop(custom_table,"height",1.82);
+    lua_n.tables.set_bool_prop(custom_table,"married",false);
+    return lua_n.response.send_table(custom_table);
 
-        if(type == lua_n.types.BOOL){
-            bool value = lua_n.tables.get_bool_by_index(t1,i);
-            printf("value: %d\n",value);
-        }
-        printf("---------------------------------\n");
-    }
-    return NULL;
 }
+
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"show_table", show_table);
-    lua_n.evaluate(l, "show_table({name='Mateus',age=27,single=true,'indexable random string'})");
+    lua_n.add_callback(l,"create_person", create_table);
+    lua_n.evaluate(l,"r = create_person()");
+
+    char *name = lua_n.get_string_evaluation(l,"r.name");
+
+    long age  = lua_n.get_evaluation_long(l,"r.age");
+    double height = lua_n.get_evaluation_double(l,"r.height");
+    bool married = lua_n.get_evaluation_bool(l,"r.married");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
+    if(!lua_n.has_errors(l)){
+        printf("name: %s\n",name);
+        printf("age: %ld\n",age);
+        printf("height: %lf\n",height);
+        printf("married %d\n",married);
+    }
+
     lua_n.free(l);
 
     return 0;
 }
-
 //gcc -Wall -shared -fpic -o minha_biblioteca.so  main.c && lua teste.lua

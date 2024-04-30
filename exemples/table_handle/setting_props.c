@@ -1,4 +1,4 @@
-#include "../../../LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){
@@ -16,8 +16,8 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"create_person", create_table);
-    lua_n.evaluate(l,"r = create_person()");
+    lua_n.add_callback(l,"create_table", create_table);
+    lua_n.evaluate(l,"r = create_custom_table()");
 
     char *name = lua_n.get_string_evaluation(l,"r.name");
     long age  = lua_n.get_evaluation_long(l,"r.age");
