@@ -74,6 +74,7 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     if(!self){
         return NULL;
     }
+
     return self->error_msg;
 }
 void LuaCEmbed_clear_errors(LuaCEmbed *self){
@@ -83,6 +84,7 @@ void LuaCEmbed_clear_errors(LuaCEmbed *self){
 
     if(self->error_msg){
         free(self->error_msg);
+        self->error_msg = NULL;
     }
 }
 void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
@@ -95,9 +97,7 @@ void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error
     if(!self){
         return;
     }
-    if(self->error_msg){
-        free(self->error_msg);
-    }
+    LuaCEmbed_clear_errors(self);
     va_list args;
     va_start(args,error);
     self->error_msg = private_LuaCembed_format_vaarg(error, args);

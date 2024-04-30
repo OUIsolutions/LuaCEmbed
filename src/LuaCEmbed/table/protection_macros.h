@@ -30,3 +30,4 @@
     if(LuaCEmbed_has_errors(self->main_object)){     \
         return NULL; \
     }
+

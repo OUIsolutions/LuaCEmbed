@@ -52,11 +52,13 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
-    int error =luaL_dofile(self->state,file);
-    if(error){
-        privateLuaCEmbed_raise_error_not_jumping(self,lua_tostring(self->state,-1));
-    }
 
+    lua_pushinteger(self->state,PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE);
+    lua_pushlightuserdata(self->state,(void*)file); //code
+    lua_pushlightuserdata(self->state,(void*)self); //code
+    lua_pushcclosure(self->state,privateLuaCEmbed_start_func_evaluation,3);
+    lua_pcall(self->state,0,1,0);
+    int error = lua_tointeger(self->state,-1);
     return error;
 
 }
