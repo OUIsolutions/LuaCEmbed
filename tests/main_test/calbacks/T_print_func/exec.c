@@ -18,7 +18,7 @@ LuaCEmbedResponse  * print_func(LuaCEmbed *args){
 
        else if(arg_type  == lua_n.types.BOOL){
            bool result = lua_n.args.get_bool(args,index);
-           char *converted_bool = result? "true":"false";
+          const  char *converted_bool = result? "true":"false";
            printf("%s\n", converted_bool);
        }
        else{

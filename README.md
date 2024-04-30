@@ -12,7 +12,7 @@ providing any methods to control Lua Code from C
 #### Oui WebSite
 [Link to Web Site](oui.tec.br)
 
-
+#### Download the Lib 
 
 ### Instalation
 Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
@@ -559,7 +559,7 @@ LuaCEmbedResponse  * print_func(LuaCEmbed *args){
 
        else if(arg_type  == lua_n.types.BOOL){
            bool result = lua_n.args.get_bool(args,index);
-           char *converted_bool = result? "true":"false";
+          const  char *converted_bool = result? "true":"false";
            printf("%s\n", converted_bool);
        }
        else{
