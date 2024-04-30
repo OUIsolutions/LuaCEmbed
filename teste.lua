@@ -1,7 +1,9 @@
 
-local lib = require("my_lib")
-
-x = lib.add(10,20)
-y = lib.sub(20,5)
-print("x",x)
-print("y",y)
+i = 0;
+limit = 10000;
+valores = {}
+while i < limit do
+i = i +1
+valores[i] = 'aaaaaaaaaa'
+end
+print('terminou')

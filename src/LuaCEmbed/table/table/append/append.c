@@ -1,5 +1,6 @@
 void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
@@ -10,6 +11,7 @@ void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
 
 void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
@@ -20,6 +22,7 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
 
 void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
@@ -30,6 +33,7 @@ void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
 
 void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
@@ -40,6 +44,7 @@ void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
 
 void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
@@ -50,6 +55,7 @@ void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
 
 void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, ...){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     va_list  args;
     va_start(args,code);

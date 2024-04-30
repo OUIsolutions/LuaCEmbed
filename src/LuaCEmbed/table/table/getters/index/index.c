@@ -2,6 +2,7 @@
 
 long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
 
 
@@ -21,6 +22,7 @@ long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
 
 long  LuaCEmbedTable_get_listable_size(LuaCEmbedTable *self){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     lua_getglobal(self->main_object->state,self->global_name);
     return (long)lua_rawlen(self->main_object->state,-1);
@@ -29,6 +31,8 @@ long  LuaCEmbedTable_get_listable_size(LuaCEmbedTable *self){
 
 long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cembed_incremented_arg index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
+
     if(index >= 0){
         return  index;
     }
@@ -38,6 +42,7 @@ long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cemb
 
 int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -60,6 +65,7 @@ int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
 }
 char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -89,6 +95,7 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
 }
 bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -115,6 +122,7 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
 
 long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -152,6 +160,7 @@ long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
 
 double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -188,6 +197,7 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
 
 char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -224,6 +234,8 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
 
 bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
+
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
     int table_index = lua_gettop(self->main_object->state);

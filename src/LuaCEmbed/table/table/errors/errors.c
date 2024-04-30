@@ -5,6 +5,8 @@ int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char 
     if(!self){
         return LUA_CEMBED_GENERIC_ERROR;
     }
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
+
     int type = lua_type(self->main_object->state,-1);
     if(type == expected_type){
         return  LUA_CEMBED_OK;
@@ -24,6 +26,8 @@ int privateLuaCEmbedTable_ensure_type_with_index(LuaCEmbedTable *self, long inde
     if(!self){
         return LUA_CEMBED_GENERIC_ERROR;
     }
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
+
     int type = lua_type(self->main_object->state,-1);
     if(type == expected_type){
         return  LUA_CEMBED_OK;

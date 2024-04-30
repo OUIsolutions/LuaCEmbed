@@ -117,6 +117,8 @@ int private_LuaCEmbed_ensure_evaluation_type(LuaCEmbed *self,int type){
 
 char * LuaCEmbed_get_evaluation_string(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->memory_limit;
+
     va_list args;
     va_start(args,code);
     int possible_error = private_LuaCEmbed_evaluate_puting_on_top_of_stack(self,code,args);
@@ -135,6 +137,7 @@ char * LuaCEmbed_get_evaluation_string(LuaCEmbed *self,const char *code, ...){
 
 int  LuaCEmbed_get_evaluation_type(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     va_list args;
     va_start(args,code);
@@ -150,6 +153,7 @@ int  LuaCEmbed_get_evaluation_type(LuaCEmbed *self,const char *code, ...){
 
 long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     va_list args;
     va_start(args,code);
@@ -177,6 +181,7 @@ long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...){
 
 long LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     va_list args;
     va_start(args,code);
@@ -194,6 +199,7 @@ long LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
 
 double LuaCEmbed_get_evaluation_double(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     va_list args;
     va_start(args,code);
@@ -210,6 +216,8 @@ double LuaCEmbed_get_evaluation_double(LuaCEmbed *self,const char *code, ...){
 
 bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_BOOL
+    private_lua_cembed_memory_limit = self->memory_limit;
+
     va_list args;
     va_start(args,code);
     int possible_error = private_LuaCEmbed_evaluate_puting_on_top_of_stack(self,code,args);

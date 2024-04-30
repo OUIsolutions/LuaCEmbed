@@ -1,6 +1,7 @@
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
 
     //equivalent of: table.sub_table = {}
@@ -43,6 +44,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const
 
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -85,6 +87,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const
 
 void LuaCEmbedTable_set_sub_table_prop(LuaCEmbedTable *self, const char *name, LuaCEmbedTable *sub_table){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     //equivalent of  table.name = sub_table;
     lua_getglobal(self->main_object->state,self->global_name);

@@ -154,6 +154,8 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 }
 
 void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     //creating the clojure
     lua_pushboolean(self->state,false);//is a method
@@ -169,6 +171,7 @@ void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *call
 
 void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
     PRIVATE_LUA_CEMBED_PROTECT_VOID
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     if(self->is_lib){
         private_LuaCEmbed_add_lib_callback(self,callback_name,callback);
