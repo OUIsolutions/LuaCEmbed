@@ -1,3 +1,4 @@
+#include "memory/memory.c"
 #include "basic/basic.c"
 #include "args/definition.h"
 #include "table/definition.h"

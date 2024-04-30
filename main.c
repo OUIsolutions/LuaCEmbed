@@ -1,46 +1,20 @@
+
+
 #include "src/one.c"
+LuaCEmbedNamespace  lua_n;
 
+int main(int argc, char *argv[]){
 
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.evaluate(l,"r = 30");
+    long calc = lua_n.get_evaluation_long(l,"r + 20");
+    printf("result %ld",calc);
 
-static void *custom_alloc(void *ud, void *ptr, size_t osize, size_t nsize) {
-    const int MAX_MEMORY_LIMIT = 1000; // 10 MB
-    int *used = (int *)ud;
-
-    if (ptr == NULL) {
-        osize = 0;
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
     }
-
-    if (nsize == 0) {
-        free(ptr);
-        *used -= osize; /* subtract old size from used memory */
-        return NULL;
-    } else {
-        if (*used + (nsize - osize) > MAX_MEMORY_LIMIT) /* too much memory in use */
-            return NULL;
-        ptr = realloc(ptr, nsize);
-        if (ptr) /* reallocation successful? */
-            *used += (nsize - osize);
-        return ptr;
-    }
-}
-
-
-int main() {
-    lua_State *L = luaL_newstate();
-
-    // Set memory limit
-    int used_memory = 0;
-    lua_setallocf(L, custom_alloc,&used_memory);
-
-    // Load Lua script
-    int result = luaL_dostring(L, "r = 'assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssa'");
-
-    if (result != LUA_OK) {
-        fprintf(stderr, "Lua error: %s\n", lua_tostring(L, -1));
-        lua_pop(L, 1);  // Pop error message from the stack
-    }
-
-    lua_close(L);
+    lua_n.free(l);
 
     return 0;
 }
