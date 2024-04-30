@@ -3,9 +3,8 @@
 
 
 void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args)){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
 
     bool is_meta = false;
 
@@ -46,9 +45,8 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
 }
 
 void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, const char *value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
     lua_pushstring(self->main_object->state,value);
@@ -57,9 +55,8 @@ void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, co
 }
 
 void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long  value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,(double)value);
@@ -67,9 +64,8 @@ void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long
 }
 
 void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, double  value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,value);
@@ -77,9 +73,8 @@ void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, do
 }
 
 void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);
     lua_pushboolean(self->main_object->state,value);
@@ -87,9 +82,8 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool
 }
 
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
 
     va_list  args;
     va_start(args,code);

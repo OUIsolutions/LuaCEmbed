@@ -5,12 +5,16 @@ int  LuaCEmbed_get_total_args(LuaCEmbed *self){
 
 
 int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
     return  lua_type(self->state, formatted_index);
 }
 
 
 long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_NUMBER)){
@@ -21,6 +25,8 @@ long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
 
 
 double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_NUMBER)){
@@ -31,6 +37,7 @@ double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
 }
 
 bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
+    PRIVATE_LUA_CEMBED_PROTECT_BOOL
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_BOOL)){
@@ -40,6 +47,7 @@ bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
 }
 
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_STRING)){
@@ -49,6 +57,8 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
 }
 
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
     if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_TABLE)){
         return NULL;

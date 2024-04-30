@@ -3,6 +3,7 @@
 
 
 LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...){
+
     LuaCEmbedTable  *self = (LuaCEmbedTable*)malloc(sizeof (LuaCEmbedTable));
     *self = (LuaCEmbedTable){0};
     self->main_object =main_embed;
@@ -19,9 +20,8 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
 
 
 void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
-    if(!self){
-        return ;
-    }
+
+
     free(self->global_name);
 
     if(self->prop_name){

@@ -7,3 +7,4 @@ typedef long private_lua_cembed_incremented_arg ;
 #include "globals/declaration.h"
 #include "callback_handle/callback_handle.h"
 #include "evaluation/evaluation.h"
+#include "protection_macros.h"

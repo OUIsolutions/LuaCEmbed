@@ -1,11 +1,15 @@
 
 
 int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     lua_getglobal(self->state, name);
     return lua_type(self->state,-1);
 }
 
 long LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_NUMBER)){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
@@ -14,6 +18,8 @@ long LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
 }
 
 double LuaCEmbed_get_global_double(LuaCEmbed *self,const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_NUMBER)){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
@@ -22,6 +28,7 @@ double LuaCEmbed_get_global_double(LuaCEmbed *self,const char *name){
 }
 
 bool LuaCEmbed_get_global_bool(LuaCEmbed *self,const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_BOOL
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_BOOL)){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
@@ -31,6 +38,8 @@ bool LuaCEmbed_get_global_bool(LuaCEmbed *self,const char *name){
 
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_STRING)){
         return  NULL;
     }
@@ -39,6 +48,7 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
 }
 
 LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
 
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
 
@@ -51,7 +61,7 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
 
 
 LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name){
-
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_TABLE)){
         return  NULL;
     }

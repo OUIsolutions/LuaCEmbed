@@ -1,9 +1,7 @@
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const char *name){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
 
-    if(!self){
-        return NULL;
-    }
 
     //equivalent of: table.sub_table = {}
     lua_getglobal(self->main_object->state,self->global_name);
@@ -44,9 +42,8 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const
 
 
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const char *name){
-    if(!self){
-        return NULL;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_getfield(self->main_object->state,-1,name);
@@ -87,10 +84,8 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const
 
 
 void LuaCEmbedTable_set_sub_table_prop(LuaCEmbedTable *self, const char *name, LuaCEmbedTable *sub_table){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
 
-    if(!self){
-        return ;
-    }
     //equivalent of  table.name = sub_table;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state,name);

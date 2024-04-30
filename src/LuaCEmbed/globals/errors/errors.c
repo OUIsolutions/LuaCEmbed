@@ -3,6 +3,7 @@
 
 
 int LuaCEmbed_ensure_global_type(LuaCEmbed *self, const char *name,int expected_type){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
 
     lua_getglobal(self->state,name);
     int type = lua_type(self->state,-1);

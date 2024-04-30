@@ -58,6 +58,8 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 }
 
 int LuaCembed_perform(LuaCEmbed *self){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
     return 1;
 }
@@ -70,12 +72,16 @@ void private_LuaCembed_handle_timeout(int signum) {
 }
 
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
     global_current_lua_embed_object = self;
     signal(SIGALRM, private_LuaCembed_handle_timeout);
     alarm(seconds);
 }
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
+    if(!self){
+        return NULL;
+    }
     return self->error_msg;
 }
 void LuaCEmbed_clear_errors(LuaCEmbed *self){
@@ -94,6 +100,9 @@ void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
     return self->global_tables;
 }
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
+    if(!self){
+        return;
+    }
     if(self->error_msg){
         free(self->error_msg);
     }
@@ -107,6 +116,9 @@ void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error
 
 
 bool LuaCEmbed_has_errors(LuaCEmbed *self){
+    if(!self){
+        return true;
+    }
 
     if(self->error_msg){
         return  true;

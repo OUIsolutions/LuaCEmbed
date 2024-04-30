@@ -1,7 +1,6 @@
 void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,size+1);
@@ -10,9 +9,8 @@ void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
 }
 
 void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,size+1);
@@ -21,9 +19,8 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
 }
 
 void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,size+1);
@@ -32,9 +29,8 @@ void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
 }
 
 void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,size+1);
@@ -43,9 +39,8 @@ void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
 }
 
 void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,size+1);
@@ -54,9 +49,8 @@ void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
 }
 
 void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, ...){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     va_list  args;
     va_start(args,code);
      char *buffer = private_LuaCembed_format_vaarg(code,args);

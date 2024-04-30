@@ -1,10 +1,7 @@
 
 
 void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const char *value){
-    if(!self){
-        return ;
-    }
-
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
 
     char *possible_key = LuaCembedTable_get_key_by_index(self,index);
     if(possible_key){
@@ -19,9 +16,8 @@ void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const
 }
 
 void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     char *possible_key = LuaCembedTable_get_key_by_index(self,index);
     if(possible_key){
         LuaCEmbedTable_set_long_prop(self,possible_key,value);
@@ -35,9 +31,8 @@ void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  v
 }
 
 void  LuaCEmbedTable_set_double_by_index(LuaCEmbedTable *self, long index, double  value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     char *possible_key = LuaCembedTable_get_key_by_index(self,index);
     if(possible_key){
         LuaCEmbedTable_set_double_prop(self,possible_key,value);
@@ -52,9 +47,8 @@ void  LuaCEmbedTable_set_double_by_index(LuaCEmbedTable *self, long index, doubl
 }
 
 void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool value){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     char *possible_key = LuaCembedTable_get_key_by_index(self,index);
     if(possible_key){
         LuaCEmbedTable_set_bool_prop(self,possible_key,value);
@@ -70,9 +64,8 @@ void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool va
 
 
 void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, long index, const char *code, ...){
-    if(!self){
-        return ;
-    }
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
     va_list  args;
     va_start(args,code);

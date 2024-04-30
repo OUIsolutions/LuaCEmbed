@@ -171,7 +171,7 @@ void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *call
 
 
 void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
-
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
 
     if(self->is_lib){
         private_LuaCEmbed_add_lib_callback(self,callback_name,callback);
