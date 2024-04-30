@@ -7,6 +7,7 @@ typedef struct LuaCEmbed{
     int total_args;
     char *error_msg;
     double memory_limit;
+    int used_memory;
     int timeout;
     void (*delete_function)(struct  LuaCEmbed *self);
     void *global_tables;
