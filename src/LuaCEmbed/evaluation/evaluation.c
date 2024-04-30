@@ -32,7 +32,9 @@ int privateLuaCEmbed_start_func_evaluation(lua_State *state){
 
 }
 int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
+
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     va_list args;
     va_start(args,code);
@@ -45,6 +47,7 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
     lua_pcall(self->state,0,1,0);
     int error = lua_tointeger(self->state,-1);
     free(formated_expresion);
+
     return error;
 
 }
@@ -52,6 +55,7 @@ int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...){
 int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
+    private_lua_cembed_memory_limit = self->memory_limit;
 
     lua_pushinteger(self->state,PRIVATE_LUA_EMBED_FILE_EVALUATION_TYPE);
     lua_pushlightuserdata(self->state,(void*)file); //code

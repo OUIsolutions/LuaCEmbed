@@ -12,6 +12,7 @@ typedef struct{
     LuaCEmbed * (*newLuaEvaluation)();
     int (*perform)(LuaCEmbed *self);
     const char * (*convert_arg_code)(int arg_code);
+    void (*set_memory_limit)(LuaCEmbed  *self, long limit);
 
     char * (*get_error_message)(LuaCEmbed *self);
     bool (*has_errors)(LuaCEmbed *self);

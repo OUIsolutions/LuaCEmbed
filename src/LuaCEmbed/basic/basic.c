@@ -5,15 +5,15 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     *self = (LuaCEmbed){0};
     self->state = luaL_newstate();
     int used_memory = 0;
-    if(LUA_CEMBED_MAX_MEMORY_LIMIT > 0){
-        lua_setallocf(self->state, private_LuaCembed_custom_allocator, &used_memory);
-    }
-
+    lua_setallocf(self->state, private_LuaCembed_custom_allocator, &used_memory);
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
+    self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
     self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
     return self;
 }
-
+void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, long limit){
+    self->memory_limit = limit;
+}
 
 void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self)){
     self->delete_function = delelte_function;

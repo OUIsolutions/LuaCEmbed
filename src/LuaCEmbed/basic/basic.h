@@ -29,6 +29,7 @@ void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self);
 
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 
+void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, long limit);
 
 void LuaCEmbed_free(LuaCEmbed *self);
 
