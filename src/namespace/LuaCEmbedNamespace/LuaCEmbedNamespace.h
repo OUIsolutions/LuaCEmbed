@@ -6,6 +6,7 @@ typedef struct{
     LuaCembedArgsModule args;
     LuaCEmbedGlobalModule  globals;
     LuaCembedTableModule tables;
+    void (*clear_errors)(LuaCEmbed *self);
     LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();

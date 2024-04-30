@@ -20,6 +20,8 @@ char * LuaCEmbed_get_error_message(LuaCEmbed *self);
 
 bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
+void LuaCEmbed_clear_errors(LuaCEmbed *self);
+
 void private_LuaCembed_handle_timeout(int signum) ;
 
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...);

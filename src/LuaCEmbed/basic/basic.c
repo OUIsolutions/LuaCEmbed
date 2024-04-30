@@ -78,7 +78,15 @@ void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){
     return self->error_msg;
 }
+void LuaCEmbed_clear_errors(LuaCEmbed *self){
+    if(!self){
+        return;
+    }
 
+    if(self->error_msg){
+        free(self->error_msg);
+    }
+}
 void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
     if(self->current_function){
        return  self->func_tables;
