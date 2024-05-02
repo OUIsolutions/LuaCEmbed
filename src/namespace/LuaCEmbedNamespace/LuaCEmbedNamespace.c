@@ -32,7 +32,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.set_double_lib_prop = LuaCEmbed_set_double_lib_prop;
     self.set_string_lib_prop = LuaCEmbed_set_string_lib_prop;
     self.set_table_lib_prop = LuaCEmbed_set_table_lib_prop;
-    
+
     self.free = LuaCEmbed_free;
     return self;
 }
