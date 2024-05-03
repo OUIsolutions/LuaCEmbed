@@ -98,10 +98,11 @@ void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
     return self->global_tables;
 }
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
-    if(!self){
+
+    if(LuaCEmbed_has_errors(self)){
         return;
     }
-    LuaCEmbed_clear_errors(self);
+
     va_list args;
     va_start(args,error);
     self->error_msg = private_LuaCembed_format_vaarg(error, args);
