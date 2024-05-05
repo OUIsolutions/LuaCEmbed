@@ -17,7 +17,7 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 [Link to Web Site](oui.tec.br)
 
 #### Download Link
-[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.22/LuaCEmbed.h)
+[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.23/LuaCEmbed.h)
 
 
 ### Instalation
