@@ -24323,6 +24323,8 @@ void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const
     lua_pushnumber(self->main_object->state,(double)formatted_index);
     lua_pushstring(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  value){
@@ -24339,6 +24341,8 @@ void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  v
     lua_pushnumber(self->main_object->state,(double)formatted_index);
     lua_pushnumber(self->main_object->state,(double )value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_double_by_index(LuaCEmbedTable *self, long index, double  value){
@@ -24356,6 +24360,8 @@ void  LuaCEmbedTable_set_double_by_index(LuaCEmbedTable *self, long index, doubl
     lua_pushnumber(self->main_object->state,(double)formatted_index);
     lua_pushnumber(self->main_object->state,(double )value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool value){
@@ -24373,6 +24379,8 @@ void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, long index, bool va
     lua_pushnumber(self->main_object->state,(double)formatted_index);
     lua_pushboolean(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 
@@ -24399,6 +24407,8 @@ void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, long index, c
     lua_pushnumber(self->main_object->state,(double)formatted_index);
     lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 
@@ -24457,6 +24467,7 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
        lua_getmetatable(self->main_object->state,-1);
         lua_setmetatable(self->main_object->state,-2);
     }
+    lua_settop(self->main_object->state, 0);
 
 }
 
@@ -24469,6 +24480,8 @@ void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, co
     lua_pushstring(self->main_object->state,value);
 
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long  value){
@@ -24478,6 +24491,8 @@ void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,(double)value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, double  value){
@@ -24488,6 +24503,8 @@ void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, do
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool value){
@@ -24498,6 +24515,8 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool
     lua_pushstring(self->main_object->state,name);
     lua_pushboolean(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...){
@@ -24523,6 +24542,8 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     lua_pushstring(self->main_object->state,name);
     lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 
@@ -24698,6 +24719,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
     lua_pushinteger(self->main_object->state,index);
     lua_getglobal(self->main_object->state,full_sub_table_name);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
 
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_internal_index(
             (privateLuaCEmbedTableArray *) self->sub_tables,
@@ -24802,6 +24824,8 @@ void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaC
     lua_pushinteger(self->main_object->state,formatted_index);
     lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 
@@ -24815,6 +24839,8 @@ void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
     lua_pushinteger(self->main_object->state,size+1);
     lua_getglobal(self->main_object->state,table->global_name);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
@@ -24826,6 +24852,8 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushstring(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
@@ -24837,6 +24865,8 @@ void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushnumber(self->main_object->state,(double)value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
@@ -24848,6 +24878,8 @@ void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushnumber(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
@@ -24859,6 +24891,8 @@ void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushboolean(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, ...){
@@ -24885,6 +24919,7 @@ void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, .
     lua_pushinteger(self->main_object->state,size+1);
     lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
 }
 
 
@@ -25227,6 +25262,8 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
+    lua_settop(self->state, 0);
+
     self->current_function = NULL;
 
     if(!possible_return){
@@ -25345,6 +25382,7 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
         lua_setglobal(self->state, callback_name);
     }
 
+    lua_settop(self->state, 0);
 
 }
 
@@ -25360,6 +25398,7 @@ void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *call
 
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
     lua_setglobal(self->state, callback_name);
+    lua_settop(self->state, 0);
 
 }
 

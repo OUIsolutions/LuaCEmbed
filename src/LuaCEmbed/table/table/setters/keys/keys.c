@@ -53,6 +53,7 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self , const char *name, LuaCEmbe
        lua_getmetatable(self->main_object->state,-1);
         lua_setmetatable(self->main_object->state,-2);
     }
+    lua_settop(self->main_object->state, 0);
 
 }
 
@@ -65,6 +66,8 @@ void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, co
     lua_pushstring(self->main_object->state,value);
 
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long  value){
@@ -74,6 +77,8 @@ void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,(double)value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, double  value){
@@ -84,6 +89,8 @@ void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self , const char *name, do
     lua_pushstring(self->main_object->state,name);
     lua_pushnumber(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool value){
@@ -94,6 +101,8 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self , const char *name, bool
     lua_pushstring(self->main_object->state,name);
     lua_pushboolean(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...){
@@ -119,4 +128,6 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     lua_pushstring(self->main_object->state,name);
     lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }

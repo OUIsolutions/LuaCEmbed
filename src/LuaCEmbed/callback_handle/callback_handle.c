@@ -32,6 +32,8 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
+    lua_settop(self->state, 0);
+
     self->current_function = NULL;
 
     if(!possible_return){
@@ -150,6 +152,7 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
         lua_setglobal(self->state, callback_name);
     }
 
+    lua_settop(self->state, 0);
 
 }
 
@@ -165,6 +168,7 @@ void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *call
 
     lua_pushcclosure(self->state,privateLuaCEmbed_main_callback_handler,4);
     lua_setglobal(self->state, callback_name);
+    lua_settop(self->state, 0);
 
 }
 

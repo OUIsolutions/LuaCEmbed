@@ -7,6 +7,8 @@ void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
     lua_pushinteger(self->main_object->state,size+1);
     lua_getglobal(self->main_object->state,table->global_name);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
@@ -18,6 +20,8 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushstring(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
@@ -29,6 +33,8 @@ void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushnumber(self->main_object->state,(double)value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
@@ -40,6 +46,8 @@ void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushnumber(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
@@ -51,6 +59,8 @@ void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value){
     lua_pushinteger(self->main_object->state,size+1);
     lua_pushboolean(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
 
 void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, ...){
@@ -77,4 +87,5 @@ void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, .
     lua_pushinteger(self->main_object->state,size+1);
     lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
 }

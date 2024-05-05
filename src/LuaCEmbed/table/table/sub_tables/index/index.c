@@ -17,6 +17,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
     lua_pushinteger(self->main_object->state,index);
     lua_getglobal(self->main_object->state,full_sub_table_name);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
 
     LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_internal_index(
             (privateLuaCEmbedTableArray *) self->sub_tables,
@@ -121,4 +122,6 @@ void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaC
     lua_pushinteger(self->main_object->state,formatted_index);
     lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
