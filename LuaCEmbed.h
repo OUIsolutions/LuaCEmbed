@@ -22635,8 +22635,10 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE 3
 #define PRIVATE_LUA_CEMBED_BOOL_RESPONSE 4
 #define PRIVATE_LUA_CEMBED_TABLE_RESPONSE 5
+
 #define PRIVATE_LUA_CEMBED_EVALUATION 6
 #define PRIVATE_LUA_CEMBED_ERROR_RESPONSE 7
+#define PRIVATE_LUA_CEMBED_MULTI_RESPONSE 8
 
 #define LUA_CEMBED_OK 0
 #define LUA_CEMBED_GENERIC_ERROR (-1)
@@ -22653,7 +22655,7 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE "private_lua_c_embed_anononymous_table_%ld"
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
 #define PRIVATE_LUA_CEMBED_TABLE_META_NAME "private_sub_table_anon_meta_name"
-
+#define  PRIVATE_LUA_CEMBED_MULTIRETURN "private_lua_c_embed_multi_return%d"
 
 
 
@@ -22701,6 +22703,8 @@ LuaCEmbedResponse * LuaCEmbed_send_error(const char *text);
 
 
 LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code);
+
+
 
 
 
@@ -22804,6 +22808,7 @@ typedef struct {
 
 LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...);
 
+int  private_lua_cEmbed_unpack(LuaCEmbedTable *self);
 
 void privateLuaCEmbedTable_free(LuaCEmbedTable *self);
 
@@ -23209,6 +23214,9 @@ void LuaCEmbed_set_table_lib_prop(LuaCEmbed *self,const char *name,LuaCEmbedTabl
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table);
 
 
+LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table);
+
+
 
 
 
@@ -23243,6 +23251,7 @@ LuaCEmbedTypeModule newLuaCEmbedTypeModule();
 
 
 typedef struct {
+    LuaCEmbedResponse * (*send_multi_return)(LuaCEmbedTable *table);
     LuaCEmbedResponse * (*send_str)(const char *text);
     LuaCEmbedResponse * (*send_table)(LuaCEmbedTable *table);
     LuaCEmbedResponse * (*send_evaluation_function)(const char *function);
@@ -23436,6 +23445,12 @@ LuaCEmbedResponse * LuaCEmbed_send_error(const char *text){
     return self;
 }
 
+LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_MULTI_RESPONSE;
+    self->string_val = strdup(table->global_name);
+    return self;
+}
 
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
@@ -23959,6 +23974,45 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
     return self;
 }
 
+ int  private_lua_cEmbed_unpack(LuaCEmbedTable *self){
+    long size = LuaCEmbedTable_get_listable_size(self);
+
+    for(int i = 0; i < size; i++){
+
+        int type = LuaCEmbedTable_get_type_by_index(self,i);
+        if(type == LUA_CEMBED_NUMBER){
+            double value = LuaCEmbedTable_get_double_by_index(self,i);
+            lua_pushnumber(self->main_object->state,value);
+        }
+
+        if(type == LUA_CEMBED_BOOL){
+            bool value = LuaCEmbedTable_get_bool_by_index(self,i);
+            lua_pushboolean(self->main_object->state,value);
+        }
+        if(type == LUA_CEMBED_STRING){
+            char*  value = LuaCEmbedTable_get_string_by_index(self,i);
+            lua_pushstring(self->main_object->state,value);
+        }
+
+        if(type == LUA_CEMBED_TABLE){
+            LuaCEmbedTable * sub = LuaCEmbedTable_get_sub_table_by_index(self,i);
+            lua_getglobal(self->main_object->state,sub->global_name);
+        }
+
+        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        lua_setglobal(self->main_object->state,formated);
+        free(formated);
+    }
+
+    for(int i = 0; i < size; i++){
+        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        lua_getglobal(self->main_object->state,formated);
+        free(formated);
+    }
+
+
+    return (int)size;
+}
 
 void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
 
@@ -25315,6 +25369,16 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
 
+    if(possible_return->type == PRIVATE_LUA_CEMBED_MULTI_RESPONSE){
+        LuaCEmbedTable  *table = private_newLuaCembedTable(self,  possible_return->string_val);
+        int size =private_lua_cEmbed_unpack(table);
+        private_LuaCEmbedResponse_free(possible_return);
+        privateLuaCEmbedTable_free(table);
+
+        return  size;
+    }
+
+
     if(possible_return->type == PRIVATE_LUA_CEMBED_EVALUATION){
         char *formated_function =private_LuaCembed_format(
                 PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,
@@ -25741,6 +25805,7 @@ LuaCEmbedTypeModule newLuaCEmbedTypeModule(){
 
 LuaCEmbedResponseModule newLuaCEmbedResponseModule(){
     LuaCEmbedResponseModule self = {0};
+    self.send_multi_return = LuaCEmbed_send_multi_return;
     self.send_str = LuaCEmbed_send_str;
     self.send_bool = LuaCEmbed_send_bool;
     self.send_double = LuaCEmbed_send_double;

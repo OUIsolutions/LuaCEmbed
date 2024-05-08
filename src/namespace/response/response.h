@@ -1,6 +1,7 @@
 
 
 typedef struct {
+    LuaCEmbedResponse * (*send_multi_return)(LuaCEmbedTable *table);
     LuaCEmbedResponse * (*send_str)(const char *text);
     LuaCEmbedResponse * (*send_table)(LuaCEmbedTable *table);
     LuaCEmbedResponse * (*send_evaluation_function)(const char *function);

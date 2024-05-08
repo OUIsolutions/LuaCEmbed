@@ -85,6 +85,16 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
 
+    if(possible_return->type == PRIVATE_LUA_CEMBED_MULTI_RESPONSE){
+        LuaCEmbedTable  *table = private_newLuaCembedTable(self,  possible_return->string_val);
+        int size =private_lua_cEmbed_unpack(table);
+        private_LuaCEmbedResponse_free(possible_return);
+        privateLuaCEmbedTable_free(table);
+
+        return  size;
+    }
+
+
     if(possible_return->type == PRIVATE_LUA_CEMBED_EVALUATION){
         char *formated_function =private_LuaCembed_format(
                 PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE,

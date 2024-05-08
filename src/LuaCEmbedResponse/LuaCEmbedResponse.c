@@ -28,6 +28,12 @@ LuaCEmbedResponse * LuaCEmbed_send_error(const char *text){
     return self;
 }
 
+LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_MULTI_RESPONSE;
+    self->string_val = strdup(table->global_name);
+    return self;
+}
 
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
