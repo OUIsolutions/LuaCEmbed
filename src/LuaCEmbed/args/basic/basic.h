@@ -1,4 +1,6 @@
 
+int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index);
+
 int  LuaCEmbed_get_total_args(LuaCEmbed *self);
 
 int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index);

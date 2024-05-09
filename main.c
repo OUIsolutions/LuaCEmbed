@@ -4,30 +4,35 @@
 LuaCEmbedNamespace  lua_n;
 
 
-LuaCEmbedResponse  * test_func(LuaCEmbed *args){
-    LuaCEmbedTable * args_to_call  = lua_n.tables.new_anonymous_table(args);
-    lua_n.tables.append_long(args_to_call,10);
-    lua_n.tables.append_long(args_to_call,20);
-    int total_returns = 1;
-    int index_of_lambda = 0;
+LuaCEmbedResponse  * add_func(LuaCEmbed *args){
 
-    lua_n.args.run_lambda(args,index_of_lambda,args_to_call,total_returns);
+    double num1 = lua_n.args.get_double(args,0);
+    printf("num1 %lf\n",num1);
+    double num2 = lua_n.args.get_double(args,1);
+
+
+    if(lua_n.has_errors(args)){
+        char *error_message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(error_message);
+    }
+    return lua_n.response.send_double(num1+num2);
     return NULL;
 }
 
+int main(int argc, char *argv[]) {
 
-int main(int argc, char *argv[]){
+    lua_n = newLuaCEmbedNamespace();
+    LuaCEmbed *l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l, "add", add_func);
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"test",test_func);
 
-    lua_n.evaluate(l,"test(function(a,b) return a + b end )");
+    double result = lua_n.get_evaluation_double(l, "add(10,20)");
 
-    if(lua_n.has_errors(l)){
-        char *error = lua_n.get_error_message(l);
-        printf("%s\n",error);
+    if (lua_n.has_errors(l)) {
+        printf("error: %s\n", lua_n.get_error_message(l));
     }
+    printf("resullt :%lf\n", result);
+
     lua_n.free(l);
 
     return 0;

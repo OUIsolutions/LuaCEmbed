@@ -11,3 +11,4 @@
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
 #define  PRIVATE_LUA_CEMBED_MULTIRETURN "private_lua_c_embed_multi_return%d"
 #define PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE "private_lua_c_embed_stage_area_table"
+#define PRIVATE_LUA_CEMBED_ARGS "private_lua_c_embed_args%d"

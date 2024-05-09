@@ -1,10 +1,7 @@
 
 
 int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_arg index){
-
-    if(LuaCEmbed_has_errors(self)){
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
+    PRIVATE_LUA_CEMBED_PROTECT_NUM;
 
     if(index > self->total_args){
 
@@ -15,12 +12,9 @@ int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_a
 
 }
 
-int LuaCEmbed_ensure_arg_type(LuaCEmbed *self, private_lua_cembed_incremented_arg index, int arg_type) {
-
-    if (LuaCEmbed_ensure_arg_exist(self, index)) {
-        return LUA_CEMBED_GENERIC_ERROR;
-    }
-    int type = lua_type(self->state, index);
+int private_LuaCEmbed_ensure_arg_type(LuaCEmbed *self, int arg_type) {
+    PRIVATE_LUA_CEMBED_PROTECT_NUM;
+    int type = lua_type(self->state, -1);
     if (type != arg_type) {
 
         privateLuaCEmbed_raise_error_not_jumping(self,
