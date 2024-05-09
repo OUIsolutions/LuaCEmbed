@@ -77,7 +77,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     }
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
     LuaCEmbedTable  *created = LuaCembed_get_global_table(self,formated_arg);
     free(formated_arg);
     return created;
