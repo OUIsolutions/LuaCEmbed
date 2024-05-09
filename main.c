@@ -7,8 +7,7 @@ LuaCEmbedNamespace  lua_n;
 LuaCEmbedResponse  * add_func(LuaCEmbed *args){
 
     double num1 = lua_n.args.get_double(args,0);
-    printf("num1 %lf\n",num1);
-    return  lua_n.response.send_double(20);
+
     double num2 = lua_n.args.get_double(args,1);
 
 

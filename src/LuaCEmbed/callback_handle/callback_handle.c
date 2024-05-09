@@ -12,7 +12,6 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formated_index);
         lua_pushvalue(L,formated_index);
         lua_setglobal(L,formated_arg);
-        lua_pop(L,1);
         free(formated_arg);
     }
 
