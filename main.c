@@ -3,33 +3,51 @@
 LuaCEmbedNamespace  lua_n;
 
 
-LuaCEmbedResponse  * add_func(LuaCEmbed *args){
-
-
-    double num1 = lua_n.args.get_long_arg_clojure_evalation(args,0,"function(t) return t.num1  end ");
-    double num2 = lua_n.args.get_long_arg_clojure_evalation(args,0,"function(t) return t.num2  end ");
-
-    if(lua_n.has_errors(args)){
-        char *error_message = lua_n.get_error_message(args);
-        return lua_n.response.send_error(error_message);
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+    long size = lua_n.args.size(args);
+    if(size == 0){
+        printf("no argument providided\n");
+        return NULL;
     }
-    return lua_n.response.send_double(num1+num2);
+
+    int index = 0;
+    int arg_type = lua_n.args.get_type(args,index);
+
+    if(arg_type  == lua_n.types.NUMBER){
+        printf("number: %lf\n",lua_n.args.get_double(args,index));
+    }
+
+    else if(arg_type  == lua_n.types.STRING){
+        printf("str: %s\n",lua_n.args.get_str(args,index));
+    }
+
+    else if(arg_type  == lua_n.types.BOOL){
+        printf("bool: %d\n", lua_n.args.get_bool(args,index));
+    }
+    else{
+        const char *converted_to_str = lua_n.convert_arg_code(arg_type);
+        printf("type: %s\n",converted_to_str);
+    }
+
+    return NULL;
 }
 
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"add",add_func);
+    lua_n.add_callback(l,"test",test_func);
 
+    lua_n.evaluate(l,"test()");
+    lua_n.evaluate(l,"test(10)");
+    lua_n.evaluate(l,"test('hello')");
+    lua_n.evaluate(l,"test(true)");
+    lua_n.evaluate(l,"test({a=30})");
 
-    double result = lua_n.get_evaluation_double(l,"add({num1=10, num2=30})");
 
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
-    printf("resullt :%lf\n",result);
-
     lua_n.free(l);
 
     return 0;

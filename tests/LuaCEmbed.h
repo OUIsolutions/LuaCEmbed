@@ -23006,7 +23006,7 @@ void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self);
 
 int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_arg index);
 
-int private_LuaCEmbed_ensure_arg_type(LuaCEmbed *self, int arg_type);
+int private_LuaCEmbed_ensure_top_stack_arg_type(LuaCEmbed *self, int index,int arg_type);
 
 
 
@@ -23648,15 +23648,15 @@ void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self){
     }
     return self->global_tables;
 }
-void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...){
+void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error_msg, ...){
 
     if(LuaCEmbed_has_errors(self)){
         return;
     }
 
     va_list args;
-    va_start(args,error);
-    self->error_msg = private_LuaCembed_format_vaarg(error, args);
+    va_start(args,error_msg);
+    self->error_msg = private_LuaCembed_format_vaarg(error_msg, args);
     va_end(args);
 
 }
@@ -23707,14 +23707,14 @@ int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_a
 
 }
 
-int private_LuaCEmbed_ensure_arg_type(LuaCEmbed *self, int arg_type) {
+int private_LuaCEmbed_ensure_top_stack_arg_type(LuaCEmbed *self, int index,int arg_type) {
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     int type = lua_type(self->state, -1);
     if (type != arg_type) {
 
         privateLuaCEmbed_raise_error_not_jumping(self,
                  PRIVATE_LUA_CEMBED_ARG_WRONG_TYPE,
-                 index,
+                 index + LUA_CEMBED_INDEX_DIF,
                  self->current_function,
                  LuaCembed_convert_arg_code(type),
                  LuaCembed_convert_arg_code(arg_type)
@@ -23764,7 +23764,7 @@ int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
 long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     privateLuaCEmbed_put_arg_on_top(self,index);
-    if(private_LuaCEmbed_ensure_arg_type(self,LUA_CEMBED_NUMBER)){
+    if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
         return (long )LUA_CEMBED_NOT_FOUND;
     }
     return (long)lua_tonumber(self->state,-1);
@@ -23774,7 +23774,7 @@ long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
 double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     privateLuaCEmbed_put_arg_on_top(self,index);
-    if(private_LuaCEmbed_ensure_arg_type(self,LUA_CEMBED_NUMBER)){
+    if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
         return (long )LUA_CEMBED_NOT_FOUND;
     }
     return lua_tonumber(self->state,-1);
@@ -23783,7 +23783,7 @@ double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
 bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_BOOL
     privateLuaCEmbed_put_arg_on_top(self,index);
-    if(private_LuaCEmbed_ensure_arg_type(self,LUA_CEMBED_BOOL)){
+    if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_BOOL)){
         return (long )LUA_CEMBED_NOT_FOUND;
     }
     return lua_toboolean(self->state,-1);
@@ -23793,7 +23793,7 @@ bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
     privateLuaCEmbed_put_arg_on_top(self,index);
-    if(private_LuaCEmbed_ensure_arg_type(self,LUA_CEMBED_STRING)){
+    if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_STRING)){
         return NULL;
     }
     return (char*)lua_tostring(self->state,-1);
@@ -23802,7 +23802,7 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
     privateLuaCEmbed_put_arg_on_top(self,index);
-    if(private_LuaCEmbed_ensure_arg_type(self,LUA_CEMBED_TABLE)){
+    if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_TABLE)){
         return NULL;
     }
 

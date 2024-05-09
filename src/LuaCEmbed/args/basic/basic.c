@@ -1,7 +1,7 @@
 
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
     lua_getglobal(self->state,formated_arg);
 
     if(lua_type(self->state,-1) == LUA_CEMBED_NOT_FOUND){

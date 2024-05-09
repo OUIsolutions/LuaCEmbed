@@ -8,9 +8,8 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
     self->total_args =  lua_gettop(self->state);
     for(int i  = 0; i < self->total_args; i++){
-        int formated_index = i + LUA_CEMBED_INDEX_DIF;
-        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formated_index);
-        lua_pushvalue(L,formated_index);
+        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,i);
+        lua_pushvalue(L,i+1);
         lua_setglobal(L,formated_arg);
         free(formated_arg);
     }
