@@ -105,5 +105,5 @@ LuaCEmbedTable* LuaCEmbed_run_callback_lambda(LuaCEmbed *self, int index, LuaCEm
     if(lua_pcall(self->state,total_args,total_returns,0)){
         //LuaCEmbed_r
     }
-
+    return NULL;
 }

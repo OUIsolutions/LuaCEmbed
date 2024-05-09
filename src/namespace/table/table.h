@@ -10,6 +10,11 @@ typedef struct {
     void  (*append_evaluation)(LuaCEmbedTable *self, const char *code, ...);
 
     void  (*insert_string_at_index)(LuaCEmbedTable *self, long index, const char *value);
+    void  (*insert_bool_at_index)(LuaCEmbedTable *self, long index,bool value);
+    void  (*insert_long_at_index)(LuaCEmbedTable *self, long index,long value);
+    void  (*insert_double_at_index)(LuaCEmbedTable *self, long index,double value);
+    void  (*insert_table_at_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *table);
+
 
 
     void (*set_sub_table_by_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table);

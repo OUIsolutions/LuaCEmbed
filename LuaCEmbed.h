@@ -22654,8 +22654,8 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define PRIVATE_LUA_CEMBE_SUB_ARG_TABLE "private_lua_c_embed_table_arg_%s_%d"
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE "private_lua_c_embed_anononymous_table_%ld"
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
-#define PRIVATE_LUA_CEMBED_TABLE_META_NAME "private_sub_table_anon_meta_name"
 #define  PRIVATE_LUA_CEMBED_MULTIRETURN "private_lua_c_embed_multi_return%d"
+#define PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE "private_lua_c_embed_stage_area_table"
 
 
 
@@ -22890,6 +22890,22 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
 
 
 
+void  private_LuaCEmbedTable_add_space(LuaCEmbedTable *self, long formatted_index);
+
+void  LuaCEmbedTable_insert_string_at_index(LuaCEmbedTable *self, long index, const char *value);
+
+void  LuaCEmbedTable_insert_bool_at_index(LuaCEmbedTable *self, long index,bool value);
+
+void  LuaCEmbedTable_insert_long_at_index(LuaCEmbedTable *self, long index,long value);
+
+void  LuaCEmbedTable_insert_double_at_index(LuaCEmbedTable *self, long index,double value);
+
+void  LuaCEmbedTable_insert_table_at_index(LuaCEmbedTable *self, long index,LuaCEmbedTable *table);
+
+
+
+
+
 int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char *name, int expected_type);
 
 int privateLuaCEmbedTable_ensure_type_with_index(LuaCEmbedTable *self, long index, int expected_type);
@@ -23009,6 +23025,9 @@ bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index);
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index);
 
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index);
+
+LuaCEmbedTable* LuaCEmbed_run_callback_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args,int total_returns);
+
 
 
 
@@ -23324,6 +23343,14 @@ typedef struct {
     void  (*append_table)(LuaCEmbedTable *self, LuaCEmbedTable *table);
     void  (*set_evaluation_prop)(LuaCEmbedTable *self, const char *name, const char *code, ...);
     void  (*append_evaluation)(LuaCEmbedTable *self, const char *code, ...);
+
+    void  (*insert_string_at_index)(LuaCEmbedTable *self, long index, const char *value);
+    void  (*insert_bool_at_index)(LuaCEmbedTable *self, long index,bool value);
+    void  (*insert_long_at_index)(LuaCEmbedTable *self, long index,long value);
+    void  (*insert_double_at_index)(LuaCEmbedTable *self, long index,double value);
+    void  (*insert_table_at_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *table);
+
+
 
     void (*set_sub_table_by_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table);
     void  (*set_string_by_index)(LuaCEmbedTable *self, long index, const char *value);
@@ -23794,6 +23821,26 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     return creaeted;
 }
 
+LuaCEmbedTable* LuaCEmbed_run_callback_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call,int total_returns){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+
+    int formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_FUNCTION)){
+        return NULL;
+    }
+    int total_args = 0;
+    if(args_to_call){
+
+       total_args = private_lua_cEmbed_unpack(args_to_call);
+    }
+
+    if(lua_pcall(self->state,total_args,total_returns,0)){
+        //LuaCEmbed_r
+    }
+    return NULL;
+}
+
+
 
 
 int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,const char *code,va_list args){
@@ -23975,34 +24022,24 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
 }
 
  int  private_lua_cEmbed_unpack(LuaCEmbedTable *self){
+
     long size = LuaCEmbedTable_get_listable_size(self);
+     lua_settop(self->main_object->state, 0);
 
-    for(int i = 0; i < size; i++){
+     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
-        int type = LuaCEmbedTable_get_type_by_index(self,i);
-        if(type == LUA_CEMBED_NUMBER){
-            double value = LuaCEmbedTable_get_double_by_index(self,i);
-            lua_pushnumber(self->main_object->state,value);
-        }
-
-        if(type == LUA_CEMBED_BOOL){
-            bool value = LuaCEmbedTable_get_bool_by_index(self,i);
-            lua_pushboolean(self->main_object->state,value);
-        }
-        if(type == LUA_CEMBED_STRING){
-            char*  value = LuaCEmbedTable_get_string_by_index(self,i);
-            lua_pushstring(self->main_object->state,value);
-        }
-
-        if(type == LUA_CEMBED_TABLE){
-            LuaCEmbedTable * sub = LuaCEmbedTable_get_sub_table_by_index(self,i);
-            lua_getglobal(self->main_object->state,sub->global_name);
-        }
-
-        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
-        lua_setglobal(self->main_object->state,formated);
-        free(formated);
-    }
+     lua_getglobal(self->main_object->state,self->global_name);
+     int table_index = lua_gettop(self->main_object->state);
+     int total = 0;
+     lua_pushnil(self->main_object->state);
+     while(lua_next(self->main_object->state,table_index)){
+         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,total);
+         lua_pushvalue(self->main_object->state,-1);
+         lua_setglobal(self->main_object->state,formated);
+         free(formated);
+         lua_pop(self->main_object->state,1);
+         total+=1;
+     }
 
     for(int i = 0; i < size; i++){
         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
@@ -24598,6 +24635,125 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     lua_settable(self->main_object->state,-3);
     lua_settop(self->main_object->state, 0);
 
+}
+
+
+void  private_LuaCEmbedTable_add_space(LuaCEmbedTable *self, long formatted_index){
+
+
+    lua_newtable(self->main_object->state);
+    lua_setglobal(self->main_object->state,PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE);
+
+    lua_getglobal(self->main_object->state, self->global_name);
+    int table_index = lua_gettop(self->main_object->state);
+    int total = 1;
+    lua_pushnil(self->main_object->state); // Empilhando o primeiro par chave-valor
+    while (lua_next(self->main_object->state, table_index)) {
+
+        if (total >= formatted_index) {
+            lua_getglobal(self->main_object->state, PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE);
+            lua_pushinteger(self->main_object->state, total + 1);
+            lua_pushvalue(self->main_object->state, -3);
+            lua_settable(self->main_object->state, -3);
+            lua_pop(self->main_object->state, 1);
+        }
+        lua_pop(self->main_object->state, 1); // Removendo o valor atual
+        total+=1;
+    }
+
+    lua_getglobal(self->main_object->state, PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE);
+    table_index = lua_gettop(self->main_object->state);
+    lua_pushnil(self->main_object->state);
+
+    while (lua_next(self->main_object->state, table_index)) {
+        lua_getglobal(self->main_object->state,self->global_name);
+        lua_pushvalue(self->main_object->state,-3); //table[index] =  stage_area[index]
+        lua_pushvalue(self->main_object->state,-3);  //table[index] =  stage_area[index]
+        lua_settable(self->main_object->state,-3);
+        lua_pop(self->main_object->state, 2); // Removendo o valor atual
+    }
+
+    lua_getglobal(self->main_object->state, "stage_arrea");
+    lua_pushnil(self->main_object->state);
+}
+
+void LuaCEmbedTable_insert_string_at_index(LuaCEmbedTable *self, long index, const char *value) {
+    // Movendo os elementos existentes para frente
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    private_LuaCEmbedTable_add_space(self,formatted_index);
+    // Inserindo o novo valor na posição especificada
+    lua_getglobal(self->main_object->state, self->global_name);
+    lua_pushnumber(self->main_object->state, (double)formatted_index);
+    lua_pushstring(self->main_object->state, value);
+    lua_settable(self->main_object->state, -3);
+
+    // Limpando a pilha
+    lua_settop(self->main_object->state, 0);
+}
+
+
+void  LuaCEmbedTable_insert_bool_at_index(LuaCEmbedTable *self, long index,bool value){
+
+    // Movendo os elementos existentes para frente
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    private_LuaCEmbedTable_add_space(self,formatted_index);
+    // Inserindo o novo valor na posição especificada
+    lua_getglobal(self->main_object->state, self->global_name);
+    lua_pushnumber(self->main_object->state, (double)formatted_index);
+    lua_pushboolean(self->main_object->state, value);
+    lua_settable(self->main_object->state, -3);
+
+    // Limpando a pilha
+    lua_settop(self->main_object->state, 0);
+}
+
+void  LuaCEmbedTable_insert_long_at_index(LuaCEmbedTable *self, long index,long value){
+
+    // Movendo os elementos existentes para frente
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    private_LuaCEmbedTable_add_space(self,formatted_index);
+    // Inserindo o novo valor na posição especificada
+    lua_getglobal(self->main_object->state, self->global_name);
+    lua_pushnumber(self->main_object->state, (double)formatted_index);
+    lua_pushinteger(self->main_object->state, value);
+    lua_settable(self->main_object->state, -3);
+
+    // Limpando a pilha
+    lua_settop(self->main_object->state, 0);
+}
+
+void  LuaCEmbedTable_insert_double_at_index(LuaCEmbedTable *self, long index,double value){
+
+    // Movendo os elementos existentes para frente
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    private_LuaCEmbedTable_add_space(self,formatted_index);
+    // Inserindo o novo valor na posição especificada
+    lua_getglobal(self->main_object->state, self->global_name);
+    lua_pushnumber(self->main_object->state, (double)formatted_index);
+    lua_pushnumber(self->main_object->state, value);
+    lua_settable(self->main_object->state, -3);
+
+    // Limpando a pilha
+    lua_settop(self->main_object->state, 0);
+}
+
+void  LuaCEmbedTable_insert_table_at_index(LuaCEmbedTable *self, long index,LuaCEmbedTable *table){
+
+    // Movendo os elementos existentes para frente
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    private_LuaCEmbedTable_add_space(self,formatted_index);
+    // Inserindo o novo valor na posição especificada
+    lua_getglobal(self->main_object->state, self->global_name);
+    lua_pushnumber(self->main_object->state, (double)formatted_index);
+    lua_getglobal(self->main_object->state,table->global_name);
+    lua_settable(self->main_object->state, -3);
+    // Limpando a pilha
+    lua_settop(self->main_object->state, 0);
 }
 
 
@@ -25871,6 +26027,11 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.append_long = LuaCEmbedTable_append_long;
     self.append_table = LuaCEmbedTable_append_table;
     self.append_evaluation = LuaCEmbedTable_append_evaluation;
+
+    self.insert_string_at_index = LuaCEmbedTable_insert_string_at_index;
+    self.insert_double_at_index = LuaCEmbedTable_insert_double_at_index;
+    self.insert_long_at_index = LuaCEmbedTable_insert_long_at_index;
+    self.insert_table_at_index = LuaCEmbedTable_insert_table_at_index;
 
     self.set_evaluation_prop = LuaCEmbedTable_set_evaluation_prop;
     self.set_method = LuaCEmbedTable_set_method;

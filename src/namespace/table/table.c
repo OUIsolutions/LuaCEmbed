@@ -11,7 +11,10 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.append_evaluation = LuaCEmbedTable_append_evaluation;
 
     self.insert_string_at_index = LuaCEmbedTable_insert_string_at_index;
-    
+    self.insert_double_at_index = LuaCEmbedTable_insert_double_at_index;
+    self.insert_long_at_index = LuaCEmbedTable_insert_long_at_index;
+    self.insert_table_at_index = LuaCEmbedTable_insert_table_at_index;
+
     self.set_evaluation_prop = LuaCEmbedTable_set_evaluation_prop;
     self.set_method = LuaCEmbedTable_set_method;
     self.set_method = LuaCEmbedTable_set_method;
