@@ -14,7 +14,6 @@ LuaCEmbedResponse  * add_func(LuaCEmbed *args){
         return lua_n.response.send_error(error_message);
     }
     return lua_n.response.send_double(num1+num2);
-    return NULL;
 }
 
 int main(int argc, char *argv[]){
