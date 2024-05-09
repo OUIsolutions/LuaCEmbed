@@ -12,7 +12,7 @@ int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_a
 
 }
 
-int private_LuaCEmbed_ensure_arg_type(LuaCEmbed *self, int arg_type) {
+int private_LuaCEmbed_ensure_top_stack_arg_type(LuaCEmbed *self, int arg_type) {
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     int type = lua_type(self->state, -1);
     if (type != arg_type) {
