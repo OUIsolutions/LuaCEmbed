@@ -8,14 +8,7 @@ void  private_LuaCEmbedTable_add_space(LuaCEmbedTable *self, long formatted_inde
     lua_pushnil(self->main_object->state); // Empilhando o primeiro par chave-valor
     while (lua_next(self->main_object->state, table_index)) {
 
-        if (total >= formatted_index) {
-            if(last_pushed){
-                last_pushed = false;
-                lua_pop(self->main_object->state, 1); // Removendo o valor atual
-                total++;
-                continue;
-            }
-
+        if (total >= formatted_index &&  !last_pushed) {
             lua_getglobal(self->main_object->state, self->global_name);
             lua_pushinteger(self->main_object->state, total + 1);
             lua_pushvalue(self->main_object->state, -3);
@@ -26,7 +19,7 @@ void  private_LuaCEmbedTable_add_space(LuaCEmbedTable *self, long formatted_inde
 
 
         lua_pop(self->main_object->state, 1); // Removendo o valor atual
-        total++;
+        total+=1;
     }
 }
 void LuaCEmbedTable_insert_string_at_index(LuaCEmbedTable *self, long index, const char *value) {

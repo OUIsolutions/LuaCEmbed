@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"test",test_func);
-    lua_n.evaluate(l,"new_table = test({'a','b','c'})");
+    lua_n.evaluate(l,"new_table = test({'a','b','c','d'})");
 
     LuaCEmbedTable * new_table = lua_n.globals.get_table(l,"new_table");
     long size = lua_n.tables.get_size(new_table);
