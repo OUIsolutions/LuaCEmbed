@@ -1,26 +1,40 @@
 
 void  private_LuaCEmbedTable_add_space(LuaCEmbedTable *self, long formatted_index){
 
+
+    lua_newtable(self->main_object->state);
+    lua_setglobal(self->main_object->state,"stage_arrea");
+
     lua_getglobal(self->main_object->state, self->global_name);
     int table_index = lua_gettop(self->main_object->state);
     int total = 1;
-    bool last_pushed = false;
     lua_pushnil(self->main_object->state); // Empilhando o primeiro par chave-valor
     while (lua_next(self->main_object->state, table_index)) {
 
-        if (total >= formatted_index &&  !last_pushed) {
-            lua_getglobal(self->main_object->state, self->global_name);
+        if (total >= formatted_index) {
+            lua_getglobal(self->main_object->state, "stage_arrea");
             lua_pushinteger(self->main_object->state, total + 1);
             lua_pushvalue(self->main_object->state, -3);
             lua_settable(self->main_object->state, -3);
             lua_pop(self->main_object->state, 1);
-            last_pushed = true;
         }
-
-
         lua_pop(self->main_object->state, 1); // Removendo o valor atual
         total+=1;
     }
+
+    lua_getglobal(self->main_object->state, "stage_arrea");
+    table_index = lua_gettop(self->main_object->state);
+    lua_pushnil(self->main_object->state);
+
+    while (lua_next(self->main_object->state, table_index)) {
+        lua_getglobal(self->main_object->state,self->global_name);
+        lua_pushvalue(self->main_object->state,-2); //table[index] =  stage_area[index]
+        lua_pushvalue(self->main_object->state,-1);  //table[index] =  stage_area[index]
+        lua_settable(self->main_object->state,-3);
+        lua_pop(self->main_object->state, 2); // Removendo o valor atual
+    }
+
+
 }
 void LuaCEmbedTable_insert_string_at_index(LuaCEmbedTable *self, long index, const char *value) {
     // Movendo os elementos existentes para frente
