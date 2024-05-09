@@ -1100,6 +1100,59 @@ value of created.a = test message
 
 ~~~
 
+#### Returning multi return 
+
+You also can return multi values at once  with the **return_multi_return** method 
+
+<!--codeof:exemples/calbacks/return_multi_return.c-->
+~~~c
+
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+
+LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+
+    LuaCEmbedTable * multi_response  = lua_n.tables.new_anonymous_table(args);
+    lua_n.tables.append_string(multi_response,"first");
+    lua_n.tables.append_long(multi_response,10);
+    return lua_n.response.send_multi_return(multi_response);
+}
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.add_callback(l,"test",test_func);
+
+
+    lua_n.evaluate(l,"a,b =test()");
+    char *a = lua_n.get_string_evaluation(l,"a");
+    long b = lua_n.get_evaluation_long(l,"b");
+
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    printf("a = %s\n",a);
+    printf("b = %ld\n",b);
+
+
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+It will produce:
+
+<!--codeof:tests/main_test/calbacks/T_return_multi_return/expected.txt-->
+~~~txt
+ 
+a = first
+b = 10
+
+~~~
+you can return multiple values using the multi return method
+
 
 #### Returning a a Error
 you can "raise" a error by returning a error in the function
