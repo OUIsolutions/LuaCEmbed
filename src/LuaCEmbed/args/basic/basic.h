@@ -15,5 +15,5 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index);
 
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index);
 
-LuaCEmbedTable* LuaCEmbed_run_callback_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args,int total_returns);
+LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns);
 

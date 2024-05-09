@@ -15,6 +15,8 @@ typedef struct {
     double (*get_double_arg_clojure_evalation)(LuaCEmbed *self,int index,const char *code,...);
     bool (*get_bool_arg_clojure_evalation)(LuaCEmbed *self,int index,const char *code,...);
     char* (*get_string_arg_clojure_evalation)(LuaCEmbed *self,int index,const char *code,...);
+    LuaCEmbedTable* (*run_lambda)(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call,int total_returns);
+
 
 
 
