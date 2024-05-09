@@ -35,7 +35,8 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,const char *c
     }
 
     free(formated_expresion);
-    lua_pushvalue(self->state,formatted_index);
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
+    privateLuaCEmbed_put_arg_on_top(self,index);
 
     if(lua_pcall(self->state,1,1,0)){
         const char *generated_error = lua_tostring(self->state,-1);
