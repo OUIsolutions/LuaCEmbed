@@ -88,3 +88,22 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     free(full_table_name);
     return creaeted;
 }
+
+LuaCEmbedTable* LuaCEmbed_run_callback_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call,int total_returns){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+
+    int formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    if(LuaCEmbed_ensure_arg_type(self,formatted_index,LUA_CEMBED_FUNCTION)){
+        return NULL;
+    }
+    int total_args = 0;
+    if(args_to_call){
+
+       total_args = private_lua_cEmbed_unpack(args_to_call);
+    }
+
+    if(lua_pcall(self->state,total_args,total_returns,0)){
+        //LuaCEmbed_r
+    }
+
+}

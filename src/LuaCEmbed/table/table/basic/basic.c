@@ -19,34 +19,25 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
 }
 
  int  private_lua_cEmbed_unpack(LuaCEmbedTable *self){
+
     long size = LuaCEmbedTable_get_listable_size(self);
+     lua_settop(self->main_object->state, 0);
 
-    for(int i = 0; i < size; i++){
+     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
-        int type = LuaCEmbedTable_get_type_by_index(self,i);
-        if(type == LUA_CEMBED_NUMBER){
-            double value = LuaCEmbedTable_get_double_by_index(self,i);
-            lua_pushnumber(self->main_object->state,value);
-        }
-
-        if(type == LUA_CEMBED_BOOL){
-            bool value = LuaCEmbedTable_get_bool_by_index(self,i);
-            lua_pushboolean(self->main_object->state,value);
-        }
-        if(type == LUA_CEMBED_STRING){
-            char*  value = LuaCEmbedTable_get_string_by_index(self,i);
-            lua_pushstring(self->main_object->state,value);
-        }
-
-        if(type == LUA_CEMBED_TABLE){
-            LuaCEmbedTable * sub = LuaCEmbedTable_get_sub_table_by_index(self,i);
-            lua_getglobal(self->main_object->state,sub->global_name);
-        }
-
-        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
-        lua_setglobal(self->main_object->state,formated);
-        free(formated);
-    }
+     lua_getglobal(self->main_object->state,self->global_name);
+     int table_index = lua_gettop(self->main_object->state);
+     int total = 0;
+     lua_pushnil(self->main_object->state);
+     while(lua_next(self->main_object->state,table_index)){
+         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,total);
+         lua_pushvalue(self->main_object->state,-1);
+         lua_setglobal(self->main_object->state,formated);
+         free(formated);
+         lua_pop(self->main_object->state,1);
+         total+=1;
+     }
 
     for(int i = 0; i < size; i++){
         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
