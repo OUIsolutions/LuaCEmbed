@@ -118,6 +118,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
         free(formatted);
     }
 
+    free(formatted_arg);
     return result;
 
  }
