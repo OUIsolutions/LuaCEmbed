@@ -23296,6 +23296,7 @@ typedef struct {
     double (*get_double)(LuaCEmbed *self,const char *name);
     bool (*get_bool)(LuaCEmbed *self,const char *name);
     char * (*get_string)(LuaCEmbed *self,const char *name);
+    LuaCEmbedTable* (*run_global_lambda)(LuaCEmbed *self, const char *name, LuaCEmbedTable *args_to_call, int total_returns);
     void (*set_table)(LuaCEmbed *self, const char *name, LuaCEmbedTable *table);
 
 
@@ -26045,6 +26046,7 @@ LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     self.get_long = LuaCEmbed_get_global_long;
     self.get_bool = LuaCEmbed_get_global_bool;
     self.get_type = LuaCEmbed_get_global_type;
+    self.run_global_lambda = LuaCEmbed_run_global_lambda;
 
     self.set_table = LuaCEmbed_set_global_table;
     self.set_string = LuaCEmbed_set_global_string;

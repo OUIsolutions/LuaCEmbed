@@ -8,6 +8,7 @@ typedef struct {
     double (*get_double)(LuaCEmbed *self,const char *name);
     bool (*get_bool)(LuaCEmbed *self,const char *name);
     char * (*get_string)(LuaCEmbed *self,const char *name);
+    LuaCEmbedTable* (*run_global_lambda)(LuaCEmbed *self, const char *name, LuaCEmbedTable *args_to_call, int total_returns);
     void (*set_table)(LuaCEmbed *self, const char *name, LuaCEmbedTable *table);
 
 

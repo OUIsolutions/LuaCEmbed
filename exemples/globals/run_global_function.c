@@ -1,4 +1,5 @@
-#include "src/one.c"
+#include "LuaCEmbed.h"
+
 
 LuaCEmbedNamespace  lua_n;
 
