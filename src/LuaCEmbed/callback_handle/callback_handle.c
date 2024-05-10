@@ -93,7 +93,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_MULTI_RESPONSE){
         LuaCEmbedTable  *table = private_newLuaCembedTable(self,  possible_return->string_val);
-        int size =private_lua_cEmbed_unpack(table);
+        int size =private_lua_cEmbed_unpack(table,NULL);
         private_LuaCEmbedResponse_free(possible_return);
         privateLuaCEmbedTable_free(table);
 

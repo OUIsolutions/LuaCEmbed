@@ -18,7 +18,7 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
     return self;
 }
 
- int  private_lua_cEmbed_unpack(LuaCEmbedTable *self){
+ int  private_lua_cEmbed_unpack(LuaCEmbedTable *self,const char * previews_function){
 
     long size = LuaCEmbedTable_get_listable_size(self);
      lua_settop(self->main_object->state, 0);
@@ -37,6 +37,9 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
          lua_pop(self->main_object->state,1);
          total+=1;
      }
+    if(previews_function){
+        lua_getglobal(self->main_object->state,previews_function);
+    }
 
     for(int i = 0; i < size; i++){
         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);

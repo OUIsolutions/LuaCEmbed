@@ -112,3 +112,40 @@ LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name){
     );
     return creaeted;
 }
+
+LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, LuaCEmbedTable *args_to_call, int total_returns){
+
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->memory_limit;
+
+    if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_FUNCTION)){
+        return  NULL;
+    }
+
+    int total_args = private_lua_cEmbed_unpack(args_to_call,name);
+    if(lua_pcall(self->state,total_args,total_returns,0)){
+        privateLuaCEmbed_raise_error_not_jumping(self, lua_tostring(self->state,-1));
+        return  NULL;
+    }
+
+    for(int i = 0; i < total_returns; i++){
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        int position = (i +1) * -1;
+        lua_pushvalue(self->state,position);
+        lua_setglobal(self->state,formatted);
+        free(formatted);
+    }
+
+    LuaCEmbedTable  *result = LuaCembed_new_anonymous_table(self);
+    for(int i = 0; i < total_returns; i++){
+        lua_getglobal(self->state,result->global_name);
+        lua_pushinteger(self->state,i+1);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        lua_getglobal(self->state,formatted);
+        lua_settable(self->state,-3);
+        free(formatted);
+    }
+
+    return result;
+}
+

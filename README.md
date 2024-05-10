@@ -827,6 +827,8 @@ resullt :40.000000
 
 ~~~
 
+#### Calling args callback
+if you recive a lambda as argument , you can
 #### Table Arguments
 you can control table arguments easly with the **get_table** method, where you can retrive a 
 **LuaCEmbedTable** object 

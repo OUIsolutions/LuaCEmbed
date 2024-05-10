@@ -12,6 +12,7 @@ char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name);
 
 LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self);
 
+LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, LuaCEmbedTable *args_to_call, int total_returns);
 
 LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name);
 
