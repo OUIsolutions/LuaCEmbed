@@ -55,6 +55,7 @@ void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self){
     for(int i = 0; i < self->size;i++){
         LuaCEmbedTable  *current_table = self->tables[i];
         privateLuaCEmbedTable_free(current_table);
+
     }
 
     free(self->tables);

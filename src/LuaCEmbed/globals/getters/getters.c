@@ -57,10 +57,14 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
     private_lua_cembed_memory_limit = self->memory_limit;
 
+    const char *format_raw = PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE;
+    if(self->current_function){
+       format_raw  =PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE;
+    }
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
-
-    char *buffer= private_LuaCembed_format(PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE, target->size);
+    char *buffer= private_LuaCembed_format(format_raw, target->size);
     LuaCEmbedTable  *created_table =LuaCembed_new_global_table(self,buffer);
+
     free(buffer);
     return created_table;
 }

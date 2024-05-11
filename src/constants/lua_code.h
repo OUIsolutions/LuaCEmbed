@@ -8,6 +8,8 @@
 
 #define PRIVATE_LUA_CEMBE_SUB_ARG_TABLE "private_lua_c_embed_table_arg_%s_%d"
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE "private_lua_c_embed_anononymous_table_%ld"
+#define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE "private_lua_c_embed_anononymous_func_table_%ld"
+
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
 #define  PRIVATE_LUA_CEMBED_MULTIRETURN "private_lua_c_embed_multi_return%d"
 #define PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE "private_lua_c_embed_stage_area_table"
