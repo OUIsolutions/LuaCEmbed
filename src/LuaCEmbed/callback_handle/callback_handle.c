@@ -34,7 +34,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         LuaCEmbedTable  *table = private_newLuaCembedTable(self, PRIVATE_LUA_CEMBED_SELFNAME);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
-        privateLuaCEmbedTable_free(table);
+        privateLuaCEmbedTable_free_setting_nill(table);
     }
 
     if(is_a_function){
@@ -42,6 +42,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         function_callback = (LuaCEmbedResponse *(*)(LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(4));
         possible_return = function_callback(self);
     }
+
     if(func_tables_created_in_these_scope) {
         privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
         self->func_tables = NULL;
@@ -95,14 +96,14 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_TABLE_RESPONSE){
-        lua_getglobal(self->state, possible_return->string_val);
+        lua_getglobal(self->state, PRIVATE_LUA_CEMBED_TABLE_RETURN);
         lua_pushvalue(self->state,-1);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_MULTI_RESPONSE){
-        LuaCEmbedTable  *table = private_newLuaCembedTable(self,  possible_return->string_val);
+        LuaCEmbedTable  *table = private_newLuaCembedTable(self,  PRIVATE_LUA_CEMBED_TABLE_RETURN);
         int size =private_lua_cEmbed_unpack(table,NULL);
         private_LuaCEmbedResponse_free(possible_return);
         privateLuaCEmbedTable_free(table);

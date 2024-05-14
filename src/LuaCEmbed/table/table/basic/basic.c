@@ -50,9 +50,7 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
 
     return (int)size;
 }
-
 void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
-
 
     free(self->global_name);
 
@@ -62,4 +60,11 @@ void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
 
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->sub_tables);
     free(self);
+}
+
+void privateLuaCEmbedTable_free_setting_nill(LuaCEmbedTable *self){
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushnil(self->main_object->state);
+    privateLuaCEmbedTable_free(self);
 }

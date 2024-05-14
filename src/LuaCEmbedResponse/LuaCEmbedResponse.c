@@ -31,14 +31,16 @@ LuaCEmbedResponse * LuaCEmbed_send_error(const char *text){
 LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_MULTI_RESPONSE;
-    self->string_val = strdup(table->global_name);
+    lua_getglobal(table->main_object->state,table->global_name);
+    lua_setglobal(table->main_object->state,PRIVATE_LUA_CEMBED_TABLE_RETURN);
     return self;
 }
 
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_TABLE_RESPONSE;
-    self->string_val = strdup(table->global_name);
+    lua_getglobal(table->main_object->state,table->global_name);
+    lua_setglobal(table->main_object->state,PRIVATE_LUA_CEMBED_TABLE_RETURN);
     return self;
 }
 
