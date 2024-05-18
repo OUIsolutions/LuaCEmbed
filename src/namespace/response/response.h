@@ -8,7 +8,7 @@ typedef struct {
     LuaCEmbedResponse  * (*send_double)(double value);
     LuaCEmbedResponse  * (*send_bool)(bool value);
     LuaCEmbedResponse  * (*send_long)(long value);
-    LuaCEmbedResponse * (*send_error)(const char *text);
+    LuaCEmbedResponse * (*send_error)(const char *format,...);
 
 }LuaCEmbedResponseModule;
 

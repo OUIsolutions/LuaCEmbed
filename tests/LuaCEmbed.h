@@ -22702,7 +22702,7 @@ LuaCEmbedResponse *private_LuaCEmbedReturn_raw();
 
 LuaCEmbedResponse * LuaCEmbed_send_str(const char *text);
 
-LuaCEmbedResponse * LuaCEmbed_send_error(const char *text);
+LuaCEmbedResponse * LuaCEmbed_send_error(const char *format,...);
 
 
 LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code);
@@ -23284,7 +23284,7 @@ typedef struct {
     LuaCEmbedResponse  * (*send_double)(double value);
     LuaCEmbedResponse  * (*send_bool)(bool value);
     LuaCEmbedResponse  * (*send_long)(long value);
-    LuaCEmbedResponse * (*send_error)(const char *text);
+    LuaCEmbedResponse * (*send_error)(const char *format,...);
 
 }LuaCEmbedResponseModule;
 
@@ -23475,12 +23475,19 @@ LuaCEmbedResponse * LuaCEmbed_send_str(const char *text){
     return self;
 }
 
-LuaCEmbedResponse * LuaCEmbed_send_error(const char *text){
+LuaCEmbedResponse * LuaCEmbed_send_error(const char *format,...){
+
+    va_list args;
+    va_start(args,format);
+    char *error = private_LuaCembed_format_vaarg(format,args);
+    va_end(args);
+
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_ERROR_RESPONSE;
-    self->string_val  = strdup(text);
+    self->string_val  = error;
     return self;
 }
+
 
 LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
