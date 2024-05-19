@@ -114,7 +114,6 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
         lua_pop(self->main_object->state,1);
         total+=1;
     }
-
     return false;
 }
 

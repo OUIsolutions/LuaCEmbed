@@ -66,5 +66,6 @@ void privateLuaCEmbedTable_free_setting_nill(LuaCEmbedTable *self){
 
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushnil(self->main_object->state);
+    lua_setglobal(self->main_object->state,self->global_name);
     privateLuaCEmbedTable_free(self);
 }
