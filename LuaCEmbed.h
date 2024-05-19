@@ -24211,15 +24211,13 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,table_index)){
         if(total == converted_index){
-            if(lua_type(self->main_object->state,-2) != LUA_CEMBED_STRING ){
-                return false;
-            }
-            return true;
+            bool has_key =lua_type(self->main_object->state,-2) == LUA_CEMBED_STRING;
+            lua_pop(self->main_object->state,1);
+            return has_key;
         }
 
         lua_pop(self->main_object->state,1);
         total+=1;
-
     }
 
     return false;
@@ -24228,7 +24226,6 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
 long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
-
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     lua_getglobal(self->main_object->state,self->global_name);
