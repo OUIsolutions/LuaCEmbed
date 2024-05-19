@@ -23746,6 +23746,7 @@ int private_LuaCEmbed_ensure_top_stack_arg_type(LuaCEmbed *self, int index,int a
 
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
     char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
     lua_getglobal(self->state,formated_arg);
 
@@ -23756,7 +23757,6 @@ int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
         privateLuaCEmbed_raise_error_not_jumping(self,error);
         free(error);
         free(formated_arg);
-
         return LUA_CEMBED_GENERIC_ERROR;
     }
     free(formated_arg);
@@ -23771,51 +23771,71 @@ int  LuaCEmbed_get_total_args(LuaCEmbed *self){
 
 int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     privateLuaCEmbed_put_arg_on_top(self,index);
-    return  lua_type(self->state, -1);
+
+    int type =  lua_type(self->state, -1);
+    lua_settop(self->state,0);
+    return type;
 }
 
 
 long long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
+        lua_settop(self->state,0);
         return (long )LUA_CEMBED_NOT_FOUND;
     }
-    return (long long)lua_tonumber(self->state,-1);
+    long long result =  (long long)lua_tonumber(self->state,-1);
+    lua_settop(self->state,0);
+    return result;
 }
 
 
 double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
+
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
+        lua_settop(self->state,0);
         return (long )LUA_CEMBED_NOT_FOUND;
     }
-    return lua_tonumber(self->state,-1);
+    double result = lua_tonumber(self->state,-1);
+    lua_settop(self->state,0);
+    return result;
 }
 
 bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_BOOL
+
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_BOOL)){
+        lua_settop(self->state,0);
         return (long )LUA_CEMBED_NOT_FOUND;
     }
-    return lua_toboolean(self->state,-1);
+    bool result = lua_toboolean(self->state,-1);
+    lua_settop(self->state,0);
+    return result;
 }
 
 
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
+    lua_settop(self->state,0);
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_STRING)){
         return NULL;
     }
-    return (char*)lua_tostring(self->state,-1);
+    char *result =  (char*)lua_tostring(self->state,-1);
+    lua_settop(self->state,0);
+    return result;
 }
 
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
+
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_TABLE)){
         return NULL;
@@ -23825,7 +23845,9 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
     LuaCEmbedTable  *created = LuaCembed_get_global_table(self,formated_arg);
     free(formated_arg);
+    lua_settop(self->state,0);
     return created;
+
 }
 
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns){
@@ -23836,12 +23858,14 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_FUNCTION)){
         free(formatted_arg);
+        lua_settop(self->state,0);
         return  NULL;
     }
     int total_args = private_lua_cEmbed_unpack(args_to_call,formatted_arg);
     if(lua_pcall(self->state,total_args,total_returns,0)){
         privateLuaCEmbed_raise_error_not_jumping(self, lua_tostring(self->state,-1));
         free(formatted_arg);
+        lua_settop(self->state,0);
         return  NULL;
     }
 
@@ -23864,6 +23888,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     }
 
     free(formatted_arg);
+    lua_settop(self->state,0);
     return result;
 
  }
@@ -24095,8 +24120,6 @@ void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
 }
 
 void privateLuaCEmbedTable_free_setting_nill(LuaCEmbedTable *self){
-
-    lua_getglobal(self->main_object->state,self->global_name);
     lua_pushnil(self->main_object->state);
     lua_setglobal(self->main_object->state,self->global_name);
     privateLuaCEmbedTable_free(self);
@@ -24122,7 +24145,7 @@ long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
         // printf("%s\n", LuaCembed_convert_arg_code(lua_type(self->main_object->state,-1)));
         lua_pop(self->main_object->state,1);
     }
-
+    lua_settop(self->main_object->state,0);
     return total;
 }
 
@@ -24201,6 +24224,7 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
 }
 bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
+    lua_settop(self->main_object->state,0);
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -24214,17 +24238,23 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
         if(total == converted_index){
             bool has_key =lua_type(self->main_object->state,-2) == LUA_CEMBED_STRING;
             lua_pop(self->main_object->state,1);
+            lua_settop(self->main_object->state,0);
+
             return has_key;
         }
 
         lua_pop(self->main_object->state,1);
         total+=1;
     }
+    lua_settop(self->main_object->state,0);
+
     return false;
 }
 
 long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    lua_settop(self->main_object->state,0);
+
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -24238,6 +24268,8 @@ long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_NUMBER)){
                 lua_pop(self->main_object->state,1);
+                lua_settop(self->main_object->state,0);
+
                 return LUA_CEMBED_GENERIC_ERROR;
             }
             long result = (long)lua_tonumber(self->main_object->state,-1);
@@ -24248,6 +24280,7 @@ long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
         total+=1;
 
     }
+    lua_settop(self->main_object->state,0);
 
     privateLuaCEmbed_raise_error_not_jumping(
             self->main_object,
@@ -24275,6 +24308,8 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_NUMBER)){
                 lua_pop(self->main_object->state,1);
+                lua_settop(self->main_object->state,0);
+
                 return LUA_CEMBED_GENERIC_ERROR;
             }
             double result = (double )lua_tonumber(self->main_object->state,-1);
@@ -24285,6 +24320,7 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
         total+=1;
 
     }
+    lua_settop(self->main_object->state,0);
 
     privateLuaCEmbed_raise_error_not_jumping(
             self->main_object,
@@ -24312,6 +24348,8 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_STRING)){
                 lua_pop(self->main_object->state,1);
+                lua_settop(self->main_object->state,0);
+
                 return NULL;
             }
             char * result = (char*)lua_tostring(self->main_object->state,-1);
@@ -24322,6 +24360,7 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
         total+=1;
 
     }
+    lua_settop(self->main_object->state,0);
 
     privateLuaCEmbed_raise_error_not_jumping(
             self->main_object,
@@ -24348,6 +24387,8 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
         if(total == converted_index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_BOOL)){
                 lua_pop(self->main_object->state,1);
+                lua_settop(self->main_object->state,0);
+
                 return LUA_CEMBED_GENERIC_ERROR;
             }
             bool result = lua_toboolean(self->main_object->state,-1);
@@ -24358,6 +24399,7 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
         total+=1;
 
     }
+    lua_settop(self->main_object->state,0);
 
     privateLuaCEmbed_raise_error_not_jumping(
             self->main_object,
@@ -24373,6 +24415,8 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    lua_settop(self->main_object->state,0);
+
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -24382,6 +24426,8 @@ int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+    lua_settop(self->main_object->state,0);
+
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -24395,6 +24441,8 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
 
 long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    lua_settop(self->main_object->state,0);
+
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -24407,6 +24455,8 @@ long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name
 
 double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
+    lua_settop(self->main_object->state,0);
+
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -24419,6 +24469,8 @@ double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
 
 bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
+    lua_settop(self->main_object->state,0);
+
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
     lua_getglobal(self->main_object->state,self->global_name);
