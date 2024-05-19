@@ -8,7 +8,7 @@ int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name){
     return lua_type(self->state,-1);
 }
 
-long LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
+int64_t LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     private_lua_cembed_memory_limit = self->memory_limit;
 
@@ -16,7 +16,7 @@ long LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
     lua_getglobal(self->state, name);
-    return (long )lua_tonumber(self->state,-1);
+    return (int64_t )lua_tonumber(self->state,-1);
 }
 
 double LuaCEmbed_get_global_double(LuaCEmbed *self,const char *name){

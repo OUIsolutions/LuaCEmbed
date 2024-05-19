@@ -7,7 +7,7 @@ int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index);
 
 
 
-long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index);
+int64_t LuaCEmbed_get_long_arg(LuaCEmbed *self, int index);
 
 double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index);
 

@@ -2,7 +2,7 @@
 
 int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name);
 
-long LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name);
+int64_t LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name);
 
 double LuaCEmbed_get_global_double(LuaCEmbed *self,const char *name);
 

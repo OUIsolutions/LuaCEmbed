@@ -4,11 +4,11 @@ int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,const char *c
 
 int privateLuaCembed_ensure_arg_evaluation_type(LuaCEmbed *self,int index,int expected_type);
 
-long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
+int LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
 
-long LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
+int  LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
 
-long LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
+int64_t LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
 
 
 double LuaCEmbed_get_double_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);

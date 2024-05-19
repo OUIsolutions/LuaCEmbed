@@ -8,7 +8,7 @@ void LuaCEmbed_set_global_string(LuaCEmbed *self, const char *name, const  char 
     lua_setglobal(self->state,name);
 }
 
-void LuaCEmbed_set_global_long(LuaCEmbed *self, const char *name, long value){
+void LuaCEmbed_set_global_long(LuaCEmbed *self, const char *name, int64_t value){
     PRIVATE_LUA_CEMBED_PROTECT_VOID
     private_lua_cembed_memory_limit = self->memory_limit;
 

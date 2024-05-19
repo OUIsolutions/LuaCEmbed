@@ -173,7 +173,7 @@ int  LuaCEmbed_get_evaluation_type(LuaCEmbed *self,const char *code, ...){
 }
 
 
-long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...){
+int64_t LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     private_lua_cembed_memory_limit = self->memory_limit;
 
@@ -196,12 +196,12 @@ long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...){
     }
      */
 
-    return (long)lua_rawlen(self->state,-1);
+    return (int64_t)lua_rawlen(self->state,-1);
 }
 
 
 
-long LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
+int64_t LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     private_lua_cembed_memory_limit = self->memory_limit;
 
@@ -215,7 +215,7 @@ long LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
     if(private_LuaCEmbed_ensure_evaluation_type(self,LUA_CEMBED_NUMBER)){
         return LUA_CEMBED_GENERIC_ERROR;
     }
-    return (long)lua_tonumber(self->state,-1);
+    return (int64_t)lua_tonumber(self->state,-1);
 
 }
 
