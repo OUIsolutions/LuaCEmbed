@@ -4,7 +4,7 @@
 #include <signal.h>
 #include <unistd.h>
 #endif
-
+#include <inttypes.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <unistd.h>
