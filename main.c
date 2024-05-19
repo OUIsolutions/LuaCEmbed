@@ -12,6 +12,8 @@ LuaCEmbedResponse  * test_func(LuaCEmbed *args){
 
 int main(int argc, char *argv[]){
 
+
+    return 0;
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"test",test_func);
