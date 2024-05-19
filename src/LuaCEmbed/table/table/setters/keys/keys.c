@@ -70,7 +70,7 @@ void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, co
 
 }
 
-void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long  value){
+void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long long   value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
 
     lua_getglobal(self->main_object->state,self->global_name);

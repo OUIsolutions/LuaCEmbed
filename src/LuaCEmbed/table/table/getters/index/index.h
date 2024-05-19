@@ -13,7 +13,7 @@ long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cemb
 
 int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index);
 
-long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index);
+long long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index);
 
 double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index);
 

@@ -1,6 +1,6 @@
 
 
-void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long value);
+void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value);
 
 void LuaCEmbed_set_double_lib_prop(LuaCEmbed *self,const char *name,double value);
 

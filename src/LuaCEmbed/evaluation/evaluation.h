@@ -27,7 +27,7 @@ int  LuaCEmbed_get_evaluation_type(LuaCEmbed *self,const char *code, ...);
 
 long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...);
 
-long LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...);
+long long  LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...);
 
 double LuaCEmbed_get_evaluation_double(LuaCEmbed *self,const char *code, ...);
 

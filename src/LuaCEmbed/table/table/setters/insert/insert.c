@@ -70,7 +70,7 @@ void  LuaCEmbedTable_insert_bool_at_index(LuaCEmbedTable *self, long index,bool 
     lua_settop(self->main_object->state, 0);
 }
 
-void  LuaCEmbedTable_insert_long_at_index(LuaCEmbedTable *self, long index,long value){
+void  LuaCEmbedTable_insert_long_at_index(LuaCEmbedTable *self, long long  index,long value){
 
     // Movendo os elementos existentes para frente
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;

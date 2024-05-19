@@ -8,7 +8,7 @@ int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name){
     return lua_type(self->state,-1);
 }
 
-long LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
+long long  LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     private_lua_cembed_memory_limit = self->memory_limit;
 

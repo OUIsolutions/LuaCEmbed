@@ -1,6 +1,6 @@
 
 
-void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long value){
+void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value){
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
     lua_pushvalue(self->state,-1);
     //set the function name

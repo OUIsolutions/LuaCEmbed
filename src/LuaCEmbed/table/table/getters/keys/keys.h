@@ -3,7 +3,7 @@
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self, const char *name);
 
-long  LuaCembedTable_get_long_prop(LuaCEmbedTable *self, const char *name);
+long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self, const char *name);
 
 double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self, const char *name);
 

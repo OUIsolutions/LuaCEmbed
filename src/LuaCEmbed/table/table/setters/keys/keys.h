@@ -7,7 +7,7 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self, const char *name, LuaCEmbed
 
 void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self, const char *name, const char *value);
 
-void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self, const char *name, long  value);
+void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self, const char *name, long long   value);
 
 void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self, const char *name, double  value);
 

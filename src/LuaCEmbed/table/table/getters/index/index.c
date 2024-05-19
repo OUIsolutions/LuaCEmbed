@@ -120,7 +120,7 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
     return false;
 }
 
-long LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
+long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 

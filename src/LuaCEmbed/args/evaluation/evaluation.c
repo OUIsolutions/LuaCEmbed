@@ -62,7 +62,7 @@ int privateLuaCembed_ensure_arg_evaluation_type(LuaCEmbed *self,int index,int ex
      );
     return LUA_CEMBED_GENERIC_ERROR;
 }
-long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,const char *code,...){
+int LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,const char *code,...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
     va_list args;
@@ -74,7 +74,7 @@ long LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self,int index,const char *
     }
     return lua_type(self->state,-1);
 }
-long LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...){
+int LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
     va_list args;
@@ -86,7 +86,7 @@ long LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self,int index,const ch
     }
     return LUA_CEMBED_OK;
 }
-long LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...){
+long long LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
     va_list args;
@@ -99,7 +99,7 @@ long LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,int index,const ch
     if(privateLuaCembed_ensure_arg_evaluation_type(self,index,LUA_CEMBED_NUMBER)){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
-    return (long) lua_tonumber(self->state,-1);
+    return (long long) lua_tonumber(self->state,-1);
 
 }
 

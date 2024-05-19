@@ -24,7 +24,7 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
 
 }
 
-void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long  value){
+void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long long  value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 

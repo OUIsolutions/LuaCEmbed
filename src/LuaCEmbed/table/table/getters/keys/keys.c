@@ -21,7 +21,7 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
 }
 
 
-long  LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
+long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
@@ -30,7 +30,7 @@ long  LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_NUMBER)){
         return LUA_CEMBED_GENERIC_ERROR;
     }
-    return (long )lua_tonumber(self->main_object->state,-1);
+    return (long long)lua_tonumber(self->main_object->state,-1);
 }
 
 double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){

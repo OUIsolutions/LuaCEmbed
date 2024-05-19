@@ -31,13 +31,13 @@ int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
 }
 
 
-long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
+long long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
         return (long )LUA_CEMBED_NOT_FOUND;
     }
-    return (long)lua_tonumber(self->state,-1);
+    return (long long)lua_tonumber(self->state,-1);
 }
 
 

@@ -21,11 +21,11 @@ typedef struct{
     char * (*get_string_evaluation)(LuaCEmbed *self,const char *code, ...);
     int  (*get_evaluation_type)(LuaCEmbed *self,const char *code,...);
     long (*get_evaluation_size)(LuaCEmbed *self,const char *code,...);
-    long (*get_evaluation_long)(LuaCEmbed *self,const char *code,...);
+    long long  (*get_evaluation_long)(LuaCEmbed *self,const char *code,...);
     double (*get_evaluation_double)(LuaCEmbed *self,const char *code,...);
     bool (*get_evaluation_bool)(LuaCEmbed *self, const char *code,...);
 
-    void (*set_long_lib_prop)(LuaCEmbed *self,const char *name,long value);
+    void (*set_long_lib_prop)(LuaCEmbed *self,const char *name,long long  value);
 
     void (*set_double_lib_prop)(LuaCEmbed *self,const char *name,double value);
     void (*set_bool_lib_prop)(LuaCEmbed *self,const char *name,bool value);

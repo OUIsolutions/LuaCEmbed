@@ -18,7 +18,7 @@ void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const
 
 }
 
-void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long index, long  value){
+void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long long  index, long  value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 

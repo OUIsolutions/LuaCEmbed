@@ -201,7 +201,7 @@ long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self,const char *code, ...){
 
 
 
-long LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
+long long  LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     private_lua_cembed_memory_limit = self->memory_limit;
 
