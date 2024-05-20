@@ -1,10 +1,4 @@
 
-
-local meta  = {}
-local normal = {}
-setmetatable(normal,meta)
-
-
-meta.__gc = function (t1,t2)
-    print("chamou")
-end 
+local teste  = io.open("a.out", "rb"):read("a")
+print(type(teste))
+io.open("b.out","w"):write(teste)
