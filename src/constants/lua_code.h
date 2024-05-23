@@ -5,14 +5,12 @@
 #define PRIVATE_LUA_CEMBED_DEL_PREFIX "__gc"
 #define  PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE "%s = %s\n"
 
-#define PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME_ "private_lua_c_embed_main_lib_table%d"
-
-#define PRIVATE_LUA_CEMBED_MAIN_META_TABLE_ "private_lua_c_embed_main_meta_table_%d"
-
-#define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE_ "private_lua_c_embed_anononymous_table_%d.%d.%ld"
-#define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_ "private_lua_c_embed_anononymous_func_table_%d.%d.%ld"
+#define PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__ "private_lua_c_embed_main_lib_table%d"
+#define PRIVATE_LUA_CEMBED_MAIN_META_TABLE__ "private_lua_c_embed_main_meta_table_%d"
+#define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE_ "private_lua_c_embed_anononymous_table_%d_%d"
+#define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_ "private_lua_c_embed_anononymous_func_table_%d_%d"
 #define PRIVATE_LUA_CEMBED_ARGS_ "private_lua_c_embed_args%d.%d.%d"
-#define  PRIVATE_LUA_CEMBED_MULTIRETURN_ "private_lua_c_embed_multi_return%d.%d.%d"
+#define  PRIVATE_LUA_CEMBED_MULTIRETURN_ "private_lua_c_embed_multi_return%d.%d_%d"
 
 
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
