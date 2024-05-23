@@ -16,13 +16,8 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     const char *func_name =  lua_tostring(L,lua_upvalueindex(3));
     self->current_function = func_name;
-    bool func_tables_created_in_these_scope = false;
-    //these its nescessary for function clojures like map, filter, where the stack will be increased
-    if(self->func_tables == NULL) {
-        self->func_tables = (void*)newprivateLuaCEmbedTableArray();
-        func_tables_created_in_these_scope = true;
-    }
-
+    void *old_funct_tables = self->func_tables;
+    self->func_tables = (void*)newprivateLuaCEmbedTableArray();
 
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
@@ -43,11 +38,9 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         possible_return = function_callback(self);
     }
 
-    if(func_tables_created_in_these_scope) {
-        privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
-        self->func_tables = NULL;
+    privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
+    self->func_tables = old_funct_tables;
 
-    }
 
     lua_settop(self->state, 0);
 
