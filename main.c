@@ -1,18 +1,31 @@
 #include "src/one.c"
 LuaCEmbedNamespace  lua_n;
 
+int acumulator = 0;
+LuaCEmbedResponse * deleter(LuaCEmbedTable *self,LuaCEmbed *args){
+    long global_value = lua_n.tables.get_long_prop(self,"global_value");
+    printf("deletou %ld\n",global_value);
+    return NULL;
+}
 
-LuaCEmbedResponse  * add_func(LuaCEmbed *args){
+LuaCEmbedResponse  * test_table(LuaCEmbed *args){
 
+    for(int i = 0; i < 10; i++){
+        char index[20] = {0};
+        sprintf(index,"valor%d",acumulator);
+        LuaCEmbedTable * teste = lua_n.globals.new_table(args,index);
 
-    double num1 = lua_n.args.get_long_arg_clojure_evalation(args,0,"function(t) return t.num1  end ");
-    double num2 = lua_n.args.get_long_arg_clojure_evalation(args,0,"function(t) return t.num2  end ");
-
-    if(lua_n.has_errors(args)){
-        char *error_message = lua_n.get_error_message(args);
-        return lua_n.response.send_error(error_message);
+        lua_n.tables.set_method(teste,"__gc", deleter);
+        lua_n.tables.set_long_prop(teste,"global_value",acumulator);
+        acumulator+=1;
     }
-    return lua_n.response.send_double(num1+num2);
+
+    return NULL;
+}
+
+LuaCEmbedResponse * printl(LuaCEmbed *args){
+    LuaCEmbedTable  *valor3  = lua_n.args.get_table(args,0);
+    printf("chamou o teste valor: %ld\n",(long )lua_n.tables.get_long_prop(valor3,"global_value"));
     return NULL;
 }
 
@@ -20,15 +33,10 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"add",add_func);
+    lua_n.add_callback(l,"test",test_table);
+    lua_n.add_callback(l,"print",printl);
 
-
-   double result = lua_n.get_evaluation_double(l,"add({num1=10, num2=30})");
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
-    }
-   printf("resullt :%lf\n",result);
+    lua_n.evaluete_file(l,"teste.lua");
 
     lua_n.free(l);
 
