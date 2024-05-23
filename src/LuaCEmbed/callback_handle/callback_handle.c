@@ -18,6 +18,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     self->current_function = func_name;
     void *old_funct_tables = self->func_tables;
     self->func_tables = (void*)newprivateLuaCEmbedTableArray();
+    self->scope_level+=1;
 
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
@@ -40,6 +41,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
     self->func_tables = old_funct_tables;
+    self->scope_level-=1;
 
 
     lua_settop(self->state, 0);

@@ -12,6 +12,8 @@ typedef struct LuaCEmbed{
     void (*delete_function)(struct  LuaCEmbed *self);
     void *global_tables;
     void *func_tables;
+    int lib_identifier;
+    int scope_level;
 }LuaCEmbed;
 
 

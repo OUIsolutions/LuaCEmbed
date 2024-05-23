@@ -8,6 +8,8 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
     self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
     self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
+
+
     return self;
 }
 void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit){
@@ -35,10 +37,19 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     self->public_functions = public_functions;
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
 
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
+    self->lib_identifier = 0;
+    if(lua_type(self->state,-1) == LUA_CEMBED_NIL){
+        self->lib_identifier  = lua_tointeger(self->state,-1)+1;
+    }
+    lua_pushinteger(self->state,self->lib_identifier);
+    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
 
 
+    char *lib_meta_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_META_TABLE_,self->lib_identifier);
     //creating the metatable
-    luaL_newmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE);
+    luaL_newmetatable(self->state, lib_meta_table);
+
 
     //seting the clojure key
     lua_pushstring(self->state,PRIVATE_LUA_CEMBED_DEL_PREFIX);
@@ -52,20 +63,23 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
 
 
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME_,self->lib_identifier);
     //creating the global table to store the elements
     lua_newtable(self->state);
-    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-
-    luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE);
+    lua_setglobal(self->state,lib_main_table);
 
 
+    luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE_);
+    free(lib_meta_table);
+    free(lib_main_table);
     return  self;
 }
 
 int LuaCembed_perform(LuaCEmbed *self){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
-
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME_,self->lib_identifier);
+    lua_getglobal(self->state,lib_main_table);
+    free(lib_main_table);
     return 1;
 }
 
