@@ -8,7 +8,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
     self->total_args =  lua_gettop(self->state);
     for(int i  = 0; i < self->total_args; i++){
-        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,i);
+        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size,i);
         lua_pushvalue(L,i+1);
         lua_setglobal(L,formated_arg);
         free(formated_arg);
@@ -147,10 +147,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
 void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
-    //get the table
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs);
 
+    //get the table
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
     //set the function name
     lua_pushstring(self->state,callback_name);
 
@@ -169,12 +170,13 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
     if(self->public_functions){
         //it points the function to a global function
         //like: callback = private_lua_c_embed_main_lib_table.callback
-        lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+        lua_getglobal(self->state, main_lib_table);
         lua_getfield(self->state,-1,callback_name);
         lua_setglobal(self->state, callback_name);
     }
 
     lua_settop(self->state, 0);
+    free(main_lib_table);
 
 }
 

@@ -2,7 +2,9 @@
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
+                                                  private_LuaCEmbed_get_stack_size(self),
+                                                  formatted_index-1);
     lua_getglobal(self->state,formated_arg);
 
     if(lua_type(self->state,-1) == LUA_CEMBED_NOT_FOUND){
@@ -97,7 +99,9 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     }
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
+                                                  private_LuaCEmbed_get_stack_size(self),
+                                                  formatted_index-1);
     LuaCEmbedTable  *created = LuaCembed_get_global_table(self,formated_arg);
     free(formated_arg);
     lua_settop(self->state,0);
@@ -108,7 +112,9 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns){
 
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
+    char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
+                                                   private_LuaCEmbed_get_stack_size(self),
+                                                   formatted_index-1);
 
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_FUNCTION)){
@@ -125,7 +131,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -136,7 +142,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);

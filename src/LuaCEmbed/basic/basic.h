@@ -33,7 +33,10 @@ void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit);
 
 int privata_LuaCEmbed_get_total_runing_libs(LuaCEmbed *self);
 
-int privata_LuaCEmbed_increment_stack(LuaCEmbed *self);
+int private_LuaCEmbed_get_stack_size(LuaCEmbed *self);
+
+void  privata_LuaCEmbed_increment_stack_(LuaCEmbed *self);
+
 
 void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self);
 
