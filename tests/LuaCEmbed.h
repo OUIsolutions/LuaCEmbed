@@ -18,6 +18,327 @@
 
 
 
+
+
+#ifndef UNIVERSAL_GARBAGE_H
+
+
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+
+
+
+
+#define UniversalGarbage_create_empty_struct(name,element_type) \
+(element_type*)malloc(sizeof(element_type));    \
+*name = (element_type){0};
+
+
+#define UniversalGarbage_cast(value) ((void**)&value)
+
+
+#define UniversalGarbage_add(garbage,deallocator_callback,value) \
+    rawUniversalGarbage_add(garbage,(void*)deallocator_callback,UniversalGarbage_cast(value))
+
+#define UniversalGarbage_add_simple(garbage,value) \
+     UniversalGarbage_add(garbage,free,value)
+
+
+#define UniversalGarbage_add_return(garbage,deallocator_callback,value) \
+        UniversalGarbage_add(garbage->return_values,deallocator_callback,value)
+
+
+#define UniversalGarbage_add_simple_return(garbage,value) \
+    UniversalGarbage_add_simple(garbage->return_values,value)
+
+
+
+#define  UniversalGarbage_remove(garbage,value) \
+    rawUniversalGarbage_remove(garbage,UniversalGarbage_cast(value));
+
+
+#define  UniversalGarbage_disconnect(garbage,value) \
+    rawUniversalGarbage_disconnect(garbage,UniversalGarbage_cast(value));
+
+
+
+
+#define UniversalGarbage_reallocate(garbage,value) \
+    rawUniversalGarbage_reallocate(garbage,UniversalGarbage_cast(value))
+
+
+#define UniversalGarbage_resset(garbage,value) \
+    rawUniversalGarbage_resset(garbage,UniversalGarbage_cast(value))
+
+
+
+
+
+
+typedef struct privateUniversalGarbageElement{
+    void **pointer;
+    void (*deallocator_callback)(void *element);
+    void *pointed_value;
+}privateUniversalGarbageElement;
+
+void private_UniversalGarbageSimpleElement_free_pointed_value(privateUniversalGarbageElement *self);
+
+
+void private_UniversalGarbageSimpleElement_free(privateUniversalGarbageElement *self);
+
+privateUniversalGarbageElement * private_newUniversalGarbageSimpleElement(void (*dealocator_callback)(void *element), void **pointer);
+
+
+
+typedef  struct UniversalGarbage{
+
+    struct UniversalGarbage *return_values;
+    privateUniversalGarbageElement **elements;
+    int  elements_size;
+    bool is_the_root;
+
+}UniversalGarbage;
+
+UniversalGarbage * newUniversalGarbage();
+
+UniversalGarbage * private_new_MainUniversalGarbage();
+
+
+
+bool  rawUniversalGarbage_resset(UniversalGarbage *self, void **pointer);
+
+bool  rawUniversalGarbage_remove(UniversalGarbage *self, void **pointer);
+
+bool  rawUniversalGarbage_disconnect(UniversalGarbage *self, void **pointer);
+
+bool rawUniversalGarbage_reallocate(UniversalGarbage *self, void **pointer);
+
+bool  rawUniversalGarbage_add(UniversalGarbage *self,  void *release_callback, void **pointer);
+
+void private_UniversalGarbage_free_all_sub_elements(UniversalGarbage *self);
+
+void UniversalGarbage_free_including_return(UniversalGarbage *self);
+
+void UniversalGarbage_free(UniversalGarbage *self);
+
+
+
+
+
+
+
+privateUniversalGarbageElement * private_newUniversalGarbageSimpleElement(void (*dealocator_callback)(void *element), void **pointer){
+
+    privateUniversalGarbageElement * self = UniversalGarbage_create_empty_struct(
+            self,
+            privateUniversalGarbageElement
+    );
+    self->pointer = pointer;
+    self->deallocator_callback = dealocator_callback;
+    self->pointed_value = *pointer;
+    return  self;
+}
+void private_UniversalGarbageSimpleElement_free_pointed_value(privateUniversalGarbageElement *self){
+    if(self->pointed_value){
+        self->deallocator_callback(self->pointed_value);
+        self->pointed_value = NULL;
+    }
+}
+
+void private_UniversalGarbageSimpleElement_free(privateUniversalGarbageElement *self){
+    private_UniversalGarbageSimpleElement_free_pointed_value(self);
+    free(self);
+}
+
+
+UniversalGarbage * private_new_MainUniversalGarbage(){
+    UniversalGarbage *self = UniversalGarbage_create_empty_struct(self,UniversalGarbage)
+    self->elements = (privateUniversalGarbageElement**)malloc(0);
+    self->is_the_root = false;
+    return self;
+}
+
+UniversalGarbage * newUniversalGarbage(){
+    UniversalGarbage *self = UniversalGarbage_create_empty_struct(self,UniversalGarbage)
+    self->is_the_root = true;
+    self->elements = (privateUniversalGarbageElement**)malloc(0);
+    self->return_values =private_new_MainUniversalGarbage();
+
+    return self;
+}
+
+
+
+
+bool  rawUniversalGarbage_reallocate(UniversalGarbage *self, void **pointer){
+
+    if(self->is_the_root){
+
+        if(rawUniversalGarbage_reallocate(self->return_values,pointer)){
+            return true;
+        }
+    }
+
+
+    for(int i = 0; i < self->elements_size; i++){
+
+        privateUniversalGarbageElement *current = self->elements[i];
+        bool reallocate = current->pointer == pointer;
+
+        if(reallocate){
+            current->pointed_value = *pointer;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool rawUniversalGarbage_resset(UniversalGarbage *self, void **pointer){
+
+    if(self->is_the_root){
+        if(rawUniversalGarbage_resset(self->return_values,pointer)){
+            return true;
+        }
+    }
+
+
+    for(int i = 0; i < self->elements_size; i++){
+        privateUniversalGarbageElement *current = self->elements[i];
+        bool resset = current->pointer == pointer;
+        if(resset){
+            private_UniversalGarbageSimpleElement_free_pointed_value(current);
+            current->pointed_value = *pointer;
+            return true;
+        }
+    }
+    return  false;
+
+}
+bool  rawUniversalGarbage_remove(UniversalGarbage *self, void **pointer){
+    if(self->is_the_root){
+        if(rawUniversalGarbage_remove(self->return_values,pointer)){
+            *pointer = NULL;
+            return true;
+        }
+    }
+
+    for(int i = 0; i < self->elements_size; i++){
+        privateUniversalGarbageElement *current = self->elements[i];
+        if(current->pointer == pointer){
+            private_UniversalGarbageSimpleElement_free(current);
+            self->elements_size-=1;
+            bool its_not_the_last = i < self->elements_size;
+            if(its_not_the_last){
+                self->elements[i] = self->elements[self->elements_size];
+
+            }
+            *pointer = NULL;
+            return  true;
+        }
+    }
+    return  false;
+}
+bool  rawUniversalGarbage_disconnect(UniversalGarbage *self, void **pointer){
+    if(self->is_the_root){
+        if(rawUniversalGarbage_disconnect(self->return_values,pointer)){
+            return true;
+        }
+    }
+
+    for(int i = 0; i < self->elements_size; i++){
+        privateUniversalGarbageElement *current = self->elements[i];
+        if(current->pointer == pointer){
+            free(current);
+            self->elements_size-=1;
+            bool its_not_the_last = i < self->elements_size;
+            if(its_not_the_last){
+                self->elements[i] = self->elements[self->elements_size];
+            }
+            return true;
+        }
+    }
+    return  false;
+
+
+
+}
+bool  rawUniversalGarbage_add(UniversalGarbage *self, void *release_callback, void **pointer){
+
+    if(!pointer){
+        return false;
+    }
+
+
+    for(int i = 0; i < self->elements_size; i++){
+        privateUniversalGarbageElement *current = self->elements[i];
+        if(current->pointer == pointer){
+            return false;
+        }
+    }
+
+    self->elements = (privateUniversalGarbageElement**)realloc(
+            self->elements,
+            (self->elements_size + 1) * sizeof(privateUniversalGarbageElement*)
+    );
+    void (*dealocator_callback)(void *element);
+#ifdef __cplusplus
+    dealocator_callback =reinterpret_cast<void(*)(void*)>(release_callback);
+#else
+    dealocator_callback = (void*)(void*)release_callback;
+
+#endif
+
+
+
+    self->elements[self->elements_size] = private_newUniversalGarbageSimpleElement(dealocator_callback, pointer);
+    self->elements_size+=1;
+    return  true;
+}
+
+
+
+void  private_UniversalGarbage_free_all_sub_elements(UniversalGarbage *self){
+    for(int i = 0; i < self->elements_size; i++){
+        private_UniversalGarbageSimpleElement_free(self->elements[i]);
+    }
+    free(self->elements);
+}
+
+void UniversalGarbage_free_including_return(UniversalGarbage *self){
+    private_UniversalGarbage_free_all_sub_elements(self);
+    if(self->is_the_root){
+        UniversalGarbage_free(self->return_values);
+    }
+    free(self);
+}
+
+void UniversalGarbage_free(UniversalGarbage *self){
+    private_UniversalGarbage_free_all_sub_elements(self);
+
+    if(self->is_the_root){
+
+        UniversalGarbage *return_garbage = self->return_values;
+        for(int i = 0; i < return_garbage->elements_size; i++){
+            free(return_garbage->elements[i]);
+        }
+
+        free(return_garbage->elements);
+        free(return_garbage);
+    }
+
+
+    free(self);
+}
+
+
+
+
+#define UNIVERSAL_GARBAGE_H
+#endif
+
 /*
 ** Lua core, libraries, and interpreter in a single file.
 ** Compiling just this file generates a complete Lua stand-alone
@@ -22643,22 +22964,27 @@ LUALIB_API void luaL_checkversion_ (lua_State *L, lua_Number ver, size_t sz) {
 #define LUA_CEMBED_OK 0
 #define LUA_CEMBED_GENERIC_ERROR (-1)
 
+
+#define PRIVATE_LUA_CEMBED_TOTAL_LIBS "private_lua_c_embed_total_running_libs"
+#define PRIVATE_LUA_CEMBED_STACK_LEVEL "private_lua_c_embed_stack_level"
+
 #define PRIVATE_LUA_CEMBED_EVALUATION_NAME "private_lua_c_embed_evaluation"
-
-#define  PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE "%s = %s\n"
-#define PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME "private_lua_c_embed_main_lib_table"
 #define PRIVATE_LUA_CEMBED_DEL_PREFIX "__gc"
-#define PRIVATE_LUA_CEMBED_MAIN_META_TABLE "private_lua_c_embed_main_meta_table"
+#define  PRIVATE_LUA_CEMBED_GLOBAL_EVALUATION_CODE "%s = %s\n"
 
 
-#define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE "private_lua_c_embed_anononymous_table_%ld"
-#define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE "private_lua_c_embed_anononymous_func_table_%ld"
+
 
 #define PRIVATE_LUA_CEMBED_SELFNAME "private_lua_c_embed_self"
-#define  PRIVATE_LUA_CEMBED_MULTIRETURN "private_lua_c_embed_multi_return%d"
 #define PRIVATE_LUA_CEMBED_STAGE_AREA_TABLE "private_lua_c_embed_stage_area_table"
-#define PRIVATE_LUA_CEMBED_ARGS "private_lua_c_embed_args%d"
 #define PRIVATE_LUA_CEMBED_TABLE_RETURN "private_lua_embed_table_return"
+
+#define PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__ "private_lua_c_embed_main_lib_table_%d"
+#define PRIVATE_LUA_CEMBED_MAIN_META_TABLE__ "private_lua_c_embed_main_meta_table_%d"
+#define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE_ "private_lua_c_embed_anononymous_table_%d_%d"
+#define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_ "private_lua_c_embed_anononymous_func_table_%d_%d"
+#define PRIVATE_LUA_CEMBED_ARGS_ "private_lua_c_embed_args_%d_%d"
+#define  PRIVATE_LUA_CEMBED_MULTIRETURN_ "private_lua_c_embed_multi_return_%d_%d"
 
 
 
@@ -22748,6 +23074,7 @@ typedef struct LuaCEmbed{
     void (*delete_function)(struct  LuaCEmbed *self);
     void *global_tables;
     void *func_tables;
+    int lib_identifier;
 }LuaCEmbed;
 
 
@@ -22787,6 +23114,14 @@ void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self);
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 
 void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit);
+
+
+int private_LuaCEmbed_get_stack_size_(LuaCEmbed *self);
+
+void  privata_LuaCEmbed_increment_stack_(LuaCEmbed *self);
+
+
+void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self);
 
 void LuaCEmbed_free(LuaCEmbed *self);
 
@@ -23189,53 +23524,6 @@ void LuaCEmbed_set_table_lib_prop(LuaCEmbed *self,const char *name,LuaCEmbedTabl
 
 
 
-void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value){
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
-    //set the function name
-    lua_pushstring(self->state,name);
-    lua_pushinteger(self->state,value);
-    lua_settable(self->state,-3);
-}
-
-void LuaCEmbed_set_double_lib_prop(LuaCEmbed *self,const char *name,double value){
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
-    //set the function name
-    lua_pushstring(self->state,name);
-    lua_pushnumber(self->state,value);
-    lua_settable(self->state,-3);
-}
-
-void LuaCEmbed_set_bool_lib_prop(LuaCEmbed *self,const char *name,bool value){
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
-    //set the function name
-    lua_pushstring(self->state,name);
-    lua_pushboolean(self->state,value);
-    lua_settable(self->state,-3);
-}
-
-void LuaCEmbed_set_string_lib_prop(LuaCEmbed *self,const char *name,const char * value){
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
-    //set the function name
-    lua_pushstring(self->state,name);
-    lua_pushstring(self->state,value);
-    lua_settable(self->state,-3);
-}
-
-void LuaCEmbed_set_table_lib_prop(LuaCEmbed *self,const char *name,LuaCEmbedTable *value){
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
-    lua_pushstring(self->state,name);
-    lua_getglobal(self->state,value->global_name);
-    lua_settable(self->state,-3);
-}
-
-
-
-
 
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table);
 
@@ -23574,6 +23862,8 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
     self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
     self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
+
+
     return self;
 }
 void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit){
@@ -23601,10 +23891,20 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     self->public_functions = public_functions;
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
 
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
+    self->lib_identifier = 0;
+    if(lua_type(self->state,-1) == LUA_CEMBED_NIL){
+        self->lib_identifier  = lua_tointeger(self->state,-1)+1;
+    }
+    lua_pushinteger(self->state,self->lib_identifier);
+    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
 
-
+    UniversalGarbage  *garbage = newUniversalGarbage();
+    char *lib_meta_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_META_TABLE__,self->lib_identifier);
+    UniversalGarbage_add_simple(garbage,lib_meta_table);
     //creating the metatable
-    luaL_newmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE);
+    luaL_newmetatable(self->state, lib_meta_table);
+
 
     //seting the clojure key
     lua_pushstring(self->state,PRIVATE_LUA_CEMBED_DEL_PREFIX);
@@ -23616,22 +23916,24 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
     lua_settable(self->state, -3);
 
-
-
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+    UniversalGarbage_add_simple(garbage,lib_main_table);
     //creating the global table to store the elements
     lua_newtable(self->state);
-    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-
-    luaL_setmetatable(self->state, PRIVATE_LUA_CEMBED_MAIN_META_TABLE);
+    lua_setglobal(self->state,lib_main_table);
 
 
+    luaL_setmetatable(self->state, lib_main_table);
+    UniversalGarbage_free(garbage);
     return  self;
 }
 
 int LuaCembed_perform(LuaCEmbed *self){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+    lua_getglobal(self->state,lib_main_table);
+    free(lib_main_table);
     return 1;
 }
 
@@ -23693,6 +23995,39 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 
+int private_LuaCEmbed_get_stack_size(LuaCEmbed *self){
+
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
+        return  (int)lua_tonumber(self->state,-1);
+    }
+    return 0;
+}
+
+
+void privata_LuaCEmbed_increment_stack_(LuaCEmbed *self){
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    int value = 0;
+    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
+        value =  lua_tonumber(self->state,-1);
+    }
+    lua_pushinteger(self->state,value+1);
+    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+}
+
+
+void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self){
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    int value = 0;
+    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
+        value =  lua_tonumber(self->state,-1);
+    }
+    if(value> 0){
+        lua_pushinteger(self->state,value+1);
+        lua_setglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    }
+
+}
 
 void LuaCEmbed_free(LuaCEmbed *self){
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->global_tables);
@@ -23747,7 +24082,9 @@ int private_LuaCEmbed_ensure_top_stack_arg_type(LuaCEmbed *self, int index,int a
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
+                                                  private_LuaCEmbed_get_stack_size(self),
+                                                  formatted_index-1);
     lua_getglobal(self->state,formated_arg);
 
     if(lua_type(self->state,-1) == LUA_CEMBED_NOT_FOUND){
@@ -23842,7 +24179,9 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     }
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
+                                                  private_LuaCEmbed_get_stack_size(self),
+                                                  formatted_index-1);
     LuaCEmbedTable  *created = LuaCembed_get_global_table(self,formated_arg);
     free(formated_arg);
     lua_settop(self->state,0);
@@ -23853,7 +24192,9 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns){
 
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,formatted_index-1);
+    char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
+                                                   private_LuaCEmbed_get_stack_size(self),
+                                                   formatted_index-1);
 
     privateLuaCEmbed_put_arg_on_top(self,index);
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_FUNCTION)){
@@ -23870,7 +24211,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -23881,7 +24222,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);
@@ -24087,7 +24428,7 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
      int total = 0;
      lua_pushnil(self->main_object->state);
      while(lua_next(self->main_object->state,table_index)){
-         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,total);
+         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self->main_object),total);
          lua_pushvalue(self->main_object->state,-1);
          lua_setglobal(self->main_object->state,formated);
          free(formated);
@@ -24099,7 +24440,7 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
     }
 
     for(int i = 0; i < size; i++){
-        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self->main_object),i);
         lua_getglobal(self->main_object->state,formated);
         free(formated);
     }
@@ -24119,11 +24460,6 @@ void privateLuaCEmbedTable_free(LuaCEmbedTable *self){
     free(self);
 }
 
-void privateLuaCEmbedTable_free_setting_nill(LuaCEmbedTable *self){
-    lua_pushnil(self->main_object->state);
-    lua_setglobal(self->main_object->state,self->global_name);
-    privateLuaCEmbedTable_free(self);
-}
 
 
 
@@ -25330,8 +25666,7 @@ void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self){
 
     for(int i = 0; i < self->size;i++){
         LuaCEmbedTable  *current_table = self->tables[i];
-        privateLuaCEmbedTable_free_setting_nill(current_table);
-
+        privateLuaCEmbedTable_free(current_table);
     }
 
     free(self->tables);
@@ -25425,12 +25760,13 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
     private_lua_cembed_memory_limit = self->memory_limit;
 
-    const char *format_raw = PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE;
+
+    const char *format_raw = PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE_;
     if(self->current_function){
-       format_raw  =PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE;
+       format_raw  =PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_;
     }
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
-    char *buffer= private_LuaCembed_format(format_raw, target->size);
+    char *buffer= private_LuaCembed_format(format_raw, private_LuaCEmbed_get_stack_size(self), target->size);
     LuaCEmbedTable  *created_table =LuaCembed_new_global_table(self,buffer);
 
     free(buffer);
@@ -25501,7 +25837,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self), i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -25512,7 +25848,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);
@@ -25575,8 +25911,10 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     LuaCEmbedResponse *possible_return = NULL;
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
     self->total_args =  lua_gettop(self->state);
+    privata_LuaCEmbed_increment_stack_(self);
+
     for(int i  = 0; i < self->total_args; i++){
-        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS,i);
+        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size(self),i);
         lua_pushvalue(L,i+1);
         lua_setglobal(L,formated_arg);
         free(formated_arg);
@@ -25584,14 +25922,8 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     const char *func_name =  lua_tostring(L,lua_upvalueindex(3));
     self->current_function = func_name;
-    bool func_tables_created_in_these_scope = false;
-    //these its nescessary for function clojures like map, filter, where the stack will be increased
-    if(self->func_tables == NULL) {
-        self->func_tables = (void*)newprivateLuaCEmbedTableArray();
-        func_tables_created_in_these_scope = true;
-    }
-
-
+    void *old_funct_tables = self->func_tables;
+    self->func_tables = (void*)newprivateLuaCEmbedTableArray();
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
 
@@ -25602,7 +25934,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         LuaCEmbedTable  *table = private_newLuaCembedTable(self, PRIVATE_LUA_CEMBED_SELFNAME);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
-        privateLuaCEmbedTable_free_setting_nill(table);
+        privateLuaCEmbedTable_free(table);
     }
 
     if(is_a_function){
@@ -25611,11 +25943,9 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         possible_return = function_callback(self);
     }
 
-    if(func_tables_created_in_these_scope) {
-        privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
-        self->func_tables = NULL;
-
-    }
+    privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
+    self->func_tables = old_funct_tables;
+    privata_LuaCEmbed_decrement_stack(self);
 
     lua_settop(self->state, 0);
 
@@ -25720,10 +26050,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
 void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
-    //get the table
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
-    lua_pushvalue(self->state,-1);
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
+    //get the table
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
     //set the function name
     lua_pushstring(self->state,callback_name);
 
@@ -25742,12 +26073,13 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
     if(self->public_functions){
         //it points the function to a global function
         //like: callback = private_lua_c_embed_main_lib_table.callback
-        lua_getglobal(self->state,PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME);
+        lua_getglobal(self->state, main_lib_table);
         lua_getfield(self->state,-1,callback_name);
         lua_setglobal(self->state, callback_name);
     }
 
     lua_settop(self->state, 0);
+    free(main_lib_table);
 
 }
 
@@ -26036,6 +26368,72 @@ bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self,const char *code, ...){
     return (bool)lua_toboolean(self->state,-1);
 }
 
+
+
+
+
+void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value){
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
+    //set the function name
+    lua_pushstring(self->state,name);
+    lua_pushinteger(self->state,value);
+    lua_settable(self->state,-3);
+    free(main_lib_table);
+}
+
+void LuaCEmbed_set_double_lib_prop(LuaCEmbed *self,const char *name,double value){
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
+    //set the function name
+    lua_pushstring(self->state,name);
+    lua_pushnumber(self->state,value);
+    lua_settable(self->state,-3);
+    free(main_lib_table);
+
+}
+
+void LuaCEmbed_set_bool_lib_prop(LuaCEmbed *self,const char *name,bool value){
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
+    //set the function name
+    lua_pushstring(self->state,name);
+    lua_pushboolean(self->state,value);
+    lua_settable(self->state,-3);
+    free(main_lib_table);
+
+}
+
+void LuaCEmbed_set_string_lib_prop(LuaCEmbed *self,const char *name,const char * value){
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
+    //set the function name
+    lua_pushstring(self->state,name);
+    lua_pushstring(self->state,value);
+    lua_settable(self->state,-3);
+    free(main_lib_table);
+
+}
+
+void LuaCEmbed_set_table_lib_prop(LuaCEmbed *self,const char *name,LuaCEmbedTable *value){
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+
+    lua_getglobal(self->state,main_lib_table);
+    lua_pushvalue(self->state,-1);
+    lua_pushstring(self->state,name);
+    lua_getglobal(self->state,value->global_name);
+    lua_settable(self->state,-3);
+    free(main_lib_table);
+
+}
 
 
 

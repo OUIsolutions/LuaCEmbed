@@ -115,14 +115,16 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
                                                    private_LuaCEmbed_get_stack_size(self),
                                                    formatted_index-1);
-
     privateLuaCEmbed_put_arg_on_top(self,index);
+
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_FUNCTION)){
         free(formatted_arg);
         lua_settop(self->state,0);
         return  NULL;
     }
+
     int total_args = private_lua_cEmbed_unpack(args_to_call,formatted_arg);
+
     if(lua_pcall(self->state,total_args,total_returns,0)){
         privateLuaCEmbed_raise_error_not_jumping(self, lua_tostring(self->state,-1));
         free(formatted_arg);
