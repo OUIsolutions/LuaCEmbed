@@ -1,7 +1,6 @@
 #include "src/one.c"
 LuaCEmbedNamespace  lua_n;
 
-int acumulator = 0;
 LuaCEmbedResponse * deleter(LuaCEmbedTable *self,LuaCEmbed *args){
     long global_value = lua_n.tables.get_long_prop(self,"global_value");
     printf("deletou %ld\n",global_value);
@@ -10,22 +9,20 @@ LuaCEmbedResponse * deleter(LuaCEmbedTable *self,LuaCEmbed *args){
 
 LuaCEmbedResponse  * test_table(LuaCEmbed *args){
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 100; i++){
         char index[20] = {0};
-        sprintf(index,"valor%d",acumulator);
+        sprintf(index,"valor%d",i);
         LuaCEmbedTable * teste = lua_n.globals.new_table(args,index);
 
         lua_n.tables.set_method(teste,"__gc", deleter);
-        lua_n.tables.set_long_prop(teste,"global_value",acumulator);
-        acumulator+=1;
+        lua_n.tables.set_long_prop(teste,"global_value",i);
     }
 
     return NULL;
 }
 
 LuaCEmbedResponse * printl(LuaCEmbed *args){
-    LuaCEmbedTable  *valor3  = lua_n.args.get_table(args,0);
-    printf("chamou o teste valor: %ld\n",(long )lua_n.tables.get_long_prop(valor3,"global_value"));
+    printf("aaaaaaaaaaa\n");
     return NULL;
 }
 

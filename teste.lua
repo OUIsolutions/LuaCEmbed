@@ -1,6 +1,10 @@
 test()
 test()
 test()
-
 test()
-print(valor3)
+
+print()
+test()
+test()
+
+
