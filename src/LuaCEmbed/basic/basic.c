@@ -46,9 +46,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     lua_setglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
 
     UniversalGarbage  *garbage = newUniversalGarbage();
-    char *lib_meta_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_META_TABLE__,
-                                                    privata_LuaCEmbed_get_total_runing_libs(self),
-                                                    self->lib_identifier);
+    char *lib_meta_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_META_TABLE__,self->lib_identifier);
     UniversalGarbage_add_simple(garbage,lib_meta_table);
     //creating the metatable
     luaL_newmetatable(self->state, lib_meta_table);
@@ -64,10 +62,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
     lua_settable(self->state, -3);
 
-    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,
-                                                    privata_LuaCEmbed_get_total_runing_libs(self),
-                                                    self->lib_identifier
-                                                    );
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
     UniversalGarbage_add_simple(garbage,lib_main_table);
     //creating the global table to store the elements
     lua_newtable(self->state);
@@ -82,10 +77,7 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 int LuaCembed_perform(LuaCEmbed *self){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
-    char *lib_main_table = private_LuaCembed_format(
-            PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,
-            privata_LuaCEmbed_get_total_runing_libs(self),
-            self->lib_identifier);
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
     lua_getglobal(self->state,lib_main_table);
     free(lib_main_table);
     return 1;
@@ -148,13 +140,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 
-int privata_LuaCEmbed_get_total_runing_libs(LuaCEmbed *self){
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
-    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
-        return lua_tonumber(self->state,-1);
-    }
-    return 0;
-}
+
 int private_LuaCEmbed_get_stack_size(LuaCEmbed *self){
     lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
     if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){

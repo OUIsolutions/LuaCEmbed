@@ -1,7 +1,7 @@
 
 
 void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value){
-    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs(self));
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     lua_getglobal(self->state,main_lib_table);
     lua_pushvalue(self->state,-1);
@@ -13,7 +13,7 @@ void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long valu
 }
 
 void LuaCEmbed_set_double_lib_prop(LuaCEmbed *self,const char *name,double value){
-    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs(self));
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     lua_getglobal(self->state,main_lib_table);
     lua_pushvalue(self->state,-1);
@@ -26,7 +26,7 @@ void LuaCEmbed_set_double_lib_prop(LuaCEmbed *self,const char *name,double value
 }
 
 void LuaCEmbed_set_bool_lib_prop(LuaCEmbed *self,const char *name,bool value){
-    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs(self));
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     lua_getglobal(self->state,main_lib_table);
     lua_pushvalue(self->state,-1);
@@ -39,7 +39,7 @@ void LuaCEmbed_set_bool_lib_prop(LuaCEmbed *self,const char *name,bool value){
 }
 
 void LuaCEmbed_set_string_lib_prop(LuaCEmbed *self,const char *name,const char * value){
-    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs(self));
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     lua_getglobal(self->state,main_lib_table);
     lua_pushvalue(self->state,-1);
@@ -52,7 +52,7 @@ void LuaCEmbed_set_string_lib_prop(LuaCEmbed *self,const char *name,const char *
 }
 
 void LuaCEmbed_set_table_lib_prop(LuaCEmbed *self,const char *name,LuaCEmbedTable *value){
-    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs(self));
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     lua_getglobal(self->state,main_lib_table);
     lua_pushvalue(self->state,-1);

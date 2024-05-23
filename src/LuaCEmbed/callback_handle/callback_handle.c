@@ -7,6 +7,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     LuaCEmbedResponse *possible_return = NULL;
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
     self->total_args =  lua_gettop(self->state);
+
     for(int i  = 0; i < self->total_args; i++){
         char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size,i);
         lua_pushvalue(L,i+1);
@@ -18,8 +19,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     self->current_function = func_name;
     void *old_funct_tables = self->func_tables;
     self->func_tables = (void*)newprivateLuaCEmbedTableArray();
-    self->scope_level+=1;
-
+    privata_LuaCEmbed_increment_stack_(self);
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
 
@@ -30,7 +30,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         LuaCEmbedTable  *table = private_newLuaCembedTable(self, PRIVATE_LUA_CEMBED_SELFNAME);
         method_callback = (LuaCEmbedResponse *(*)(LuaCEmbedTable *tb, LuaCEmbed *self))lua_touserdata(L, lua_upvalueindex(5));
         possible_return = method_callback(table,self);
-        privateLuaCEmbedTable_free_setting_nill(table);
+        privateLuaCEmbedTable_free(table);
     }
 
     if(is_a_function){
@@ -41,8 +41,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
     self->func_tables = old_funct_tables;
-    self->scope_level-=1;
-
+    privata_LuaCEmbed_decrement_stack(self);
 
     lua_settop(self->state, 0);
 
@@ -147,7 +146,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
 void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
 
-    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,privata_LuaCEmbed_get_total_runing_libs);
+    char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     //get the table
     lua_getglobal(self->state,main_lib_table);
