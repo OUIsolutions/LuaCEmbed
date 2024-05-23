@@ -1,9 +1,6 @@
 test()
 test()
 test()
+
 test()
 print(valor3)
-test()
-test()
-test()
-test()
