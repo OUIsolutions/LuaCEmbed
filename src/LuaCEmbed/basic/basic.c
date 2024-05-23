@@ -140,7 +140,37 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 
+int privata_LuaCEmbed_get_total_runing_libs(LuaCEmbed *self){
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
+    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
+        return lua_tonumber(self->state,-1);
+    }
+    return 0;
+}
 
+int privata_LuaCEmbed_increment_stack(LuaCEmbed *self){
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    int value = 0;
+    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
+        value =  lua_tonumber(self->state,-1);
+    }
+    lua_pushinteger(self->state,value+1);
+    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    return value;
+}
+
+void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self){
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    int value = 0;
+    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
+        value =  lua_tonumber(self->state,-1);
+    }
+    if(value> 0){
+        lua_pushinteger(self->state,value+1);
+        lua_setglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    }
+
+}
 
 void LuaCEmbed_free(LuaCEmbed *self){
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->global_tables);

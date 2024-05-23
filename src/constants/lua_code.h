@@ -1,5 +1,6 @@
 
 #define PRIVATE_LUA_CEMBED_TOTAL_LIBS "private_lua_c_embed_total_running_libs"
+#define PRIVATE_LUA_CEMBED_STACK_LEVEL "private_lua_c_embed_stack_level"
 
 #define PRIVATE_LUA_CEMBED_EVALUATION_NAME "private_lua_c_embed_evaluation"
 #define PRIVATE_LUA_CEMBED_DEL_PREFIX "__gc"
