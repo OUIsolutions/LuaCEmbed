@@ -134,7 +134,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self), i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -145,7 +145,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);

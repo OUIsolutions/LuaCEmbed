@@ -9,4 +9,3 @@ typedef long private_lua_cembed_incremented_arg ;
 #include "evaluation/evaluation.h"
 #include "protection_macros.h"
 #include "lib_props/lib_props.h"
-#include "lib_props/lib_props.c"
