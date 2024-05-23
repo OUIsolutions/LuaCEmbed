@@ -7,9 +7,10 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     LuaCEmbedResponse *possible_return = NULL;
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
     self->total_args =  lua_gettop(self->state);
+    privata_LuaCEmbed_increment_stack_(self);
 
     for(int i  = 0; i < self->total_args; i++){
-        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size,i);
+        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size(self),i);
         lua_pushvalue(L,i+1);
         lua_setglobal(L,formated_arg);
         free(formated_arg);
@@ -19,7 +20,6 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     self->current_function = func_name;
     void *old_funct_tables = self->func_tables;
     self->func_tables = (void*)newprivateLuaCEmbedTableArray();
-    privata_LuaCEmbed_increment_stack_(self);
     if(is_a_method){
         LuaCEmbedResponse *(*method_callback)(LuaCEmbedTable *tb, LuaCEmbed *self);
 
