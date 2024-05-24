@@ -1,4 +1,5 @@
 #include "memory/memory.c"
+#include "lib_start/lib_start.c"
 #include "basic/basic.c"
 #include "args/definition.h"
 #include "table/definition.h"
