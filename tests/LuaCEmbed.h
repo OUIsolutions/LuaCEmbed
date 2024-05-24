@@ -23084,6 +23084,14 @@ LuaCEmbed  *global_current_lua_embed_object;
 
 
 
+int private_LuaCemb_internal_free(lua_State *L);
+
+LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
+
+int LuaCembed_perform(LuaCEmbed *self);
+
+
+
 
 
 LuaCEmbed * newLuaCEmbedEvaluation();
@@ -23093,12 +23101,9 @@ int private_LuaCemb_internal_free(lua_State *L);
 
 
 
-LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
 
 
 void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
-
-int LuaCembed_perform(LuaCEmbed *self);
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self);
 
@@ -23853,6 +23858,71 @@ static void *private_LuaCembed_custom_allocator(void *ud, void *ptr, size_t osiz
 
 
 
+int private_LuaCemb_internal_free(lua_State *L){
+    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
+    if(self->delete_function){
+        self->delete_function(self);
+    }
+    LuaCEmbed_free(self);
+    return 0;
+}
+LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
+    LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
+    *self = (LuaCEmbed){0};
+
+    self->state = state;
+
+    self->lib_identifier = 0;
+
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
+    if(lua_type(self->state,-1) == LUA_CEMBED_NIL){
+        self->lib_identifier  = lua_tointeger(self->state,-1);
+    }
+    self->lib_identifier +=1;
+    lua_pushinteger(self->state,self->lib_identifier);
+    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
+
+
+    self->is_lib = true;
+    self->public_functions = public_functions;
+    self->global_tables = (void*)newprivateLuaCEmbedTableArray();
+
+
+    UniversalGarbage  *garbage = newUniversalGarbage();
+    char *lib_meta_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_META_TABLE__,self->lib_identifier);
+    UniversalGarbage_add_simple(garbage,lib_meta_table);
+    //creating the metatable
+    luaL_newmetatable(self->state, lib_meta_table);
+    //seting the clojure key
+    lua_pushstring(self->state,PRIVATE_LUA_CEMBED_DEL_PREFIX);
+    //set self as first clojure argument
+    lua_pushlightuserdata(self->state,(void*)self);
+    lua_pushcclosure(self->state,private_LuaCemb_internal_free,1);
+    lua_settable(self->state, -3);
+
+
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+    UniversalGarbage_add_simple(garbage,lib_main_table);
+    //creating the global table to store the elements
+    lua_newtable(self->state);
+    lua_setglobal(self->state,lib_main_table);
+    luaL_setmetatable(self->state, lib_meta_table);
+
+    UniversalGarbage_free(garbage);
+    return  self;
+}
+
+int LuaCembed_perform(LuaCEmbed *self){
+    PRIVATE_LUA_CEMBED_PROTECT_NUM
+
+    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+    lua_getglobal(self->state,lib_main_table);
+    free(lib_main_table);
+    return 1;
+}
+
+
+
 
 LuaCEmbed * newLuaCEmbedEvaluation(){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
@@ -23874,68 +23944,7 @@ void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(stru
     self->delete_function = delelte_function;
 }
 
-int private_LuaCemb_internal_free(lua_State *L){
 
-    LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
-    if(self->delete_function){
-        self->delete_function(self);
-    }
-    LuaCEmbed_free(self);
-    return 0;
-}
-LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
-    LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
-    *self = (LuaCEmbed){0};
-    self->state = state;
-    self->is_lib = true;
-    self->public_functions = public_functions;
-    self->global_tables = (void*)newprivateLuaCEmbedTableArray();
-
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
-    self->lib_identifier = 0;
-    if(lua_type(self->state,-1) == LUA_CEMBED_NIL){
-        self->lib_identifier  = lua_tointeger(self->state,-1)+1;
-    }
-    lua_pushinteger(self->state,self->lib_identifier);
-    lua_setglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
-
-    UniversalGarbage  *garbage = newUniversalGarbage();
-    char *lib_meta_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_META_TABLE__,self->lib_identifier);
-    UniversalGarbage_add_simple(garbage,lib_meta_table);
-    //creating the metatable
-    luaL_newmetatable(self->state, lib_meta_table);
-
-
-    //seting the clojure key
-    lua_pushstring(self->state,PRIVATE_LUA_CEMBED_DEL_PREFIX);
-
-
-    //set self as first clojure argument
-    lua_pushlightuserdata(self->state,(void*)self);
-    lua_pushcclosure(self->state,private_LuaCemb_internal_free,1);
-
-    lua_settable(self->state, -3);
-
-    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
-    UniversalGarbage_add_simple(garbage,lib_main_table);
-    //creating the global table to store the elements
-    lua_newtable(self->state);
-    lua_setglobal(self->state,lib_main_table);
-
-
-    luaL_setmetatable(self->state, lib_main_table);
-    UniversalGarbage_free(garbage);
-    return  self;
-}
-
-int LuaCembed_perform(LuaCEmbed *self){
-    PRIVATE_LUA_CEMBED_PROTECT_NUM
-
-    char *lib_main_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
-    lua_getglobal(self->state,lib_main_table);
-    free(lib_main_table);
-    return 1;
-}
 
 
 void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
