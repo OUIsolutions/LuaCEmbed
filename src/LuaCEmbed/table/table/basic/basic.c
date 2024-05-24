@@ -28,15 +28,17 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
      lua_getglobal(self->main_object->state,self->global_name);
      int table_index = lua_gettop(self->main_object->state);
      int total = 0;
+     int stack_level = private_LuaCEmbed_get_stack_size(self->main_object);
+
      lua_pushnil(self->main_object->state);
      while(lua_next(self->main_object->state,table_index)){
 
          lua_pushvalue(self->main_object->state,-1);
-         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self->main_object),total);
+         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,stack_level,total);
 
          lua_setglobal(self->main_object->state,formated);
          free(formated);
-         lua_pop(self->main_object->state,2);
+         lua_pop(self->main_object->state,1);
          total+=1;
      }
     if(previews_function){
@@ -44,11 +46,10 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
     }
 
     for(int i = 0; i < size; i++){
-        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self->main_object),i);
+        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,stack_level,i);
         lua_getglobal(self->main_object->state,formated);
         free(formated);
     }
-
 
     return (int)size;
 }
