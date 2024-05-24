@@ -162,7 +162,7 @@ void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self){
         value =  lua_tonumber(self->state,-1);
     }
     if(value> 0){
-        lua_pushinteger(self->state,value+1);
+        lua_pushinteger(self->state,value-1);
         lua_setglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
     }
 
