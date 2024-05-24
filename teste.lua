@@ -1,4 +1,5 @@
+local lib = require("my_lib")
 
-local teste  = io.open("a.out", "rb"):read("a")
-print(type(teste))
-io.open("b.out","w"):write(teste)
+
+soma = lib.add(10,20)
+print(soma)

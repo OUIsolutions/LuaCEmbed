@@ -1,38 +1,38 @@
 #include "src/one.c"
-LuaCEmbedNamespace  lua_n;
-
 
 LuaCEmbedNamespace  lua_n;
 
 
-LuaCEmbedResponse  * test_func(LuaCEmbed *args){
+LuaCEmbedResponse  *add_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
 
-    LuaCEmbedTable *created = lua_n.tables.new_anonymous_table(args);
-    lua_n.tables.append_long(created,10);
-    lua_n.tables.append_long(created,20);
-
-
-    LuaCEmbedTable *response = lua_n.args.run_lambda(args,0,created,3);
-    double result = lua_n.tables.get_double_by_index(response,0);
-
-    printf("result %lf\n",result);
-
-    return NULL;
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
+    }
+    double result = first_num + second_num;
+    return lua_n.response.send_double(result);
 }
 
-int main(int argc, char *argv[]){
+LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"test",test_func);
-
-    lua_n.evaluate(l,"test(function (a,b) return a + b end )");
-
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
     }
-    lua_n.free(l);
+    double result = first_num - second_num;
+    return lua_n.response.send_double(result);
+}
 
-    return 0;
+int luaopen_my_lib(lua_State *state){
+    lua_n = newLuaCEmbedNamespace();
+    //functions will be only assescible by the required reciver
+    bool set_functions_as_public  = false;
+    LuaCEmbed * l  = lua_n.newLuaLib(state,set_functions_as_public);
+    lua_n.add_callback(l,"add",add_cfunc);
+    lua_n.add_callback(l,"sub",sub_cfunc);
+    return lua_n.perform(l);
 }
