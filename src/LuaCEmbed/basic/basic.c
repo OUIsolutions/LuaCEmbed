@@ -141,14 +141,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 
-int private_LuaCEmbed_get_stack_size(LuaCEmbed *self){
 
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
-    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
-        return  (int)lua_tonumber(self->state,-1);
-    }
-    return 0;
-}
 
 
 void privata_LuaCEmbed_increment_stack_(LuaCEmbed *self){

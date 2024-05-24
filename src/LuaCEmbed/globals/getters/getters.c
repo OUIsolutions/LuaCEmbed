@@ -63,7 +63,7 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
        format_raw  =PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_;
     }
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
-    char *buffer= private_LuaCembed_format(format_raw, private_LuaCEmbed_get_stack_size(self), target->size);
+    char *buffer= private_LuaCembed_format(format_raw, self->stack_leve, target->size);
     LuaCEmbedTable  *created_table =LuaCembed_new_global_table(self,buffer);
 
     free(buffer);
@@ -134,7 +134,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self), i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, self->stack_leve, i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -145,7 +145,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->stack_leve,i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);

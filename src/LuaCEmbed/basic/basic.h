@@ -32,7 +32,6 @@ void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit);
 
 
-int private_LuaCEmbed_get_stack_size_(LuaCEmbed *self);
 
 void  privata_LuaCEmbed_increment_stack_(LuaCEmbed *self);
 

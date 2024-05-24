@@ -9,8 +9,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     self->total_args =  lua_gettop(self->state);
     privata_LuaCEmbed_increment_stack_(self);
 
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    self->stack_leve = (int)lua_tonumber(self->state,-1);
+
     for(int i  = 0; i < self->total_args; i++){
-        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size(self),i);
+        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->stack_leve,i);
         lua_pushvalue(L,i+1);
         lua_setglobal(L,formated_arg);
         free(formated_arg);
