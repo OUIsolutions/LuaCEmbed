@@ -149,9 +149,9 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
         lua_settable(self->state,-3);
         free(formatted);
     }
-
     free(formatted_arg);
     lua_settop(self->state,0);
+
     return result;
 
  }

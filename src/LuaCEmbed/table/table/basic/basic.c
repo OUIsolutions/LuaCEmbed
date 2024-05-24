@@ -30,11 +30,13 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
      int total = 0;
      lua_pushnil(self->main_object->state);
      while(lua_next(self->main_object->state,table_index)){
-         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self->main_object),total);
+
          lua_pushvalue(self->main_object->state,-1);
+         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self->main_object),total);
+
          lua_setglobal(self->main_object->state,formated);
          free(formated);
-         lua_pop(self->main_object->state,1);
+         lua_pop(self->main_object->state,2);
          total+=1;
      }
     if(previews_function){
