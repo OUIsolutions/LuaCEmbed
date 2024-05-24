@@ -23075,6 +23075,7 @@ typedef struct LuaCEmbed{
     void *global_tables;
     void *func_tables;
     int lib_identifier;
+    int stack_leve;
 }LuaCEmbed;
 
 
@@ -23116,7 +23117,6 @@ void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit);
 
 
-int private_LuaCEmbed_get_stack_size_(LuaCEmbed *self);
 
 void  privata_LuaCEmbed_increment_stack_(LuaCEmbed *self);
 
@@ -23995,14 +23995,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self){
 
 
 
-int private_LuaCEmbed_get_stack_size(LuaCEmbed *self){
 
-    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
-    if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
-        return  (int)lua_tonumber(self->state,-1);
-    }
-    return 0;
-}
 
 
 void privata_LuaCEmbed_increment_stack_(LuaCEmbed *self){
@@ -24082,9 +24075,7 @@ int private_LuaCEmbed_ensure_top_stack_arg_type(LuaCEmbed *self, int index,int a
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
-                                                  private_LuaCEmbed_get_stack_size(self),
-                                                  formatted_index-1);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->stack_leve,formatted_index-1);
     lua_getglobal(self->state,formated_arg);
 
     if(lua_type(self->state,-1) == LUA_CEMBED_NOT_FOUND){
@@ -24179,9 +24170,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     }
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
-                                                  private_LuaCEmbed_get_stack_size(self),
-                                                  formatted_index-1);
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->stack_leve,formatted_index-1);
     LuaCEmbedTable  *created = LuaCembed_get_global_table(self,formated_arg);
     free(formated_arg);
     lua_settop(self->state,0);
@@ -24192,16 +24181,15 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns){
 
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
-    char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,
-                                                   private_LuaCEmbed_get_stack_size(self),
-                                                   formatted_index-1);
-
+    char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->stack_leve,formatted_index-1);
     privateLuaCEmbed_put_arg_on_top(self,index);
+
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_FUNCTION)){
         free(formatted_arg);
         lua_settop(self->state,0);
         return  NULL;
     }
+
     int total_args = private_lua_cEmbed_unpack(args_to_call,formatted_arg);
     if(lua_pcall(self->state,total_args,total_returns,0)){
         privateLuaCEmbed_raise_error_not_jumping(self, lua_tostring(self->state,-1));
@@ -24211,7 +24199,7 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->stack_leve,i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -24222,14 +24210,14 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->stack_leve,i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);
     }
-
     free(formatted_arg);
     lua_settop(self->state,0);
+
     return result;
 
  }
@@ -24426,10 +24414,14 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
      lua_getglobal(self->main_object->state,self->global_name);
      int table_index = lua_gettop(self->main_object->state);
      int total = 0;
+
+
      lua_pushnil(self->main_object->state);
      while(lua_next(self->main_object->state,table_index)){
-         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self->main_object),total);
+
          lua_pushvalue(self->main_object->state,-1);
+         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->main_object->stack_leve,total);
+
          lua_setglobal(self->main_object->state,formated);
          free(formated);
          lua_pop(self->main_object->state,1);
@@ -24440,11 +24432,10 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
     }
 
     for(int i = 0; i < size; i++){
-        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self->main_object),i);
+        char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->main_object->stack_leve,i);
         lua_getglobal(self->main_object->state,formated);
         free(formated);
     }
-
 
     return (int)size;
 }
@@ -25766,7 +25757,7 @@ LuaCEmbedTable * LuaCembed_new_anonymous_table(LuaCEmbed *self){
        format_raw  =PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_;
     }
     privateLuaCEmbedTableArray *target = (privateLuaCEmbedTableArray*)privateLuaCEmbed_get_current_table_array(self);
-    char *buffer= private_LuaCembed_format(format_raw, private_LuaCEmbed_get_stack_size(self), target->size);
+    char *buffer= private_LuaCembed_format(format_raw, self->stack_leve, target->size);
     LuaCEmbedTable  *created_table =LuaCembed_new_global_table(self,buffer);
 
     free(buffer);
@@ -25837,7 +25828,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     }
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, private_LuaCEmbed_get_stack_size(self), i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_, self->stack_leve, i);
         int position = (i +1) * -1;
         lua_pushvalue(self->state,position);
         lua_setglobal(self->state,formatted);
@@ -25848,7 +25839,7 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
     for(int i = 0; i < total_returns; i++){
         lua_getglobal(self->state,result->global_name);
         lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,private_LuaCEmbed_get_stack_size(self),i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->stack_leve,i);
         lua_getglobal(self->state,formatted);
         lua_settable(self->state,-3);
         free(formatted);
@@ -25913,8 +25904,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     self->total_args =  lua_gettop(self->state);
     privata_LuaCEmbed_increment_stack_(self);
 
+    lua_getglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
+    self->stack_leve = (int)lua_tonumber(self->state,-1);
+
     for(int i  = 0; i < self->total_args; i++){
-        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,private_LuaCEmbed_get_stack_size(self),i);
+        char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->stack_leve,i);
         lua_pushvalue(L,i+1);
         lua_setglobal(L,formated_arg);
         free(formated_arg);
