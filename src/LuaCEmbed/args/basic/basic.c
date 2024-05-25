@@ -94,8 +94,7 @@ char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index){
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_STRING)){
         return NULL;
     }
-
-    char *result =  (char*)lua_tolstring(self->state,-1,(size_t*)size);
+    char *result =  (char*)lua_tolstring(self->state,-1,(unsigned  long*)size);
     lua_settop(self->state,0);
     return result;
 }
