@@ -3,6 +3,7 @@
 main.c
 doTheWorld.h
 teste.png
+teste.lua
 # Object files
 *.o
 *.ko
