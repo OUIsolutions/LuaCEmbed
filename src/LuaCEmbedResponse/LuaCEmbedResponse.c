@@ -14,12 +14,46 @@ LuaCEmbedResponse  * LuaCEmbed_send_bool(bool value){
     return self;
 }
 
+
 LuaCEmbedResponse * LuaCEmbed_send_str(const char *text){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
-    self->string_val  = strdup(text);
+    self->string_size = (long)strlen(text);
+    self->string_val  =  (char*)malloc(sizeof(char) * self->string_size +1);
+    memcpy(self->string_val,text,self->string_size);
+    self->string_val[self->string_size] = '\0';
     return self;
 }
+
+LuaCEmbedResponse * LuaCEmbed_send_raw_string(const char *text,long size){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
+    self->string_size = size;
+    self->string_val  =  (char*)malloc(sizeof(char) * self->string_size +1);
+    memcpy(self->string_val,text,self->string_size);
+    self->string_val[self->string_size] = '\0';
+    return self;
+}
+
+LuaCEmbedResponse * LuaCEmbed_send_str_reference(char *text){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
+    self->string_size = (long)strlen(text);
+    self->string_val  = text;
+    self->its_string_ref = true;
+    return self;
+}
+
+LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference( char *text,long size){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
+    self->string_size = size;
+    self->string_val  = text;
+    self->its_string_ref = true;
+    return  self;
+}
+
+
 
 LuaCEmbedResponse * LuaCEmbed_send_error(const char *format,...){
 
@@ -75,7 +109,8 @@ LuaCEmbedResponse  * LuaCEmbed_send_long(long value){
 
 
 void private_LuaCEmbedResponse_free(LuaCEmbedResponse  *self){
-    if(self->string_val){
+
+    if(self->string_val && self->its_string_ref == false){
         free(self->string_val);
     }
     free(self);

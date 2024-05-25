@@ -3,6 +3,8 @@ typedef struct {
 
     int type;
     double num_val;
+    bool its_string_ref;
+    long string_size;
     char *string_val;
 
 }LuaCEmbedResponse;
@@ -11,6 +13,12 @@ LuaCEmbedResponse *private_LuaCEmbedReturn_raw();
 
 
 LuaCEmbedResponse * LuaCEmbed_send_str(const char *text);
+
+LuaCEmbedResponse * LuaCEmbed_send_raw_string(const char *text,long size);
+
+LuaCEmbedResponse * LuaCEmbed_send_str_reference( char *text);
+
+LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference( char *text,long size);
 
 LuaCEmbedResponse * LuaCEmbed_send_error(const char *format,...);
 
