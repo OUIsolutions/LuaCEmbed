@@ -15,6 +15,8 @@ bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index);
 
 char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index);
 
+char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index);
+
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index);
 
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns);

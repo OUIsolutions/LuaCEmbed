@@ -81,7 +81,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_STRING_RESPONSE){
-        lua_pushstring(L, possible_return->string_val);
+        lua_pushlstring(self->state,possible_return->string_val,possible_return->string_size);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }

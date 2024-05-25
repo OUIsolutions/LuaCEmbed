@@ -1,6 +1,8 @@
 # Prerequisites
 *.d
 main.c
+doTheWorld.h
+teste.png
 # Object files
 *.o
 *.ko

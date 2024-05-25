@@ -7,6 +7,7 @@ typedef struct {
     long long  (*get_long)(LuaCEmbed *self, int index);
     double (*get_double)(LuaCEmbed *self, int index);
     bool (*get_bool)(LuaCEmbed *self, int index);
+    char * (*get_raw_str)(LuaCEmbed *self, long *size, int index);
     char * (*get_str)(LuaCEmbed *self, int index);
     LuaCEmbedTable  * (*get_table)(LuaCEmbed *self,int index);
     int  (*generate_arg_clojure_evalation)(LuaCEmbed *self,int index,const char *code,...);

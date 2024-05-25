@@ -87,6 +87,18 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
     lua_settop(self->state,0);
     return result;
 }
+char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+    lua_settop(self->state,0);
+    privateLuaCEmbed_put_arg_on_top(self,index);
+    if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_STRING)){
+        return NULL;
+    }
+
+    char *result =  (char*)lua_tolstring(self->state,-1,(size_t*)size);
+    lua_settop(self->state,0);
+    return result;
+}
 
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
