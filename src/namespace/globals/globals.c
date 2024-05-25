@@ -7,6 +7,8 @@ LuaCEmbedGlobalModule newLuaCEmbedGlobalModule(){
     self.get_double = LuaCEmbed_get_global_double;
     self.get_string = LuaCEmbed_get_global_string;
     self.get_long = LuaCEmbed_get_global_long;
+    self.get_raw_string =  LuaCEmbed_get_global_raw_string;
+    self.set_raw_string = LuaCEmbed_set_global_raw_string;
     self.get_bool = LuaCEmbed_get_global_bool;
     self.get_type = LuaCEmbed_get_global_type;
     self.run_global_lambda = LuaCEmbed_run_global_lambda;

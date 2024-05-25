@@ -41,6 +41,16 @@ bool LuaCEmbed_get_global_bool(LuaCEmbed *self,const char *name){
     return lua_toboolean(self->state,-1);
 }
 
+char * LuaCEmbed_get_global_raw_string(LuaCEmbed *self,const char *name,long *size){
+    PRIVATE_LUA_CEMBED_PROTECT_NULL
+    private_lua_cembed_memory_limit = self->memory_limit;
+
+    if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_STRING)){
+        return  NULL;
+    }
+    lua_getglobal(self->state, name);
+    return (char*)lua_tolstring(self->state,-1,(unsigned long*)size);
+}
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
