@@ -35,20 +35,20 @@ LuaCEmbedResponse * LuaCEmbed_send_raw_string(const char *text,long size){
     return self;
 }
 
-LuaCEmbedResponse * LuaCEmbed_send_str_reference(char *text){
+LuaCEmbedResponse * LuaCEmbed_send_str_reference(const char *text){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
     self->string_size = (long)strlen(text);
-    self->string_val  = text;
+    self->string_val  = (char*)text;
     self->its_string_ref = true;
     return self;
 }
 
-LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference( char *text,long size){
+LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference(const  char *text,long size){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
     self->string_size = size;
-    self->string_val  = text;
+    self->string_val  = (char*)text;
     self->its_string_ref = true;
     return  self;
 }

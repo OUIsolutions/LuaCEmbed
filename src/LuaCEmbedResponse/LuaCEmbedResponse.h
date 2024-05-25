@@ -16,9 +16,9 @@ LuaCEmbedResponse * LuaCEmbed_send_str(const char *text);
 
 LuaCEmbedResponse * LuaCEmbed_send_raw_string(const char *text,long size);
 
-LuaCEmbedResponse * LuaCEmbed_send_str_reference( char *text);
+LuaCEmbedResponse * LuaCEmbed_send_str_reference( const char *text);
 
-LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference( char *text,long size);
+LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference(const char *text,long size);
 
 LuaCEmbedResponse * LuaCEmbed_send_error(const char *format,...);
 
