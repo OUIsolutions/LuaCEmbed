@@ -140,7 +140,6 @@ long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
             if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_NUMBER)){
                 lua_pop(self->main_object->state,1);
                 lua_settop(self->main_object->state,0);
-
                 return LUA_CEMBED_GENERIC_ERROR;
             }
             long result = (long)lua_tonumber(self->main_object->state,-1);
