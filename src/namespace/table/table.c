@@ -9,6 +9,12 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.append_long = LuaCEmbedTable_append_long;
     self.append_table = LuaCEmbedTable_append_table;
     self.append_evaluation = LuaCEmbedTable_append_evaluation;
+    self.get_type_prop_looping = LuaCEmbedTable_get_type_prop_looping;
+    self.get_string_prop_looping = LuaCembedTable_get_string_prop_looping;
+    self.get_long_prop_looping = LuaCembedTable_get_long_prop_looping;
+    self.get_double_prop_looping= LuaCembedTable_get_double_prop_looping;
+    self.get_bool_prop_looping = LuaCembedTable_get_bool_prop_looping;
+
 
     self.insert_string_at_index = LuaCEmbedTable_insert_string_at_index;
     self.insert_double_at_index = LuaCEmbedTable_insert_double_at_index;
@@ -27,15 +33,15 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.new_sub_table_prop = LuaCEmbedTable_new_sub_table_by_key;
     self.set_sub_table_prop = LuaCEmbedTable_set_sub_table_prop;
     self.new_anonymous_table = LuaCembed_new_anonymous_table;
-
     self.set_sub_table_by_index = LuaCEmbedTable_set_sub_table_by_index;
-    self.get_bool_prop = LuaCembedTable_get_bool_prop;
-    self.get_double_prop = LuaCembedTable_get_double_prop;
-    self.get_long_prop = LuaCembedTable_get_long_prop;
-    self.get_string_prop = LuaCembedTable_get_string_prop;
-    self.get_type_prop = LuaCEmbedTable_get_type_prop;
-    self.destroy_prop = LuaCembedTable_destroy_prop;
 
+    self.get_bool_prop_by_field = LuaCembedTable_get_bool_prop_by_field;
+    self.get_double_prop_by_field = LuaCembedTable_get_double_prop_by_field;
+    self.get_long_prop_by_field = LuaCembedTable_get_long_prop_by_field;
+    self.get_string_prop_by_field = LuaCembedTable_get_string_prop_by_field;
+    self.get_type_prop_by_field = LuaCEmbedTable_get_type_prop_by_field;
+
+    self.destroy_prop = LuaCembedTable_destroy_prop;
     self.set_long_by_index = LuaCEmbedTable_set_long_by_index;
     self.set_bool_by_index= LuaCEmbedTable_set_bool_by_index;
     self.set_double_by_index =LuaCEmbedTable_set_double_by_index;

@@ -53,6 +53,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushstring(self->main_object->state, name);
     lua_gettable(self->main_object->state, -2);
+
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_TABLE)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
         return NULL;
