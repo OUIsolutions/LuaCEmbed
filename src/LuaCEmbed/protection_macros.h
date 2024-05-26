@@ -18,3 +18,5 @@
     if(!self){                          \
     return NULL;      \
     }
+
+#define PRIVATE_LUA_CEMBED_CLEAR_STACK     if(lua_gettop(self->main_object->state)){lua_settop(self->main_object->state,0);}

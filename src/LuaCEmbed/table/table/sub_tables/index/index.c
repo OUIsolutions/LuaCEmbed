@@ -26,6 +26,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
 
     if(possible){
         free(full_sub_table_name);
+        PRIVATE_LUA_CEMBED_CLEAR_STACK
         return possible;
     }
 
@@ -38,6 +39,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
     );
 
     free(full_sub_table_name);
+    PRIVATE_LUA_CEMBED_CLEAR_STACK
     return created;
 }
 
@@ -60,6 +62,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
 
             if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_TABLE)){
                 lua_pop(self->main_object->state,1);
+                PRIVATE_LUA_CEMBED_CLEAR_STACK
                 return NULL;
             }
 
@@ -75,6 +78,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
             if(possible){
                 free(full_sub_table_name);
                 lua_pop(self->main_object->state,1);
+                PRIVATE_LUA_CEMBED_CLEAR_STACK
                 return possible;
             }
 
@@ -88,6 +92,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
 
             free(full_sub_table_name);
             lua_pop(self->main_object->state,1);
+            PRIVATE_LUA_CEMBED_CLEAR_STACK
             return created;
         }
         lua_pop(self->main_object->state,1);
@@ -103,6 +108,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
             LuaCembed_convert_arg_code(LUA_CEMBED_NIL),
             LuaCembed_convert_arg_code(LUA_CEMBED_TABLE)
     );
+    PRIVATE_LUA_CEMBED_CLEAR_STACK
     return NULL;
 }
 
@@ -114,6 +120,7 @@ void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaC
     char *possible_key = LuaCembedTable_get_key_by_index(self,index);
     if(possible_key){
         LuaCEmbedTable_set_sub_table_prop(self,possible_key,sub_table);
+        PRIVATE_LUA_CEMBED_CLEAR_STACK
         return;
     }
 
@@ -123,5 +130,5 @@ void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaC
     lua_getglobal(self->main_object->state,sub_table->global_name);
     lua_settable(self->main_object->state,-3);
     lua_settop(self->main_object->state, 0);
-
+    PRIVATE_LUA_CEMBED_CLEAR_STACK
 }
