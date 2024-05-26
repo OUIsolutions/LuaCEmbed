@@ -3,10 +3,10 @@ LuaCEmbedNamespace  lua_n;
 
 
 LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
-    char *name = lua_n.tables.get_string_prop(self,"name");
-    long age  = lua_n.tables.get_long_prop(self,"age");
-    double height = lua_n.tables.get_double_prop(self,"height");
-    bool married = lua_n.tables.get_bool_prop(self,"married");
+    char *name = lua_n.tables.get_string_prop_by_field(self,"name");
+    long age  = lua_n.tables.get_long_prop_by_field(self,"age");
+    double height = lua_n.tables.get_double_prop_by_field(self,"height");
+    bool married = lua_n.tables.get_bool_prop_by_field(self,"married");
     printf("person description:\n");
     printf("name: %s\n",name);
     printf("age: %ld\n",age);
