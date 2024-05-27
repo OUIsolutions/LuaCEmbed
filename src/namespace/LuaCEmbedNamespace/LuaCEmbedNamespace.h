@@ -32,6 +32,11 @@ typedef struct{
     void (*set_string_lib_prop)(LuaCEmbed *self,const char *name,const char * value);
     void (*set_table_lib_prop)(LuaCEmbed *self,const char *name,LuaCEmbedTable *value);
 
+    long long  (*get_long_lib_prop)(LuaCEmbed *self,const char *name);
+    double (*get_double_lib_prop)(LuaCEmbed *self,const char *name);
+    bool (*get_bool_lib_prop)(LuaCEmbed *self,const char *name);
+    char * (*get_string_lib_prop)(LuaCEmbed *self,const char *name);
+    LuaCEmbedTable *(*get_table_lib_prop)(LuaCEmbed *self,const char *name);
 
     int (*evaluete_file)(LuaCEmbed *self, const char *file);
     void (*add_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );

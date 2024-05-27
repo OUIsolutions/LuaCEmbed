@@ -119,6 +119,8 @@ void LuaCEmbed_free(LuaCEmbed *self){
     if(self->error_msg){
         free(self->error_msg);
     }
-
+    if(self->main_lib_table){
+        free(self->main_lib_table);
+    }
     free(self);
 }

@@ -14,6 +14,8 @@
 #define PRIVATE_LUA_CEMBED_TABLE_RETURN "private_lua_embed_table_return"
 
 #define PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__ "private_lua_c_embed_main_lib_table_%d"
+#define PRIVATE_LUA_CEMBED_MAIN_LIB_SUB_TABLE "private_lua_c_embed_main_lib_table_%d_%s"
+
 #define PRIVATE_LUA_CEMBED_MAIN_META_TABLE__ "private_lua_c_embed_main_meta_table_%d"
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_TABLE_ "private_lua_c_embed_anononymous_table_%d_%d"
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_ "private_lua_c_embed_anononymous_func_table_%d_%d"

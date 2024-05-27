@@ -12,3 +12,4 @@
 #define PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX "index %d at object %s its %s instead of %s"
 #define PRIVATE_LUA_CEMBED_ELEMENT_DOES_NOT_HAVE_KEY "index %d at object %s not have a key"
 #define PRIVVATE_LUA_CEMBED_TIMEOUT_ERROR "timeout error"
+#define PRIVATE_LUA_CEMBED_LIB_PROP_WRONG_TYPE "lib prop %s its %s insteadd of %s"

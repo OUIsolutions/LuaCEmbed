@@ -14,6 +14,7 @@ typedef struct LuaCEmbed{
     void *func_tables;
     int lib_identifier;
     int stack_leve;
+    char *main_lib_table;
 }LuaCEmbed;
 
 

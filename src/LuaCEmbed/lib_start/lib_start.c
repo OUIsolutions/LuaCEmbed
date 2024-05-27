@@ -19,7 +19,11 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
     if(lua_type(self->state,-1) == LUA_CEMBED_NIL){
         self->lib_identifier  = lua_tointeger(self->state,-1);
     }
+
     self->lib_identifier +=1;
+
+    self->main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
+
     lua_pushinteger(self->state,self->lib_identifier);
     lua_setglobal(self->state,PRIVATE_LUA_CEMBED_TOTAL_LIBS);
 

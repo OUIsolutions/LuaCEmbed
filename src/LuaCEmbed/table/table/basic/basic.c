@@ -44,7 +44,6 @@ LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *fo
     if(previews_function){
         lua_getglobal(self->main_object->state,previews_function);
     }
-
     for(int i = 0; i < size; i++){
         char *formated = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->main_object->stack_leve,i);
         lua_getglobal(self->main_object->state,formated);
