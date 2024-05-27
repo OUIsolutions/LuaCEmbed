@@ -15,6 +15,7 @@ typedef struct LuaCEmbed{
     int lib_identifier;
     int stack_leve;
     char *main_lib_table;
+    bool field_protection = false;
 }LuaCEmbed;
 
 

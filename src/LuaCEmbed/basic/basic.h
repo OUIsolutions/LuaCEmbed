@@ -19,6 +19,7 @@ bool LuaCEmbed_has_errors(LuaCEmbed *self);
 
 void LuaCEmbed_clear_errors(LuaCEmbed *self);
 
+void privateLuaCEmbd_get_field_protected(LuaCEmbed *self,const char *name);
 
 void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error, ...);
 

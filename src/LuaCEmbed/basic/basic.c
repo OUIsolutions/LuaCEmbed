@@ -110,6 +110,11 @@ void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self){
 
 }
 
+void privateLuaCEmbd_get_field_protected(LuaCEmbed *self,const char *name){
+    self->field_protection = true;
+    lua_getfield(self->state,-1,name);
+    self->field_protection = false;
+}
 
 void LuaCEmbed_free(LuaCEmbed *self){
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->global_tables);
