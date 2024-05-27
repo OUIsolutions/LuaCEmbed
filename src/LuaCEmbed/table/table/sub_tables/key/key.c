@@ -51,16 +51,14 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_key(LuaCEmbedTable *self, const
 
 
     lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushstring(self->main_object->state, name);
-    lua_gettable(self->main_object->state, -2);
+    privateLuaCEmbd_get_field_protected(self->main_object,name);
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_TABLE)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
         return NULL;
     }
     //equivalent of full_sub_table_name = table.sub_table
     lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushstring(self->main_object->state, name);
-    lua_gettable(self->main_object->state, -2);
+    privateLuaCEmbd_get_field_protected(self->main_object,name);
     char *full_sub_table_name = private_LuaCembed_format("%s_%s", self->global_name, name);
     lua_setglobal(self->main_object->state,full_sub_table_name);
 
@@ -106,8 +104,8 @@ void LuaCEmbedTable_set_sub_table_prop(LuaCEmbedTable *self, const char *name, L
 
     //equivalent of full_sub_table_name = table.sub_table
     lua_getglobal(self->main_object->state,self->global_name);
-    lua_pushstring(self->main_object->state, name);
-    lua_gettable(self->main_object->state, -2);
+    privateLuaCEmbd_get_field_protected(self->main_object,name);
+
     char *full_sub_table_name = private_LuaCembed_format("%s_%s", self->global_name, name);
     lua_setglobal(self->main_object->state,full_sub_table_name);
     free(full_sub_table_name);
