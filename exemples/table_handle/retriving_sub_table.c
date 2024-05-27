@@ -13,8 +13,8 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
     for(int i = 0; i < size; i++){
 
         LuaCEmbedTable *current = lua_n.tables.get_sub_table_by_index(t1,i);
-        char *name  = lua_n.tables.get_string_prop(current,"name");
-        long age = lua_n.tables.get_long_prop(current,"age");
+        char *name  = lua_n.tables.get_string_prop_by_field(current,"name");
+        long age = lua_n.tables.get_long_prop_by_field(current,"age");
 
         if(lua_n.has_errors(args)){
             char *menssage = lua_n.get_error_message(args);

@@ -9,8 +9,8 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
         return  lua_n.response.send_error(menssage);
     }
 
-    char *name  = lua_n.tables.get_string_prop(t1,"name");
-    long age = lua_n.tables.get_long_prop(t1,"age");
+    char *name  = lua_n.tables.get_string_prop_by_field(t1,"name");
+    long age = lua_n.tables.get_long_prop_by_field(t1,"age");
 
     if(lua_n.has_errors(args)){
         char *menssage = lua_n.get_error_message(args);

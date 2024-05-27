@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
 
     lua_n.evaluate(l,"r = {a='internal text'}");
     LuaCEmbedTable *r_table  = lua_n.globals.get_table(l,"r");
-    char *a = lua_n.tables.get_string_prop(r_table,"a");
+    char *a = lua_n.tables.get_string_prop_by_field(r_table,"a");
     printf("value of r.a = %s\n",a);
 
     if(lua_n.has_errors(l)){

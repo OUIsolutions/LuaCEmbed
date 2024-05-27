@@ -10,7 +10,7 @@ int main(int argc, char *argv[]){
     LuaCEmbedTable *created = lua_n.globals.new_table(l,"r");
     lua_n.tables.set_string_prop(created,"a","internal text");
 
-    char *a =  lua_n.tables.get_string_prop(created,"a");
+    char *a =  lua_n.tables.get_string_prop_by_field(created,"a");
     printf("result of r.a %s\n",a);
 
     if(lua_n.has_errors(l)){

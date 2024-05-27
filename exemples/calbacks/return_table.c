@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
 
     lua_n.evaluate(l,"created_table = test()");
     LuaCEmbedTable *created = lua_n.globals.get_table(l,"created_table");
-    char *a = lua_n.tables.get_string_prop(created,"a");
+    char *a = lua_n.tables.get_string_prop_by_field(created,"a");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }

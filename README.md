@@ -900,8 +900,8 @@ LuaCEmbedResponse  * add_func(LuaCEmbed *args){
         return lua_n.response.send_error(error_message);
     }
 
-    double num1 = lua_n.tables.get_double_prop(t0,"num1");
-    double num2 = lua_n.tables.get_double_prop(t0,"num2");
+    double num1 = lua_n.tables.get_double_prop_by_field(t0,"num1");
+    double num2 = lua_n.tables.get_double_prop_by_field(t0,"num2");
 
 
     if(lua_n.has_errors(args)){
@@ -1131,7 +1131,7 @@ int main(int argc, char *argv[]){
 
     lua_n.evaluate(l,"created_table = test()");
     LuaCEmbedTable *created = lua_n.globals.get_table(l,"created_table");
-    char *a = lua_n.tables.get_string_prop(created,"a");
+    char *a = lua_n.tables.get_string_prop_by_field(created,"a");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
@@ -1263,8 +1263,8 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
         return  lua_n.response.send_error(menssage);
     }
 
-    char *name  = lua_n.tables.get_string_prop(t1,"name");
-    long age = lua_n.tables.get_long_prop(t1,"age");
+    char *name  = lua_n.tables.get_string_prop_by_field(t1,"name");
+    long age = lua_n.tables.get_long_prop_by_field(t1,"age");
 
     if(lua_n.has_errors(args)){
         char *menssage = lua_n.get_error_message(args);
@@ -1321,8 +1321,8 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
     for(int i = 0; i < size; i++){
 
         LuaCEmbedTable *current = lua_n.tables.get_sub_table_by_index(t1,i);
-        char *name  = lua_n.tables.get_string_prop(current,"name");
-        long age = lua_n.tables.get_long_prop(current,"age");
+        char *name  = lua_n.tables.get_string_prop_by_field(current,"name");
+        long age = lua_n.tables.get_long_prop_by_field(current,"age");
 
         if(lua_n.has_errors(args)){
             char *menssage = lua_n.get_error_message(args);
@@ -1526,10 +1526,10 @@ you also can set a method to a table, passing a callback function for it
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
-    char *name = lua_n.tables.get_string_prop(self,"name");
-    long age  = lua_n.tables.get_long_prop(self,"age");
-    double height = lua_n.tables.get_double_prop(self,"height");
-    bool married = lua_n.tables.get_bool_prop(self,"married");
+    char *name = lua_n.tables.get_string_prop_by_field(self,"name");
+    long age  = lua_n.tables.get_long_prop_by_field(self,"age");
+    double height = lua_n.tables.get_double_prop_by_field(self,"height");
+    bool married = lua_n.tables.get_bool_prop_by_field(self,"married");
     printf("person description:\n");
     printf("name: %s\n",name);
     printf("age: %ld\n",age);
@@ -1667,10 +1667,10 @@ LuaCEmbedNamespace  lua_n;
 
 
 LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
-    char *name = lua_n.tables.get_string_prop(self,"name");
-    long age  = lua_n.tables.get_long_prop(self,"age");
-    double height = lua_n.tables.get_double_prop(self,"height");
-    bool married = lua_n.tables.get_bool_prop(self,"married");
+    char *name = lua_n.tables.get_string_prop_by_field(self,"name");
+    long age  = lua_n.tables.get_long_prop_by_field(self,"age");
+    double height = lua_n.tables.get_double_prop_by_field(self,"height");
+    bool married = lua_n.tables.get_bool_prop_by_field(self,"married");
     printf("person description:\n");
     printf("name: %s\n",name);
     printf("age: %ld\n",age);
@@ -2031,7 +2031,7 @@ int main(int argc, char *argv[]){
 
     lua_n.evaluate(l,"r = {a='internal text'}");
     LuaCEmbedTable *r_table  = lua_n.globals.get_table(l,"r");
-    char *a = lua_n.tables.get_string_prop(r_table,"a");
+    char *a = lua_n.tables.get_string_prop_by_field(r_table,"a");
     printf("value of r.a = %s\n",a);
 
     if(lua_n.has_errors(l)){
@@ -2216,7 +2216,7 @@ int main(int argc, char *argv[]){
     LuaCEmbedTable *created = lua_n.globals.new_table(l,"r");
     lua_n.tables.set_string_prop(created,"a","internal text");
 
-    char *a =  lua_n.tables.get_string_prop(created,"a");
+    char *a =  lua_n.tables.get_string_prop_by_field(created,"a");
     printf("result of r.a %s\n",a);
 
     if(lua_n.has_errors(l)){

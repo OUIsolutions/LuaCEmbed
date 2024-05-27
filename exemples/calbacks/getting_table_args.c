@@ -12,8 +12,8 @@ LuaCEmbedResponse  * add_func(LuaCEmbed *args){
         return lua_n.response.send_error(error_message);
     }
 
-    double num1 = lua_n.tables.get_double_prop(t0,"num1");
-    double num2 = lua_n.tables.get_double_prop(t0,"num2");
+    double num1 = lua_n.tables.get_double_prop_by_field(t0,"num1");
+    double num2 = lua_n.tables.get_double_prop_by_field(t0,"num2");
 
 
     if(lua_n.has_errors(args)){
