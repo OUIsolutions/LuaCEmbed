@@ -23088,7 +23088,7 @@ typedef struct LuaCEmbed{
     int lib_identifier;
     int stack_leve;
     char *main_lib_table;
-    bool field_protection = false;
+    bool field_protection;
 }LuaCEmbed;
 
 
@@ -24868,7 +24868,7 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
 
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
-    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
     lua_settop(self->main_object->state,0);
 
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
