@@ -58,6 +58,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
         if(self->field_protection){
             private_LuaCEmbedResponse_free(possible_return);
+            if(self->error_msg){
+                free(self->error_msg);
+                self->error_msg = NULL;
+            }
+
             return PRIVATE_LUACEMBED_NO_RETURN;
         }
 

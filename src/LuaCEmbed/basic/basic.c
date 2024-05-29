@@ -111,9 +111,10 @@ void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self){
 }
 
 void privateLuaCEmbd_get_field_protected(LuaCEmbed *self,const char *name){
+    bool old_field_proection = self->field_protection;
     self->field_protection = true;
     lua_getfield(self->state,-1,name);
-    self->field_protection = false;
+    self->field_protection = old_field_proection;
 }
 
 void LuaCEmbed_free(LuaCEmbed *self){

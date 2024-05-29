@@ -24120,9 +24120,10 @@ void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self){
 }
 
 void privateLuaCEmbd_get_field_protected(LuaCEmbed *self,const char *name){
+    bool old_field_proection = self->field_protection;
     self->field_protection = true;
     lua_getfield(self->state,-1,name);
-    self->field_protection = false;
+    self->field_protection = old_field_proection;
 }
 
 void LuaCEmbed_free(LuaCEmbed *self){
@@ -24869,10 +24870,7 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
-    lua_settop(self->main_object->state,0);
-
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
-
     lua_getglobal(self->main_object->state,self->global_name);
     privateLuaCEmbd_get_field_protected(self->main_object,name);
     return lua_type(self->main_object->state,-1);
@@ -24881,7 +24879,6 @@ int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
-    lua_settop(self->main_object->state,0);
 
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
@@ -24900,7 +24897,6 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
 
 long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
-    lua_settop(self->main_object->state,0);
 
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
     lua_getglobal(self->main_object->state,self->global_name);
@@ -24915,7 +24911,6 @@ long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name
 
 double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
-    lua_settop(self->main_object->state,0);
 
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
@@ -24933,7 +24928,6 @@ double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
 
 bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
-    lua_settop(self->main_object->state,0);
 
     private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
@@ -26125,6 +26119,11 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
         if(self->field_protection){
             private_LuaCEmbedResponse_free(possible_return);
+            if(self->error_msg){
+                free(self->error_msg);
+                self->error_msg = NULL;
+            }
+
             return PRIVATE_LUACEMBED_NO_RETURN;
         }
 
