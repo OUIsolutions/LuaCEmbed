@@ -4,14 +4,23 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
     self->state = luaL_newstate();
+    self->global_tables = (void*)newprivateLuaCEmbedTableArray();
+    self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
+    self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
+    return self;
+}
+
+LuaCEmbed * newLuaCEmbedEvaluation_with_custom_allocator(){
+    LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
+    *self = (LuaCEmbed){0};
+    self->state = luaL_newstate();
     lua_setallocf(self->state, private_LuaCembed_custom_allocator, &self->used_memory);
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
     self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
     self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
-
-
     return self;
 }
+
 void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit){
     self->memory_limit = limit;
 }

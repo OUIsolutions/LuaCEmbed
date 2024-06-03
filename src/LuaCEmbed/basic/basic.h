@@ -3,6 +3,8 @@
 
 LuaCEmbed * newLuaCEmbedEvaluation();
 
+LuaCEmbed * newLuaCEmbedEvaluation_with_custom_allocator();
+
 int private_LuaCemb_internal_free(lua_State *L);
 
 

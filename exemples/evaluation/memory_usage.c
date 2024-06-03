@@ -6,7 +6,7 @@ LuaCEmbedNamespace  lua_n;
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    LuaCEmbed * l = lua_n.newLuaEvaluation_with_custom_allocator();
     int one_mega = 1;
     lua_n.set_memory_limit(l,one_mega);
     lua_n.evaluate(l,"t = 'a';while true do t = t .. t  end");

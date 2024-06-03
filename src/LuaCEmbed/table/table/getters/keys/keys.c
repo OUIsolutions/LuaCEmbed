@@ -21,7 +21,7 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
     }
 
     char *value = (char*)lua_tostring(self->main_object->state,-1);
-    PRIVATE_LUA_CEMBED_CLEAR_STACK
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return value;
 }
 
@@ -36,7 +36,7 @@ long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name
         return LUA_CEMBED_GENERIC_ERROR;
     }
     long long value = (long long)lua_tonumber(self->main_object->state,-1);
-    PRIVATE_LUA_CEMBED_CLEAR_STACK
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return value;
 }
 
@@ -53,7 +53,7 @@ double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self , const char *name){
         return LUA_CEMBED_GENERIC_ERROR;
     }
     double value  = (double )lua_tonumber(self->main_object->state,-1);
-    PRIVATE_LUA_CEMBED_CLEAR_STACK
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return value;
 }
 
@@ -69,6 +69,6 @@ bool  LuaCembedTable_get_bool_prop(LuaCEmbedTable *self , const char *name){
         return LUA_CEMBED_GENERIC_ERROR;
     }
     bool value =  lua_toboolean(self->main_object->state,-1);
-    PRIVATE_LUA_CEMBED_CLEAR_STACK
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return value;
 }
