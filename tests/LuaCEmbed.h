@@ -26120,6 +26120,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     bool is_a_function = !is_a_method;
     LuaCEmbedResponse *possible_return = NULL;
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L,lua_upvalueindex(2));
+    int old_total_args = self->total_args;
     self->total_args =  lua_gettop(self->state);
     privata_LuaCEmbed_increment_stack_(self);
 
@@ -26158,13 +26159,12 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 
     privateLuaCEmbedTableArray_free((privateLuaCEmbedTableArray*)self->func_tables);
     self->func_tables = old_funct_tables;
+    self->total_args = old_total_args;
     privata_LuaCEmbed_decrement_stack(self);
-
-    lua_settop(self->state, 0);
-
+    PRIVATE_LUA_CEMBED_CLEAR_STACK
     self->current_function = NULL;
 
-    if(!possible_return){
+    if(possible_return==NULL){
         return PRIVATE_LUACEMBED_NO_RETURN;
     }
 
