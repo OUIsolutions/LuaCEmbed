@@ -1,6 +1,9 @@
 
 
-
+void LuaCEmbed_set_memory_limit(LuaCEmbed *self, double limit){
+    lua_setallocf(self->state, private_LuaCembed_custom_allocator, &lua_cembed_used_memory);
+    lua_cembed_memory_limit = limit;
+}
 static void *private_LuaCembed_custom_allocator(void *ud, void *ptr, size_t osize, size_t nsize) {
     int *used = (int *)ud;
 

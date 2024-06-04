@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"test",test_func);
     int seconds = 2;
-    lua_n.set_timeout(l,seconds);
+    lua_n.set_timeout(seconds);
 
     lua_n.evaluate(l,"while true do end ;");
 

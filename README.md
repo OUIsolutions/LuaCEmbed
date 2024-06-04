@@ -437,7 +437,7 @@ int main(int argc, char *argv[]){
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.add_callback(l,"test",test_func);
     int seconds = 2;
-    lua_n.set_timeout(l,seconds);
+    lua_n.set_timeout(seconds);
 
     lua_n.evaluate(l,"while true do end ;");
 
@@ -482,6 +482,7 @@ AND IT WILL KILL THE APPLICATION
 <!--codeof:exemples/evaluation/memory_usage.c-->
 ~~~c
 #include "LuaCEmbed.h"
+
 LuaCEmbedNamespace  lua_n;
 
 
@@ -489,7 +490,7 @@ LuaCEmbedNamespace  lua_n;
 int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation_with_custom_allocator();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
     int one_mega = 1;
     lua_n.set_memory_limit(l,one_mega);
     lua_n.evaluate(l,"t = 'a';while true do t = t .. t  end");
