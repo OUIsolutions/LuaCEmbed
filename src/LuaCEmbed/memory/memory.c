@@ -13,7 +13,7 @@ static void *private_LuaCembed_custom_allocator(void *ud, void *ptr, size_t osiz
         *used -= osize; /* subtract old size from used memory */
         return NULL;
     } else {
-        long  custom_limit = (long)(private_lua_cembed_memory_limit * PRIVATE_LUA_CEMBED_ONE_MB);
+        long  custom_limit = (long)(lua_cembed_memory_limit * PRIVATE_LUA_CEMBED_ONE_MB);
         if (*used + (nsize - osize) > custom_limit) /* too much memory in use */
             return NULL;
         ptr = realloc(ptr, nsize);

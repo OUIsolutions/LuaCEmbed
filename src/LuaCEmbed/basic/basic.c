@@ -4,26 +4,19 @@ LuaCEmbed * newLuaCEmbedEvaluation(){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
     self->state = luaL_newstate();
+    if(lua_cembed_memory_limit > 0){
+        lua_setallocf(self->state, private_LuaCembed_custom_allocator, &lua_cembed_used_memory);
+    }
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
-    self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
-    self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
+
     return self;
 }
 
-LuaCEmbed * newLuaCEmbedEvaluation_with_custom_allocator(){
-    LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
-    *self = (LuaCEmbed){0};
-    self->state = luaL_newstate();
-    lua_setallocf(self->state, private_LuaCembed_custom_allocator, &self->used_memory);
-    self->global_tables = (void*)newprivateLuaCEmbedTableArray();
-    self->memory_limit = LUA_CEMBED_DEFAULT_MEMORY_LIMIT;
-    self->timeout = LUA_CEMBED_DEFAULT_TIMEOUT;
-    return self;
+
+void LuaCEmbed_set_memory_limit( double limit){
+    lua_cembed_memory_limit = limit;
 }
 
-void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit){
-    self->memory_limit = limit;
-}
 
 void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self)){
     self->delete_function = delelte_function;
@@ -32,8 +25,8 @@ void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(stru
 
 
 
-void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds){
-    self->timeout = seconds;
+void LuaCEmbed_set_timeout(int seconds){
+    lua_cembed_timeout = seconds;
 }
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self){

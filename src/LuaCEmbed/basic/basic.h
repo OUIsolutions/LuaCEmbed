@@ -3,7 +3,6 @@
 
 LuaCEmbed * newLuaCEmbedEvaluation();
 
-LuaCEmbed * newLuaCEmbedEvaluation_with_custom_allocator();
 
 int private_LuaCemb_internal_free(lua_State *L);
 
@@ -27,10 +26,10 @@ void privateLuaCEmbed_raise_error_not_jumping(LuaCEmbed *self, const char *error
 
 void * privateLuaCEmbed_get_current_table_array(LuaCEmbed *self);
 
-void LuaCEmbed_set_timeout(LuaCEmbed *self,int seconds);
 
-void LuaCEmbed_set_memory_limit(LuaCEmbed  *self, double limit);
+void LuaCEmbed_set_timeout(int seconds);
 
+void LuaCEmbed_set_memory_limit( double limit);
 
 
 void  privata_LuaCEmbed_increment_stack_(LuaCEmbed *self);

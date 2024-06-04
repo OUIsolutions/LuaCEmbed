@@ -1,7 +1,6 @@
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
-    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
 
 
@@ -46,7 +45,6 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
 LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, long index){
 
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
-    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -114,7 +112,6 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
 
 void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
-    private_lua_cembed_memory_limit = self->main_object->memory_limit;
 
 
     char *possible_key = LuaCembedTable_get_key_by_index(self,index);
