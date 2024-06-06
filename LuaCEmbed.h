@@ -23066,7 +23066,6 @@ typedef struct LuaCEmbed{
     lua_State *state;
     const char *current_function;
     bool is_lib;
-    bool public_functions;
     int total_args;
     char *error_msg;
     void (*delete_function)(struct  LuaCEmbed *self);
@@ -23099,7 +23098,7 @@ static void *private_LuaCembed_custom_allocator(void *ud, void *ptr, size_t osiz
 
 int private_LuaCemb_internal_free(lua_State *L);
 
-LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions);
+LuaCEmbed * newLuaCEmbedLib(lua_State *state);
 
 int LuaCembed_perform(LuaCEmbed *self);
 
@@ -23461,13 +23460,14 @@ void LuaCEmbed_set_global_table(LuaCEmbed *self, const char *name, LuaCEmbedTabl
 
 int privateLuaCEmbed_main_callback_handler(lua_State  *L);
 
-void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
+void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args),bool global_functions );
 
 void private_LuaCEmbed_add_evaluation_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
 
 void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
 
 
+void LuaCEmbed_add_global_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args));
 
 
 
@@ -23747,7 +23747,7 @@ typedef struct{
     LuaCEmbedGlobalModule  globals;
     LuaCembedTableModule tables;
     void (*clear_errors)(LuaCEmbed *self);
-    LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
+    LuaCEmbed * (*newLuaLib)(lua_State *state);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();
     void (*load_lib_from_c)(LuaCEmbed *self,int (*callback)(lua_State *l),const char *name);
@@ -23781,6 +23781,8 @@ typedef struct{
 
     int (*evaluete_file)(LuaCEmbed *self, const char *file);
     void (*add_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
+    void (*add_global_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
+
     void (*free)(LuaCEmbed *self);
 
 } LuaCEmbedNamespace;
@@ -23951,7 +23953,7 @@ int private_LuaCemb_internal_free(lua_State *L){
     LuaCEmbed_free(self);
     return 0;
 }
-LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
+LuaCEmbed * newLuaCEmbedLib(lua_State *state){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
 
@@ -23973,7 +23975,6 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
 
     self->is_lib = true;
-    self->public_functions = public_functions;
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
 
 
@@ -26204,7 +26205,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 }
 
 
-void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args),bool global_functions ){
 
     char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
@@ -26226,7 +26227,7 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 
 
     lua_settable(self->state,-3);
-    if(self->public_functions){
+    if(global_functions){
         //it points the function to a global function
         //like: callback = private_lua_c_embed_main_lib_table.callback
         lua_getglobal(self->state, main_lib_table);
@@ -26259,13 +26260,22 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
     PRIVATE_LUA_CEMBED_PROTECT_VOID
 
     if(self->is_lib){
-        private_LuaCEmbed_add_lib_callback(self,callback_name,callback);
+        private_LuaCEmbed_add_lib_callback(self,callback_name,callback,false);
         return;
     }
     private_LuaCEmbed_add_evaluation_callback(self,callback_name,callback);
 
 }
 
+void LuaCEmbed_add_global_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args)){
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
+
+    if(self->is_lib){
+        private_LuaCEmbed_add_lib_callback(self,callback_name,callback,true);
+        return;
+    }
+    private_LuaCEmbed_add_evaluation_callback(self,callback_name,callback);
+}
 
 
 
@@ -26924,7 +26934,7 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.get_evaluation_bool = LuaCEmbed_get_evaluation_bool;
     self.evaluete_file = LuaCEmbed_evaluete_file;
     self.add_callback = LuaCEmbed_add_callback;
-
+    self.add_global_callback = LuaCEmbed_add_global_callback;
     self.set_bool_lib_prop = LuaCEmbed_set_bool_lib_prop;
     self.set_long_lib_prop = LuaCEmbed_set_long_lib_prop;
     self.set_double_lib_prop = LuaCEmbed_set_double_lib_prop;

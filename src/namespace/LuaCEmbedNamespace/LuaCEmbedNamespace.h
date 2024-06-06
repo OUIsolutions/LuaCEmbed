@@ -7,7 +7,7 @@ typedef struct{
     LuaCEmbedGlobalModule  globals;
     LuaCembedTableModule tables;
     void (*clear_errors)(LuaCEmbed *self);
-    LuaCEmbed * (*newLuaLib)(lua_State *state, bool public_functions);
+    LuaCEmbed * (*newLuaLib)(lua_State *state);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();
     void (*load_lib_from_c)(LuaCEmbed *self,int (*callback)(lua_State *l),const char *name);
@@ -41,6 +41,8 @@ typedef struct{
 
     int (*evaluete_file)(LuaCEmbed *self, const char *file);
     void (*add_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
+    void (*add_global_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
+
     void (*free)(LuaCEmbed *self);
 
 } LuaCEmbedNamespace;

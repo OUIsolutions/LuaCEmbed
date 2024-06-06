@@ -7,7 +7,7 @@ int private_LuaCemb_internal_free(lua_State *L){
     LuaCEmbed_free(self);
     return 0;
 }
-LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
+LuaCEmbed * newLuaCEmbedLib(lua_State *state){
     LuaCEmbed  *self = (LuaCEmbed*) malloc(sizeof (LuaCEmbed));
     *self = (LuaCEmbed){0};
 
@@ -29,7 +29,6 @@ LuaCEmbed * newLuaCEmbedLib(lua_State *state,bool public_functions){
 
 
     self->is_lib = true;
-    self->public_functions = public_functions;
     self->global_tables = (void*)newprivateLuaCEmbedTableArray();
 
 

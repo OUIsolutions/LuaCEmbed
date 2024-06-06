@@ -158,7 +158,7 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
 }
 
 
-void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) ){
+void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args),bool global_functions ){
 
     char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
@@ -180,7 +180,7 @@ void private_LuaCEmbed_add_lib_callback(LuaCEmbed *self, const char *callback_na
 
 
     lua_settable(self->state,-3);
-    if(self->public_functions){
+    if(global_functions){
         //it points the function to a global function
         //like: callback = private_lua_c_embed_main_lib_table.callback
         lua_getglobal(self->state, main_lib_table);
@@ -213,9 +213,19 @@ void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbe
     PRIVATE_LUA_CEMBED_PROTECT_VOID
 
     if(self->is_lib){
-        private_LuaCEmbed_add_lib_callback(self,callback_name,callback);
+        private_LuaCEmbed_add_lib_callback(self,callback_name,callback,false);
         return;
     }
     private_LuaCEmbed_add_evaluation_callback(self,callback_name,callback);
 
+}
+
+void LuaCEmbed_add_global_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args)){
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
+
+    if(self->is_lib){
+        private_LuaCEmbed_add_lib_callback(self,callback_name,callback,true);
+        return;
+    }
+    private_LuaCEmbed_add_evaluation_callback(self,callback_name,callback);
 }

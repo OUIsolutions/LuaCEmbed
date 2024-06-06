@@ -3,7 +3,6 @@ typedef struct LuaCEmbed{
     lua_State *state;
     const char *current_function;
     bool is_lib;
-    bool public_functions;
     int total_args;
     char *error_msg;
     void (*delete_function)(struct  LuaCEmbed *self);
