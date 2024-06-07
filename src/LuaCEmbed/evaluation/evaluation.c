@@ -28,8 +28,8 @@ int privateLuaCEmbed_start_func_evaluation(lua_State *state){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(state,lua_upvalueindex(3));
     global_current_lua_embed_object = self;
         #ifdef _WIN32
-            if (self->timeout > 0) {
-                SetTimer(NULL, 0, self->timeout * 1000, TimerHandler);
+            if (lua_cembed_timeout > 0) {
+                SetTimer(NULL, 0,lua_cembed_timeout > 0 * 1000, TimerHandler);
             }
         #else
             if (lua_cembed_timeout > 0) {

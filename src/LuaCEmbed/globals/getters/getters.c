@@ -44,7 +44,7 @@ char * LuaCEmbed_get_global_raw_string(LuaCEmbed *self,const char *name,long *si
         return  NULL;
     }
     lua_getglobal(self->state, name);
-    return (char*)lua_tolstring(self->state,-1,(unsigned long*)size);
+    return (char*)lua_tolstring(self->state,-1,(size_t*)size);
 }
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){

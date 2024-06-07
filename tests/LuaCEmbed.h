@@ -24313,7 +24313,7 @@ char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index){
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_STRING)){
         return NULL;
     }
-    char *result =  (char*)lua_tolstring(self->state,-1,(unsigned  long*)size);
+    char *result =  (char*)lua_tolstring(self->state,-1,(size_t*)size);
     PRIVATE_LUA_CEMBED_CLEAR_STACK
     return result;
 }
@@ -25888,7 +25888,7 @@ char * LuaCEmbed_get_global_raw_string(LuaCEmbed *self,const char *name,long *si
         return  NULL;
     }
     lua_getglobal(self->state, name);
-    return (char*)lua_tolstring(self->state,-1,(unsigned long*)size);
+    return (char*)lua_tolstring(self->state,-1,(size_t*)size);
 }
 
 char * LuaCEmbed_get_global_string(LuaCEmbed *self,const char *name){
@@ -26307,8 +26307,8 @@ int privateLuaCEmbed_start_func_evaluation(lua_State *state){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(state,lua_upvalueindex(3));
     global_current_lua_embed_object = self;
         #ifdef _WIN32
-            if (self->timeout > 0) {
-                SetTimer(NULL, 0, self->timeout * 1000, TimerHandler);
+            if (lua_cembed_timeout > 0) {
+                SetTimer(NULL, 0,lua_cembed_timeout > 0 * 1000, TimerHandler);
             }
         #else
             if (lua_cembed_timeout > 0) {
