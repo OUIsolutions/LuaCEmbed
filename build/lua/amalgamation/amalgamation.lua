@@ -13,7 +13,7 @@
 
     local start_point_sha = dtw.generate_sha_from_file(start_point)
     if already_included_list.is_included(start_point_sha) then
-    	clib.print(ANSI_YELLOW.."file"..start_point.."already included\n")
+    	clib.print(ANSI_YELLOW.."file "..start_point.." already included\n ")
     	return ""
     end
 
@@ -21,7 +21,10 @@
 
 
     local content = dtw.load_file(start_point)
-
+    if content == nil then
+    	clib.print("file "..start_point.."not found")
+    	clib.exit(1)
+    end
     local size = clib.get_str_size(content)
     local inside_string = false
     local waiting_include = false
