@@ -1,383 +1,587 @@
-# DoTheWorld
-DoTheWorld is a Windows/Linux single file library designed to handle files in C/C++ in a number of ways, providing everything from simple functions for reading/writing files and folders, to complex functions like taking sha256 from files, checking modification dates. And functionalities of atomic writing of folders/files through transaction systems.
+
+LuaCEmbed it's  a lua wrapper to allow easy interoperability beetwen C and Lua
+providing any methods to control Lua Code from C
+
+<h3 style="color:red;">
+DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION READY YET, USE RESPONSIBLY
+</h3>
 
 
+### Usefull Links
 
-## Learning
-In These Current Markdown you will see some basic exemples of usage of these library 
-but if you want to get an deep knolege see at **exemples** folder, you will find an lot of exemplos of how you can use DoTheWorld
 
-# Installation
-The installation of DoTheWorld is made to be as dumb as possible, just  download the file  **doTheWorld.h** :
+#### Lua Project
+[Lua Project](https://www.lua.org/)
 
-[Download link](https://github.com/OUIsolutions/DoTheWorld/releases/download/v6.002/doTheWorld.h)
+#### Oui WebSite
+[Link to Web Site](oui.tec.br)
 
- And include in your project.
-if this compiles then the library will work:
+#### Download Link
+[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.53/LuaCEmbed.h)
+
+
+### Instalation
+Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
+into your project, and compile with gcc/clang
+<!--codeof:exemples/evaluation/hello_world.c-->
 ~~~c
-#include "doTheWorld.h"
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
     
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    lua_n.evaluate(l,"r = 30");
+    long calc = lua_n.get_evaluation_long(l,"r + 20");
+    printf("result %ld",calc);
     
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
     return 0;
 }
 ~~~
 
-## Full Folder
-Alternatively you can download the entire **src** folder and include the **src/one.c** file
+It will produce:
+
+<!--codeof:tests/main_test/evaluation/T_hello_world/expected.txt-->
+~~~txt
+ 
+result 50
+~~~
+### Making a library
+in the same way we can execute lua from C, we also can generate dll/so to be acessible by lua as a library
 
 ~~~c
 
-#include "src/one.c"
+#include "LuaCEmbed.h"
 
-int main(int argc, char *argv[]){
+LuaCEmbedNamespace  lua_n;
 
-    return 0;
+
+    LuaCEmbedResponse  *add_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
+
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
+    }
+    double result = first_num + second_num;
+    return lua_n.response.send_double(result);
 }
+LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
+    double first_num = lua_n.args.get_double(args,0);
+    double second_num = lua_n.args.get_double(args,1);
+
+    if(lua_n.has_errors(args)){
+        char *message = lua_n.get_error_message(args);
+        return lua_n.response.send_error(message);
+    }
+    double result = first_num - second_num;
+    return lua_n.response.send_double(result);
+}
+int luaopen_my_lib(lua_State *state){
+    lua_n = newLuaCEmbedNamespace();
+    //functions will be only assescible by the required reciver
+    LuaCEmbed * l  = lua_n.newLuaLib(state);
+    lua_n.add_callback(l,"add",add_cfunc);
+    lua_n.add_callback(l,"sub",sub_cfunc);
+
+return lua_n.perform(l);
+
+}
+~~~
+Compile the code with:
+~~~shell
+gcc -Wall -shared -fpic -o my_lib.so  main.c 
+~~~
+
+
+than you can call into your lua code
+
+~~~lua 
+
+local lib = require("my_lib")
+
+x = lib.add(10,20)
+y = lib.sub(20,5)
+print("x",x)
+print("y",y)
 
 ~~~
-## Pre Compiled version
-You also can download the pre compiled versions
-[Pre Compiled Linux](https://github.com/OUIsolutions/DoTheWorld/releases/download/v6.001/pre_compiled_linux.zip) or
-[Pre Compiled Windows](https://github.com/OUIsolutions/DoTheWorld/releases/download/v6.001/pre_compiled_windows.zip) to
-optimize compilation time, extract the zip , than you can run with:
+### Lib Props
+you can determine library props into your lib:
 ~~~c 
-#include "doTheWorldDeclaration.h"
 
-int main(){
-  return 0;
+
+#include "LuaCEmbed.h"
+
+LuaCEmbedNamespace  lua_n;
+
+
+
+int luaopen_my_lib(lua_State *state){
+    lua_n = newLuaCEmbedNamespace();
+    //functions will be only assescible by the required reciver
+    bool set_functions_as_public  = false;
+    LuaCEmbed * l  = lua_n.newLuaLib(state,set_functions_as_public);
+    lua_n.set_long_lib_prop(l,"long_prop", 30);
+    lua_n.set_double_lib_prop(l,"double_prop",50.5);
+    lua_n.set_bool_lib_prop(l,"bool_prop",true);
+    lua_n.set_string_lib_prop(l,"string_prop","test");
+    LuaCEmbedTable * t = lua_n.tables.new_anonymous_table(l);
+    lua_n.tables.set_string_prop(t,"test","test_message");
+    lua_n.set_table_lib_prop(l,"table_prop",t);
+
+    return lua_n.perform(l);
+
 }
 ~~~
-compile with: 
 
-~~~shel 
-gcc main.c cJSON.o doTheWorld.o sha256.o
+testing with lua:
+
+~~~lua 
+
+lib = require("my_lib")
+print("long_prop",lib.long_prop)
+print("double_prop",lib.double_prop)
+print("bool_prop",lib.bool_prop)
+print("string_prop",lib.string_prop)
+print("table_prop",lib.table_prop)
+print("table_prop internal",lib.table_prop.test)
+
+
 ~~~
 
 
-# Bulding the Project
-if you want to exec all tests, or generate your own amalgamation, 
-just run the **./build.out** or **build.exe** located into the root dir of the repo 
+### Evaluation
+To evaluate Lua Code from C, you can use all the evaluation methods, provided by the lib
 
-~~~shel
-./build.out
-~~~
-# IO Operations
 
-## Reading strings
-if you are sure that the content you are going to read is not binary you can call the function **dtw_load_string_file_content**
-codeof: exemples/io/loading_string.c
+#### Evaluating string
 
-### Reading Any Content
+codeof:exemples/evaluation/string_evalation.c
 
-codeof: exemples/io/loading_any.c
+It will produce:
 
-### Reading Double bools and Integers
-you also can direclty load all types from an file  with numerical ios 
+codeof:tests/main_test/evaluation/T_string_evalation/expected.txt
 
-codeof: exemples/numerical_io/loading_data.c
 
-to write strings in text files is very simple, just call the function **dtw_write_string_file_content**
-(Note that the target directory does not need to exist, if it does not exist it will be created automatically)
+#### Evaluating a file
+It's also possible to evaluate a file by using the **evaluete_file** method
 
-codeof: exemples/io/writing_strings.c
+codeof:exemples/evaluation/file_evaluation.c
 
 
-### Writing Any
-if you want to write anything to a file, it's also very simple, use the **dtw_write_any_content** function, but note that it will be necessary to pass the writing size
+It will produce:
 
+codeof:tests/main_test/evaluation/T_file_evaluation/expected.txt
 
-codeof: exemples/io/write_any.c
 
-### Writing Double , bool and Integers
-You also can write any type direclty to an file 
 
-codeof: exemples/numerical_io/writing_data.c
+#### Type Evaluation
+You can determine the type of the evaluation by using the **get_evaluation_type** method
+#### Evaluating Long
 
-If you want to create dirs you can call the function **dtw_create_dir_recursively**
-passing the folder you want to create,dont wory about if the previews path dont exist 
-it will create till reachs the target folder
+codeof:exemples/evaluation/type_evaluation.c
 
-codeof: exemples/io/create_dirs.c 
 
-### Copying Anything
-With the function **dtw_copy_any** you can copy either files or folders to one position to anoter position 
+It will produce:
 
-codeof: exemples/io/copying_files.c
+codeof:tests/main_test/evaluation/T_type_evaluation/expected.txt
 
-### Moving Any
-You can move either folders or files with **dtw_move_any** function
 
-codeof:exemples/io/move_any.c
 
+### Table Size
+Its also possible to determine the size of a table by using the **get_evaluation_size** method
 
-With the listage functions you can extract all Strings Arrays of elements in an folder 
+codeof:exemples/evaluation/table_size.c
 
-## Listing files
 
-codeof: exemples/monodimension_listage/list_files.c
+It will produce:
 
-### Listing Dirs
+codeof:tests/main_test/evaluation/T_table_size/expected.txt
 
-codeof:exemples/monodimension_listage/list_dirs.c
+#### Evaluating Long
 
-### Listing All
+codeof:exemples/evaluation/long_return.c
 
-codeof:exemples/monodimension_listage/list_all.c
+It will produce:
 
-The By Using multi dimension listage functions , you can see all itens listed in all sub folders of the "main" folder 
+codeof:tests/main_test/evaluation/T_long_return/expected.txt
 
-## Listing Files Recursively
+#### Evaluating Double
 
-codeof:exemples/multidimension_listage/list_files_recursively.c
+codeof:exemples/evaluation/double_evaluation.c
 
-## Listing Dirs Recursively
 
-codeof:exemples/multidimension_listage/list_dirs_recursively.c
+It will produce:
 
-## Listing All Recursively
+codeof:tests/main_test/evaluation/T_double_evaluation/expected.txt
 
-codeof:exemples/multidimension_listage/list_all_recursively.c
+#### Evaluating Bool
 
-## Dealing with base64 
-You can easly transform an binary file to an base64 string like these
+codeof:exemples/evaluation/bool_evaluation.c
 
-codeof:exemples/extras/converting_file_to_base64.c
+It will produce:
 
-You also can reconvert an base64 string to binary
+codeof:tests/main_test/evaluation/T_bool_evaluation/expected.txt
 
-codeof:exemples/extras/converting_b64_to_binary.c
+### Timeout
+You can set timeout to your functions, by using the timeout method:
 
 
-## Sha256
-Generating Sha from file 
+codeof:exemples/evaluation/timeout.c
 
-codeof:exemples/extras/generating_sha_from_file.c
+It will produce:
 
-### Unix
+codeof:tests/main_test/evaluation/T_timeout/expected.txt
 
-codeof: exemples/extras/get_entity_last_modification_in_unix.c
+### Memory usage
+by using the method **set_memory_limit** you can control the max ram usage of lua, the default its 100mb
+<h5 style="color:red;">NOTE THAT EXTRA MEMORY ALOCATED OUTSIDE CALLBACKS OR EVALUATIONS  ARE CONSIDER UNPROTECTED GEHAVIOR
+AND IT WILL KILL THE APPLICATION
 
+</h5>
 
-codeof: exemples/extras/get_entity_last_modification.c
 
 
-## Locker 
-With the locker you can Lock files and ensure that even with multprocessment, they will
-be executed in an order
+codeof:exemples/evaluation/memory_usage.c
 
-codeof:exemples/locker/locker_test.c
+It will produce:
 
-## Resources 
-With Resources you can iterate over all types of values ,and modifie than into an single transaction or one by one 
-### Setting Values 
+codeof:tests/main_test/evaluation/T_memory_usage/expected.txt
 
-codeof:exemples/resources/setters.c
+### Callbacks
+Callbacks i'ts a way to make c functions assesible in lua code, this it's the most basic callback:
 
+codeof:exemples/calbacks/basic_callback.c
 
+It will produce:
 
+codeof:tests/main_test/calbacks/T_basic_callback/expected.txt
 
-### Getting values of Resource
-codeof:exemples/resources/getters.c
 
 
-### Generating transaction
-with transactions you can make all modifications and executed or denny it one time,avoid nod
-wanted side effects
+#### CallBack args
+you can accept callback arguments into your function,check their types, and make operations with them.
 
-codeof:exemples/transaction/transaction_executiong.c
+codeof:exemples/calbacks/args_retriving.c
 
+It will produce:
 
-You also can dump the transaction to an json file to store it 
+codeof:tests/main_test/calbacks/T_args_retriving/expected.txt
 
-codeof:exemples/transaction/transaction_dumping_to_json.c
+#### Index type
+The lua native language index first elements in position 1, authogth LuaCEmbed use the C style for indexation, starting at
+0, but these can be easly reverted with the int macro **LUA_CEMBED_INDEX_DIF**
 
-codeof:exemples/transaction/transaction_loading_from_json.c
+codeof:exemples/calbacks/args_retriving_balanced.c
 
 
+It will produce:
 
-### Schemas
+codeof:tests/main_test/calbacks/T_args_retriving_balanced/expected.txt
 
-Schema its a way to handle resources into a serializible way, providing foreing key and primary key concepts
 
-### Creating a insertion
-in these example we are creating a user using schema concept  
 
-codeof:exemples/schema/user_creation.c
+#### Creating a basic print function
 
+in these example, we are creating an 'print' function ,to allow print values
 
+codeof:exemples/calbacks/print_func.c
 
-### Removing a insertion
-In these example we also can destroy the user , automaticly destroying the index
+It will produce:
 
-codeof:exemples/schema/user_remove.c
+codeof:tests/main_test/calbacks/T_print_func/expected.txt
 
 
-### Finding a insertion
-With  primary keys you can find values without loop iteration increasing readability and speed, 
+#### Evaluating arguments
 
-codeof:exemples/schema/user_find.c
+it's also possible to modify callbacks by lua code , by using the evaluation args mechanism.
 
+codeof:exemples/calbacks/evaluating_args.c
 
-### Iterating over insertions
-you also can iterate over insertions 
+It will produce:
 
-codeof:exemples/schema/user_iteration.c
+codeof:tests/main_test/calbacks/T_evaluating_args/expected.txt
 
+#### Calling args callback
 
-### Trees and TreeParts 
-with tree concepts, you can manipulate files as trees, and implement IO modifications with atomic concepts
+if you recive a lambda as argument , you can run the function with rguments and retriving its result
 
-### Loading An TreePart 
+codeof:exemples/calbacks/args_lambda.c
 
-codeof:exemples/tree_parts/loading_tree_part.c
+It will produce:
 
+codeof:tests/main_test/calbacks/T_args_lambda/expected.txt
 
-### Creating an empty tree Part
 
-codeof:exemples/trees/creating_tree_part.c
+#### Table Arguments
+you can control table arguments easly with the **get_table** method, where you can retrive a
+**LuaCEmbedTable** object
 
-### Modifying an tree part
 
-codeof:exemples/tree_parts/tree_part_content_modification.c
+codeof:exemples/calbacks/getting_table_args.c
 
+It will produce:
 
-### Retriing Paths Paramns
+codeof:tests/main_test/calbacks/T_getting_table_args/expected.txt
 
-codeof:exemples/path/getting_path_paramns.c
+### Callbacks Response
 
-### Changing path Atributes at once 
+You also can return  values or errors, with the **response** methods
 
+#### Returning a Long
 
-codeof:exemples/path/change_path_attributes.c
 
-With the **hardware_modify** , **hardware_write**, **hardware_remove** 
-Functions , you can generate modifications, without implement it, in these 
-way , you can create massive atomic transactions, and execute all at once 
+codeof:exemples/calbacks/return_long.c
 
+It will produce:
 
-### hardware_modify
-Will Modificate the original content, for exemple, if you change the extension of an file, it will modificate the original content 
+codeof:tests/main_test/calbacks/T_return_long/expected.txt
 
+#### Returning a Double
 
-codeof:exemples/tree_parts/hardware_modify.c
 
-Will write the file as an "new" file, ignoring the existence of the 
-old file 
+codeof:exemples/calbacks/return_double.c
 
-codeof:exemples/tree_parts/hardware_write.c
+It will produce:
 
+codeof:tests/main_test/calbacks/T_return_double/expected.txt
 
-Will Delete the current Content 
+#### Returning a String
 
 
-codeof:exemples/tree_parts/hardware_remove.c
+codeof:exemples/calbacks/return_string.c
 
-With Trees you can make massive folders and files modifications with 
-easy steps 
-### Loading Tree From Hardware
+It will produce:
 
-codeof:exemples/trees/add_tree_from_hardware.c
+codeof:tests/main_test/calbacks/T_return_string/expected.txt
 
-### Iterating over An Tree
+#### Returning a Bool
 
-codeof:exemples/trees/tree_iteration.c
 
-### Finding An Tree by name
+codeof:exemples/calbacks/return_bool.c
 
-codeof:exemples/trees/find_tree_part_by_name.c
+It will produce:
 
+codeof:tests/main_test/calbacks/T_return_bool/expected.txt
 
-### Finding An Tree by Path
+#### Returning a Table
 
-codeof:exemples/trees/find_tree_part_by_full_path.c
 
-### Finding An Tree by Function
+codeof:exemples/calbacks/return_table.c
 
-codeof:exemples/trees/finding_tree_part_by_function.c
+It will produce:
 
-Trees suports even Maps or filters, it returns an new tree of the of the current lambda procediment 
-#### Filter 
-with filter you can filter the contents you want in an tree with an bool lambda
+codeof:tests/main_test/calbacks/T_return_table/expected.txt
 
-codeof:exemples/trees/tree_filter.c
 
-### Map 
+#### Returning multi return
 
-codeof:exemples/trees/tree_map.c
+You also can return multi values at once  with the **return_multi_return** method
 
-With **hardware_commit_tree** you can commit all modifications at Once 
-turning system ultra securty
+codeof:exemples/calbacks/return_multi_return.c
 
 
-codeof:exemples/trees/tree_commit.c
+It will produce:
 
+codeof:tests/main_test/calbacks/T_return_multi_return/expected.txt
 
-With transactin Reports , you can see what will be modified
+you can return multiple values using the multi return method
 
-codeof:exemples/trees/transaction_report.c
 
-With Json Trees Operations you can save or load trees, from hardware or strings in an super easy mode 
+#### Returning a a Error
+you can "raise" a error by returning a error in the function
 
-#### Dumping Tree Json To File 
-It will transform the tree in an json document
+codeof:exemples/calbacks/return_error.c
 
-codeof:exemples/trees/dumps_json_tree_to_file.c
+It will produce:
 
+codeof:tests/main_test/calbacks/T_return_error/expected.txt
 
-codeof:exemples/trees/dumps_json_tree_to_string.c
+### Table Handling
+you can easly handle tables, with the getters and setters methods
 
-If you want to recuperate the file you saved in the json file
-you can load it 
+#### Retriving table props
 
-codeof:exemples/trees/loads_json_tree_from_file.c
+codeof:exemples/table_handle/retriving_props.c
 
+It will produce:
 
-codeof:exemples/trees/loads_json_tree_from_string.c
+codeof:tests/main_test/table_handle/T_retriving_props/expected.txt
 
 
-## Hash
+#### Retriving Sub Tables
 
-By using hash Object you can digest values,( its very usefull in dynamic programing)
-or to avoid recomputation in compilers or bundlers
 
-### Simple Hashing
+codeof:exemples/table_handle/retriving_sub_table.c
 
-codeof:exemples/hash/simple_digest.c
+It will produce:
 
-codeof:exemples/hash/file_hashing.c
+codeof:tests/main_test/table_handle/S_retriving_sub_table/expected.txt
 
-codeof:exemples/hash/file_hashing_by_last_modification.c
+#### Iterating over table
 
+codeof:exemples/table_handle/iterating_over_table.c
 
-### Randonizer
-Randonizer it's a way to generate random values,integers or strings
+It will produce:
 
-#### Numerical Random 
-codeof:exemples/randonizer/num_randonizer.c
+codeof:tests/main_test/table_handle/S_iterating_over_table/expected.txt
 
-#### Token  Random
-codeof:exemples/randonizer/token_randonizer.c
 
+### Table setting
+its possible to set values of table in a lot of different ways
 
-## CJson<br><br>
-**CJson**: from https://github.com/DaveGamble/cJSON <br>
-Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+#### Seting  basic Props
+codeof:exemples/table_handle/setting_props.c
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+It will produce:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+codeof:tests/main_test/table_handle/T_setting_props/expected.txt
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-## sha-256 <br>
-**sha-256**: from https://github.com/amosnier/sha-2 <br>
+#### Setting Methods
+you also can set a method to a table, passing a callback function for it
 
-Zero Clause BSD License
-© 2021 Alain Mosnier
+codeof:exemples/table_handle/setting_method.c
 
-Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+It will produce:
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+codeof:tests/main_test/table_handle/T_setting_method/expected.txt
+
+#### Setting Meta Methods
+Meta methods like **__gc** or **__index** works fine tool
+
+codeof:exemples/table_handle/meta_method.c
+
+It will produce:
+
+codeof:tests/main_test/table_handle/T_meta_method/expected.txt
+
+### Full Object construction
+
+in these example we are creating a **full class ** of a person
+
+codeof:exemples/table_handle/full_person.c
+
+It will produce:
+
+codeof:tests/main_test/table_handle/T_full_person/expected.txt
+
+### Appending Props
+you also can work with arrays , by using the **append** methods
+
+codeof:exemples/table_handle/appending_props.c
+
+It will produce:
+
+codeof:tests/main_test/table_handle/T_appending_props/expected.txt
+
+### Setting sub tables
+sub tables can be constructed, setted and autocreated
+
+codeof:exemples/table_handle/setting_sub_table.c
+
+It will produce:
+
+codeof:tests/main_test/table_handle/T_setting_sub_table/expected.txt
+
+
+### Globals
+Glbals can be fully handled by the LuaCEmbed Api
+
+#### Retriving Globals
+
+#### Getting a global string
+
+codeof:exemples/globals/get_string_global.c
+
+It will produce:
+
+codeof:tests/main_test/globals/T_get_string_global/expected.txt
+
+#### Getting a global bool
+
+codeof:exemples/globals/get_bool_global.c
+
+It will produce:
+
+
+codeof:tests/main_test/globals/T_get_bool_global/expected.txt
+
+#### Getting a double global
+
+codeof:exemples/globals/get_double_global.c
+
+It will produce:
+
+codeof:tests/main_test/globals/T_get_double_global/expected.txt
+
+
+#### Getting a long global
+
+codeof:exemples/globals/get_long_global.c
+
+It will produce:
+
+codeof:tests/main_test/globals/T_get_long_global/expected.txt
+
+#### Getting a type global
+codeof:exemples/globals/get_type.c
+
+It will produce:
+
+codeof:tests/main_test/globals/T_get_type/expected.txt
+#### Getting a table
+Tables are by default auto created, so yoou can just use the **get_table_auto_creating**  method
+codeof:exemples/globals/get_table_global.c
+It will produce:
+
+codeof:tests/main_test/globals/T_get_table_global/expected.txt
+
+### Setting Globals
+
+Its also possible to set global variables
+
+#### Set Long
+codeof:exemples/globals/set_long.c
+It will produce
+
+codeof:tests/main_test/globals/T_set_long/expected.txt
+#### Set Double
+codeof:exemples/globals/set_double.c
+It will produce
+
+codeof:tests/main_test/globals/T_set_double/expected.txt
+#### Set string
+codeof:exemples/globals/set_string.c
+
+It will produce
+
+codeof:tests/main_test/globals/T_set_string/expected.txt
+
+#### Set Bool
+codeof:exemples/globals/set_bool.c
+
+It will produce
+
+codeof:tests/main_test/globals/T_set_bool/expected.txt
+
+#### New Table
+its possible to create a new global table, the vallues will be automaticaly setted
+
+
+#### Set Bool
+codeof:exemples/globals/set_table.c
+
+It will produce
+
+codeof:tests/main_test/globals/T_set_table/expected.txt
+
 
