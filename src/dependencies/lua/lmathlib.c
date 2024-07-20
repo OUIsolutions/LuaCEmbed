@@ -95,7 +95,7 @@ static int math_floor (lua_State *L) {
   if (lua_isinteger(L, 1))
     lua_settop(L, 1);  /* integer is its own floor */
   else {
-    lua_Number d = l_mathop(floor)(luaL_checknumber(L, 1));
+    lua_Number d = l_mathop(private_lua_embed_floor)(luaL_checknumber(L, 1));
     pushnumint(L, d);
   }
   return 1;
@@ -143,7 +143,7 @@ static int math_modf (lua_State *L) {
   else {
     lua_Number n = luaL_checknumber(L, 1);
     /* integer part (rounds toward zero) */
-    lua_Number ip = (n < 0) ? l_mathop(ceil)(n) : l_mathop(floor)(n);
+    lua_Number ip = (n < 0) ? l_mathop(ceil)(n) : l_mathop(private_lua_embed_floor)(n);
     pushnumint(L, ip);
     /* fractional part (test needed for inf/-inf) */
     lua_pushnumber(L, (n == ip) ? l_mathop(0.0) : (n - ip));
@@ -169,18 +169,18 @@ static int math_log (lua_State *L) {
   lua_Number x = luaL_checknumber(L, 1);
   lua_Number res;
   if (lua_isnoneornil(L, 2))
-    res = l_mathop(log)(x);
+    res = l_mathop(private_lua_cembed_log)(x);
   else {
     lua_Number base = luaL_checknumber(L, 2);
 #if !defined(LUA_USE_C89)
     if (base == l_mathop(2.0))
-      res = l_mathop(log2)(x);
+      res = l_mathop(private_lua_cembed_log2)(x);
     else
 #endif
     if (base == l_mathop(10.0))
-      res = l_mathop(log10)(x);
+      res = l_mathop(private_lua_embed_log10)(x);
     else
-      res = l_mathop(log)(x)/l_mathop(log)(base);
+      res = l_mathop(private_lua_cembed_log)(x)/l_mathop(private_lua_cembed_log)(base);
   }
   lua_pushnumber(L, res);
   return 1;

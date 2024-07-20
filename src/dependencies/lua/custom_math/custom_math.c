@@ -1,4 +1,58 @@
 
+// Função que calcula o fatorial de um número
+double private_lua_cembed_factorial(int n) {
+    if (n <= 1) {
+        return 1.0;
+    }
+    double resultado = 1.0;
+    for (int i = 2; i <= n; ++i) {
+        resultado *= i;
+    }
+    return resultado;
+}
+
+// Função que calcula o seno de um ângulo (em radianos)
+double private_lua_cembed_sin(double x) {
+    double resultado = 0.0;
+    int n = 0;
+    double termo = x;
+    double termo_atual = termo;
+    double termo_quadrado = termo * termo;
+
+    while (termo_atual > 1.0e-15) {
+        resultado += termo_atual;
+        n += 2;
+        termo *= -termo_quadrado / ((n + 1) * (n + 2));
+        termo_atual = termo / private_lua_cembed_factorial(n);
+    }
+
+    return resultado;
+}
+
+// Função que calcula o cosseno de um ângulo (em radianos)
+double private_lua_cembed_cos(double x) {
+    double resultado = 0.0;
+    int n = 0;
+    double termo = 1.0;
+    double termo_atual = termo;
+    double termo_quadrado = termo * termo;
+
+    while (termo_atual > 1.0e-15) {
+        resultado += termo_atual;
+        n += 2;
+        termo *= -termo_quadrado / (n * (n + 1));
+        termo_atual = termo / private_lua_cembed_factorial(n);
+    }
+
+    return resultado;
+}
+
+// Função que calcula a tangente de um ângulo (em radianos)
+double private_lua_cembed_tan(double x) {
+    return private_lua_cembed_sin(x) / private_lua_cembed_cos(x);
+}
+
+
 // Função que calcula o logaritmo natural (ln)
 double private_lua_cembed_log(double x) {
     if (x <= 0.0) {

@@ -6,7 +6,7 @@ int main(int argc, char *argv[]){
 
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
-    luaL_openlibs(l->state);  // Abre todas as bibliotecas padrão, incluindo a base
+    //luaL_openlibs(l->state);  // Abre todas as bibliotecas padrão, incluindo a base
 
     lua_n.evaluate(l,"os.execute('echo hello')");
 
