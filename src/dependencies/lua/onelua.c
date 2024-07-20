@@ -19,8 +19,9 @@
 #endif
 #endif
 #endif
-
-
+#include <math.h>
+#include "custom_math/custom_math.h"
+#include  "custom_math/custom_math.c"
 /*
 ** Choose suitable platform-specific features. Default is no
 ** platform-specific features. Some of these options may need extra
@@ -71,7 +72,6 @@
 #define LUAI_DDEF	static
 
 /* core -- used by all */
-#include "custom_math/custom_math.c"
 #include "lzio.c"
 #include "lctype.c"
 #include "lopcodes.c"

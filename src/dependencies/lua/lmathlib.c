@@ -5,7 +5,6 @@
 */
 #define lmathlib_c
 #define LUA_LIB
-#include <math.h>
 #include "lprefix.h"
 
 
@@ -18,7 +17,6 @@
 
 #include "lauxlib.h"
 #include "lualib.h"
-#include "custom_math/custom_math.h"
 
 
 #undef PI
