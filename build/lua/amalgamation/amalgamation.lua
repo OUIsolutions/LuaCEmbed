@@ -6,7 +6,6 @@
 ---@return string
   function Generate_amalgamation_recursive(start_point,already_included_list)
 
-
     if already_included_list == nil then
     	already_included_list = Created_already_included()
     end
@@ -22,7 +21,7 @@
 
     local content = dtw.load_file(start_point)
     if content == nil then
-    	clib.print("file "..start_point.."not found")
+    	clib.print(ANSI_RED.."f"..start_point.."not found")
     	clib.exit(1)
     end
     local size = clib.get_str_size(content)

@@ -83,6 +83,11 @@ end
     if clib.get_char(content,index) == "<" then
     	return true
     end
+
+    if clib.get_char(content,index) == "\n" then
+    	return true
+    end
+
     return false
 end
 
