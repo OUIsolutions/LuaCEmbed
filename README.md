@@ -87,8 +87,7 @@ LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
 int luaopen_my_lib(lua_State *state){
     lua_n = newLuaCEmbedNamespace();
     //functions will be only assescible by the required reciver
-    bool set_functions_as_public  = false;
-    LuaCEmbed * l  = lua_n.newLuaLib(state,set_functions_as_public);
+    LuaCEmbed * l  = lua_n.newLuaLib(state);
     lua_n.add_callback(l,"add",add_cfunc);
     lua_n.add_callback(l,"sub",sub_cfunc);
 
