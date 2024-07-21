@@ -1,2 +1,10 @@
 //path: src/one.c
-"declaration.h""definition.h"
+
+
+#ifndef LUACEMBED_H
+#include "declaration.h"
+#include "definition.h"
+
+
+#define LUACEMBED_H
+#endif 

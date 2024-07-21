@@ -9,7 +9,18 @@
     if state_machine.inside_string then
     	return
     end
- 	state_machine.final_text = state_machine.final_text..clib.get_char(state_machine.content,state_machine.index)
+    if state_machine.inside_coment then
+    	return
+    end
+
+    local current_char = clib.get_char(state_machine.content,state_machine.index)
+    if not current_char then
+    	return
+    end
+
+
+ 	state_machine.final_text =  state_machine.final_text..current_char
+
 
 end
 
@@ -33,18 +44,17 @@ end
 ---@param state_machine AMalgamationStateMachine
  function Is_include_point(state_machine)
 
-    if not state_machine.inside_string then
+    if  state_machine.inside_string then
     	return
     end
 
-    if not state_machine.inside_coment then
+    if state_machine.inside_coment then
     	return
     end
-
-      if Point_starts_with(state_machine,"#include") then
+    if Point_starts_with(state_machine,"#include") then
        	state_machine.index = state_machine.index + clib.get_str_size("#include")
        	state_machine.waiting_include = true
-       end
+    end
 end
 
 

@@ -25,7 +25,7 @@
     end
 
     if not dtw.isfile(start_point)  then
-    	clib.print(ANSI_RED.."file"..start_point.."not found")
+    	clib.print(ANSI_RED.."file "..start_point.." not found")
     	clib.exit(1)
     end
 
@@ -69,13 +69,11 @@
         Single_line_coment_end(state_machine)
         Is_include_point(state_machine)
         Anulate_inclusion(state_machine)
-        Include_char_to_final(state_machine)
         Make_recursive_call(state_machine)
-
-
+        Include_char_to_final(state_machine)
 
     end
 
-           clib.print(ANSI_GREEN.."amalgamated: "..start_point.."\n")
-           return state_machine.final_text
+   clib.print(ANSI_GREEN.."amalgamated: "..start_point.."\n")
+   return state_machine.final_text
 end
