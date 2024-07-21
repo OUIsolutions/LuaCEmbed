@@ -15,7 +15,9 @@ void LuaCEmbed_load_lib_from_c(LuaCEmbed *self,int (*callback)(lua_State *l),con
         lua_setglobal(self->state,name);
     }
 }
-
+void LuaCEmbed_load_native_libs(LuaCEmbed *self) {
+    luaL_openlibs(self->state);
+}
 
 
 

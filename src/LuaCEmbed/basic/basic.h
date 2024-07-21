@@ -8,6 +8,8 @@ int private_LuaCemb_internal_free(lua_State *L);
 
 void LuaCEmbed_load_lib_from_c(LuaCEmbed *self,int (*callback)(lua_State *l),const char *name);
 
+void LuaCEmbed_load_native_libs(LuaCEmbed *self);
+
 void LuaCembed_set_delete_function(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
 
 char * LuaCEmbed_get_error_message(LuaCEmbed *self);

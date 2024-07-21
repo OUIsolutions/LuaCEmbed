@@ -10,6 +10,7 @@ typedef struct{
     LuaCEmbed * (*newLuaLib)(lua_State *state);
     void (*set_delete_function)(LuaCEmbed *self,void (*delelte_function)(struct  LuaCEmbed *self));
     LuaCEmbed * (*newLuaEvaluation)();
+    void (*load_native_libs)(LuaCEmbed *self);
     void (*load_lib_from_c)(LuaCEmbed *self,int (*callback)(lua_State *l),const char *name);
     int (*perform)(LuaCEmbed *self);
     const char * (*convert_arg_code)(int arg_code);
