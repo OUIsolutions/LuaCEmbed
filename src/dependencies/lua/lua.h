@@ -143,13 +143,6 @@ typedef struct lua_Debug lua_Debug;
 typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
 
 
-/*
-** generic extra include file
-*/
-#if defined(LUA_USER_H)
-#include LUA_USER_H
-#endif
-
 
 /*
 ** RCS ident string

@@ -4,7 +4,7 @@ LINUX_COMPILER = "gcc"
 WINDOWS_COMPILER = "x86_64-w64-mingw32-gcc"
 
 OUTPUT_SINGLE_FILE = "LuaCembed.h"
-END_TEST_POINT= "tests/LuaCembedTest.h"
+END_TEST_POINT= "tests/LuaCEmbed.h"
 SIDE_EFFECT = "tests/target"
 TEST_POINT = "tests/main_test"
 LIB_FOLDER = "src"

@@ -1,4 +1,4 @@
-#include "src/one.c"
+#include "../../../LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
@@ -8,7 +8,6 @@ int main(int argc, char *argv[]){
     //NEVER USE THESE IF YOU DONT TRUSt IN THE CLIENT
     lua_n.load_native_libs(l);
 
-LUA_IDSIZE
     lua_n.evaluate(l,"print('hello from lua')");
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));

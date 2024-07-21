@@ -54,7 +54,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "custom_math/custom_math.h"
 
 /* setup for luaconf.h */
 #define LUA_CORE

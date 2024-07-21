@@ -7,12 +7,13 @@
 	if inside_string == true then
 		return false
 	end
-	local last_char = clib.get_char(content,index-1)
-    if last_char == '\\' then
+    local last_char = clib.get_char(content,index-1)
+    if last_char == "'" then
     	return false
     end
+
     local current_char = clib.get_char(content,index)
-    if current_char == '"' then
+    if current_char == '"'  then
     	return true
     end
     return false

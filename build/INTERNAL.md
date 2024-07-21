@@ -30,6 +30,17 @@ It will produce:
 
 codeof: tests/main_test/evaluation/T_hello_world/expected.txt
 
+### Runting Native functions
+<h3 style="color:red;">
+NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
+</h3>
+You can load native lua functions by the usage of **load_native_libs** function 
+
+codeof: exemples/evaluation/basic_evaluation_with_loaded_libs.c
+
+It will produce:
+codeof: tests/main_test/evaluation/T_basic_evaluation_with_loaded_libs/expected.txt
+
 
 ### Making a library
 in the same way we can execute lua from C, we also can generate dll/so to be acessible by lua as a library

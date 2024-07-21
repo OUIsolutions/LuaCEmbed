@@ -10,6 +10,11 @@
     	already_included_list = Created_already_included()
     end
 
+    if not dtw.isfile(start_point)  then
+    	clib.print(ANSI_RED.."file"..start_point.."not found")
+    	clib.exit(1)
+    end
+
     local start_point_sha = dtw.generate_sha_from_file(start_point)
     if already_included_list.is_included(start_point_sha) then
     	clib.print(ANSI_YELLOW.."file "..start_point.." already included\n ")
@@ -20,19 +25,17 @@
 
 
     local content = dtw.load_file(start_point)
-    if content == nil then
-    	clib.print(ANSI_RED.."f"..start_point.."not found")
-    	clib.exit(1)
-    end
+
     local size = clib.get_str_size(content)
     local inside_string = false
     local waiting_include = false
     local string_buffer = ""
-    local final_text = ""
+    local final_text = "//path: "..start_point.."\n"
+
     for i=1,size do
         local is_start_string = Verify_if_is_start_string_char(content,i,inside_string)
         if is_start_string  then
-        	inside_string = true
+            inside_string = true
         end
 
         local is_end_string = Verify_if_is_end_string_char(is_start_string,content,i,inside_string)
@@ -42,6 +45,7 @@
         end
 
        if Include_string_buffer_to_final(waiting_include,is_end_string) then
+            clib.print("end buffer"..string_buffer.."\n")
             final_text = final_text..'"'..string_buffer..'"'
         end
 
@@ -63,7 +67,7 @@
         if Make_recursive_call(waiting_include,is_end_string) then
             local dir = dtw.newPath(start_point).get_dir()
             local full_path = dtw.concat_path(dir,string_buffer)
-
+            -- clib.print("calling "..full_path.." from"..start_point.."\n")
             local acumulated = Generate_amalgamation_recursive(full_path,already_included_list)
             final_text = final_text.. acumulated.."\n"
 
