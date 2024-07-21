@@ -166,7 +166,7 @@ static int os_rename (lua_State *L) {
 }
 #ifdef __linux
 static int os_tmpname(lua_State *L) {
-  char buff[LUA_TMPNAMBUFSIZE];
+  char buff[100];
   const char *tmpdir = "/tmp/lua_XXXXXX";
   int fd = mkstemp(buff);
   if (fd == -1) {

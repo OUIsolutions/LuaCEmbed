@@ -1486,14 +1486,14 @@ type string
 value: indexable random string
 ------------------------------------------
 index: 1
-key: name
-type string
-value: Mateus
-------------------------------------------
-index: 2
 key: age
 type number
 value: 27.000000
+------------------------------------------
+index: 2
+key: name
+type string
+value: Mateus
 ------------------------------------------
 index: 3
 key: single
