@@ -80,8 +80,11 @@ end
 	local dir = dtw.newPath(state_machine.start_path).get_dir()
 	local full_path = dtw.concat_path(dir,state_machine.buffer)
 	--clib.print("calling "..full_path.." from"..state_machine.start_path.."\n")
-    local acumulated = Generate_amalgamation_recursive(full_path,state_machine.aleady_included)
+    local acumulated = Generate_amalgamation_recursive(full_path,state_machine.already_include)
     state_machine.final_text= state_machine.final_text.. acumulated.."\n"
+    state_machine.buffer = ""
+    state_machine.is_end_string = false
+    state_machine.waiting_include = false
 end
 
 

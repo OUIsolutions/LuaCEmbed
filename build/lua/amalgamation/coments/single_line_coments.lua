@@ -6,12 +6,14 @@
     if state_machine.inside_string then
     	return
     end
-    if state_machine.insde_single_coment then
+    if state_machine.inside_coment then
     	return
     end
 
-    if Point_starts_with(state_machine,"//") then
-    	state_machine.index = state_machine.index + clib.get_str_size("//")
+
+
+    if Point_starts_with(state_machine,"\n//") then
+    	state_machine.index = state_machine.index + clib.get_str_size("\n//")
     	state_machine.inside_coment = true
     	state_machine.insde_single_coment = true
     end

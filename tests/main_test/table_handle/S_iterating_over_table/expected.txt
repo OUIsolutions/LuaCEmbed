@@ -9,12 +9,12 @@ type string
 value: Mateus
 ------------------------------------------
 index: 2
-key: single
-type boolean
-value: 1
-------------------------------------------
-index: 3
 key: age
 type number
 value: 27.000000
+------------------------------------------
+index: 3
+key: single
+type boolean
+value: 1
 ------------------------------------------

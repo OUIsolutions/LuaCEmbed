@@ -1,4 +1,4 @@
-#include "tests/LuaCEmbed.h"
+#include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){

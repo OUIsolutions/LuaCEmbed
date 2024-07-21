@@ -53,6 +53,41 @@ It will produce:
 result 50
 ~~~
 
+### Runting Native functions
+<h3 style="color:red;">
+NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
+</h3>
+You can load native lua functions by the usage of **load_native_libs** function 
+
+
+~~~c
+#include "LuaCEmbed.h"
+LuaCEmbedNamespace  lua_n;
+
+int main(int argc, char *argv[]){
+
+    lua_n =  newLuaCEmbedNamespace();
+    LuaCEmbed * l = lua_n.newLuaEvaluation();
+    //NEVER USE THESE IF YOU DONT TRUSt IN THE CLIENT
+    lua_n.load_native_libs(l);
+
+    lua_n.evaluate(l,"print('hello from lua')");
+    if(lua_n.has_errors(l)){
+        printf("error: %s\n",lua_n.get_error_message(l));
+    }
+    lua_n.free(l);
+
+    return 0;
+}
+~~~
+
+It will produce:
+
+~~~txt
+hello from lua
+
+~~~
+
 
 ### Making a library
 in the same way we can execute lua from C, we also can generate dll/so to be acessible by lua as a library
@@ -1456,14 +1491,14 @@ type string
 value: Mateus
 ------------------------------------------
 index: 2
-key: single
-type boolean
-value: 1
-------------------------------------------
-index: 3
 key: age
 type number
 value: 27.000000
+------------------------------------------
+index: 3
+key: single
+type boolean
+value: 1
 ------------------------------------------
 
 ~~~

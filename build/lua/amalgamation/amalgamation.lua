@@ -13,7 +13,7 @@
 ---@field inside_multiline_coment boolean
 ---@field insde_single_coment boolean
 ---@field start_path string
----@field aleady_included StringArray
+---@field already_include StringArray
 
 ---@param start_point string
 ---@param already_included_list  StringArray | nil
@@ -25,7 +25,7 @@
     end
 
     if not dtw.isfile(start_point)  then
-    	clib.print(ANSI_RED.."file "..start_point.." not found")
+    	clib.print(ANSI_RED.."file "..start_point.." not found\n")
     	clib.exit(1)
     end
 
@@ -55,7 +55,6 @@
          start_path = start_point,
          already_include =already_included_list
     }
-
 
     for i=1,state_machine.size do
         state_machine.index = state_machine.index + 1

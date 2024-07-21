@@ -11,11 +11,8 @@ local function main()
             return Generate_amalgamation_recursive(START_POINT)
         end).add_dependencie(src_sha)
         local amalgamation_result = Generate_amalgamation_recursive(START_POINT)
-
         dtw.write_file(END_TEST_POINT,amalgamation_result)
-      if true then
-        	return
-        end
+
         Execute_full_test(cache,src_sha)
 
         Create_examples()
