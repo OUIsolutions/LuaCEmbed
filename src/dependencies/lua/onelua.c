@@ -54,6 +54,12 @@
 #include <string.h>
 #include <time.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#include <fcntl.h>
+#endif
 
 /* setup for luaconf.h */
 #define LUA_CORE

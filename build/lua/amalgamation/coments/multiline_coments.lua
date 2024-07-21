@@ -10,6 +10,7 @@
     	return
     end
 
+
     if Point_starts_with(state_machine,"/*") then
     	state_machine.index = state_machine.index + clib.get_str_size("/*")
     	state_machine.inside_coment = true
