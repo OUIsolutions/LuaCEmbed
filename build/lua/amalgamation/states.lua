@@ -18,10 +18,13 @@ end
     if state_machine.waiting_include then
     	return
     end
+
     if not state_machine.is_end_string then
     	return
     end
+
     state_machine.final_text = state_machine.final_text..'"'..state_machine.buffer..'"'
+    state_machine.is_end_string = false
 end
 
 ---@param content string
@@ -52,13 +55,6 @@ end
 
     if not state_machine.inside_string then
         return
-    end
-
-    if state_machine.string_starts_now then
-    	return
-    end
-    if state_machine.is_end_string then
-    	return
     end
 
     state_machine.buffer = state_machine.buffer..clib.get_char(state_machine.content,state_machine.index)

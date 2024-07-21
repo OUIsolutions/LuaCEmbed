@@ -6,10 +6,10 @@
 ---@field waiting_include boolean
 ---@field string_buffer string
 ---@field final_text string
----@field string_starts_now boolean
 ---@field index number
 ---@field is_end_string boolean
 ---@field buffer string
+
 
 ---@param start_point string
 ---@param already_included_list  StringArray | nil
@@ -41,56 +41,51 @@
          string_buffer = "",
          final_text = "//path: "..start_point.."\n",
          is_start_string=false,
-         index=1,
-         string_starts_now = false,
+         index=0,
          is_end_string = false,
-         buffer=""
+         buffer="",
     }
 
 
     for i=1,state_machine.size do
-        state_machine.index = i
-        if state_machine.string_starts_now then
-        	state_machine.string_starts_now = false
-        end
-
+        state_machine.index = state_machine.index + 1
         Verify_if_is_start_string_char(state_machine)
         Verify_if_is_end_string_char(state_machine)
         Include_char_to_string_buffer(state_machine)
         Include_buffer_to_final(state_machine)
 
-        if Is_include_point(content,i,inside_string) then
-        	waiting_include = true
-        end
+        --        if Is_include_point(content,i,inside_string) then
+        --        	waiting_include = true
+        --        end
 
-        if Anulate_inclusion(waiting_include,content,i) then
-            final_text = final_text.."#include "
-        	waiting_include = false
-        end
+        ---        if Anulate_inclusion(waiting_include,content,i) then-
+        --            final_text = final_text.."#include "
+        ---        	waiting_include = false
+        --        end
 
-        if Include_char_to_final(waiting_include,inside_string) then
-        	final_text = final_text..clib.get_char(content,i)
-        end
+        --        if Include_char_to_final(waiting_include,inside_string) then
+        --        	final_text = final_text..clib.get_char(content,i)
+        --        end
 
 
 
-        if Make_recursive_call(waiting_include,is_end_string) then
-            local dir = dtw.newPath(start_point).get_dir()
-            local full_path = dtw.concat_path(dir,string_buffer)
-            -- clib.print("calling "..full_path.." from"..start_point.."\n")
-            local acumulated = Generate_amalgamation_recursive(full_path,already_included_list)
-            final_text = final_text.. acumulated.."\n"
+          --      if Make_recursive_call(waiting_include,is_end_string) then
+          --          local dir = dtw.newPath(start_point).get_dir()
+          --          local full_path = dtw.concat_path(dir,string_buffer)
+                    -- clib.print("calling "..full_path.." from"..start_point.."\n")
+          --          local acumulated = Generate_amalgamation_recursive(full_path,already_included_list)
+           --         final_text = final_text.. acumulated.."\n"
 
-        	waiting_include = false
-        end
+             --   	waiting_include = false
+        --        end
 
-        if is_end_string then
-           inside_string = false
-           string_buffer = ""
-        end
+          --      if is_end_string then
+          --         inside_string = false
+          --         string_buffer = ""
+          --      end
 
+           end
+
+           clib.print(ANSI_GREEN.."amalgamated: "..start_point.."\n")
+           return state_machine.final_text
     end
-
-    clib.print(ANSI_GREEN.."amalgamated: "..start_point.."\n")
-    return final_text
-end
