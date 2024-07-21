@@ -1,4 +1,3 @@
- 
 index: 0
 key: Not provided
 type string

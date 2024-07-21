@@ -22,36 +22,15 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 
 ### Instalation
 Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
-into your project, and compile with gcc/clang
-<!--codeof:exemples/evaluation/hello_world.c-->
-~~~c
-#include "LuaCEmbed.h"
-LuaCEmbedNamespace  lua_n;
+into your project, and compile with gcc/clang 
+codeof:exemples/evaluation/hello_world.c
 
-int main(int argc, char *argv[]){
-    
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate(l,"r = 30");
-    long calc = lua_n.get_evaluation_long(l,"r + 20");
-    printf("result %ld",calc);
-    
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
-    }
-    lua_n.free(l);
-
-    return 0;
-}
-~~~
 
 It will produce:
 
-<!--codeof:tests/main_test/evaluation/T_hello_world/expected.txt-->
-~~~txt
- 
-result 50
-~~~
+codeof:tests/main_test/evaluation/T_hello_world/expected.txt
+
+
 ### Making a library
 in the same way we can execute lua from C, we also can generate dll/so to be acessible by lua as a library
 

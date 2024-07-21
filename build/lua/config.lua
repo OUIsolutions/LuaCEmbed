@@ -18,4 +18,4 @@ CODEOF_TEXT = "codeof"
 SIDE_EFFECT_COMPARATION = "side_effect"
 
 
-RECONSTRUCT = false
+RECONSTRUCT = true
