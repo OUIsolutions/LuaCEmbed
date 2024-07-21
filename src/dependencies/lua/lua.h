@@ -350,7 +350,7 @@ LUA_API void (lua_warning)  (lua_State *L, const char *msg, int tocont);
 
 /* parameters for incremental mode */
 #define LUA_GCPPAUSE		3  /* size of pause between successive GCs */
-#define LUA_GCPSTEPMUL		4  /* GC "speed" */
+#define LUA_GCPSTEPMUL		4  /* GC  */
 #define LUA_GCPSTEPSIZE		5  /* GC granularity */
 
 /* number of parameters */

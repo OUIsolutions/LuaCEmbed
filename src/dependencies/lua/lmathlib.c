@@ -3,16 +3,13 @@
 ** Standard mathematical library
 ** See Copyright Notice in lua.h
 */
-
 #define lmathlib_c
 #define LUA_LIB
-
 #include "lprefix.h"
 
 
 #include <float.h>
 #include <limits.h>
-#include <math.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -33,39 +30,39 @@ static int math_abs (lua_State *L) {
     lua_pushinteger(L, n);
   }
   else
-    lua_pushnumber(L, l_mathop(fabs)(luaL_checknumber(L, 1)));
+    lua_pushnumber(L, l_mathop(private_lua_cembed_fabs)(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_sin (lua_State *L) {
-  lua_pushnumber(L, l_mathop(sin)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_sin)(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_cos (lua_State *L) {
-  lua_pushnumber(L, l_mathop(cos)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_cos)(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_tan (lua_State *L) {
-  lua_pushnumber(L, l_mathop(tan)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_tan)(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_asin (lua_State *L) {
-  lua_pushnumber(L, l_mathop(asin)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_asin)(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_acos (lua_State *L) {
-  lua_pushnumber(L, l_mathop(acos)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_acos)(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_atan (lua_State *L) {
   lua_Number y = luaL_checknumber(L, 1);
   lua_Number x = luaL_optnumber(L, 2, 1);
-  lua_pushnumber(L, l_mathop(atan2)(y, x));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_atan2)(y, x));
   return 1;
 }
 
@@ -96,7 +93,7 @@ static int math_floor (lua_State *L) {
   if (lua_isinteger(L, 1))
     lua_settop(L, 1);  /* integer is its own floor */
   else {
-    lua_Number d = l_mathop(floor)(luaL_checknumber(L, 1));
+    lua_Number d = l_mathop(private_lua_embed_floor)(luaL_checknumber(L, 1));
     pushnumint(L, d);
   }
   return 1;
@@ -107,7 +104,7 @@ static int math_ceil (lua_State *L) {
   if (lua_isinteger(L, 1))
     lua_settop(L, 1);  /* integer is its own ceil */
   else {
-    lua_Number d = l_mathop(ceil)(luaL_checknumber(L, 1));
+    lua_Number d = l_mathop(private_lua_cembed_ceil)(luaL_checknumber(L, 1));
     pushnumint(L, d);
   }
   return 1;
@@ -144,7 +141,7 @@ static int math_modf (lua_State *L) {
   else {
     lua_Number n = luaL_checknumber(L, 1);
     /* integer part (rounds toward zero) */
-    lua_Number ip = (n < 0) ? l_mathop(ceil)(n) : l_mathop(floor)(n);
+    lua_Number ip = (n < 0) ? l_mathop(private_lua_cembed_ceil)(n) : l_mathop(private_lua_embed_floor)(n);
     pushnumint(L, ip);
     /* fractional part (test needed for inf/-inf) */
     lua_pushnumber(L, (n == ip) ? l_mathop(0.0) : (n - ip));
@@ -154,7 +151,7 @@ static int math_modf (lua_State *L) {
 
 
 static int math_sqrt (lua_State *L) {
-  lua_pushnumber(L, l_mathop(sqrt)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_sqrt)(luaL_checknumber(L, 1)));
   return 1;
 }
 
@@ -170,25 +167,25 @@ static int math_log (lua_State *L) {
   lua_Number x = luaL_checknumber(L, 1);
   lua_Number res;
   if (lua_isnoneornil(L, 2))
-    res = l_mathop(log)(x);
+    res = l_mathop(private_lua_cembed_log)(x);
   else {
     lua_Number base = luaL_checknumber(L, 2);
 #if !defined(LUA_USE_C89)
     if (base == l_mathop(2.0))
-      res = l_mathop(log2)(x);
+      res = l_mathop(private_lua_cembed_log2)(x);
     else
 #endif
     if (base == l_mathop(10.0))
-      res = l_mathop(log10)(x);
+      res = l_mathop(private_lua_embed_log10)(x);
     else
-      res = l_mathop(log)(x)/l_mathop(log)(base);
+      res = l_mathop(private_lua_cembed_log)(x)/l_mathop(private_lua_cembed_log)(base);
   }
   lua_pushnumber(L, res);
   return 1;
 }
 
 static int math_exp (lua_State *L) {
-  lua_pushnumber(L, l_mathop(exp)(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, l_mathop(private_lua_cembed_exp)(luaL_checknumber(L, 1)));
   return 1;
 }
 

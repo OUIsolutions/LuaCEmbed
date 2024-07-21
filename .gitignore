@@ -6,6 +6,7 @@ teste.png
 teste.lua
 # Object files
 *.o
+cache2
 *.ko
 *.obj
 *.elf

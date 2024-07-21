@@ -19,8 +19,9 @@
 #endif
 #endif
 #endif
-
-
+#include <math.h>
+#include "custom_math/custom_math.h"
+#include  "custom_math/custom_math.c"
 /*
 ** Choose suitable platform-specific features. Default is no
 ** platform-specific features. Some of these options may need extra
@@ -44,7 +45,6 @@
 #include <float.h>
 #include <limits.h>
 #include <locale.h>
-#include <math.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -72,7 +72,6 @@
 #define LUAI_DDEF	static
 
 /* core -- used by all */
-#include "custom_math/custom_math.c"
 #include "lzio.c"
 #include "lctype.c"
 #include "lopcodes.c"
@@ -98,3 +97,28 @@
 #include "lauxlib.c"
 
 
+
+/* standard library  -- not used by luac */
+#ifndef MAKE_LUAC
+#include "lbaselib.c"
+#include "lcorolib.c"
+#include "ldblib.c"
+#include "liolib.c"
+#include "lmathlib.c"
+#include "loadlib.c"
+#include "loslib.c"
+#include "lstrlib.c"
+#include "ltablib.c"
+#include "lutf8lib.c"
+#include "linit.c"
+#endif
+
+/* lua */
+#ifdef MAKE_LUA
+#include "lua.c"
+#endif
+
+/* luac */
+#ifdef MAKE_LUAC
+#include "luac.c"
+#endif

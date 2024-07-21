@@ -1,4 +1,3 @@
- 
 no argument providided
 number: 10.000000
 str: hello
