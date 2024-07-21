@@ -181,15 +181,16 @@ static int os_tmpname(lua_State *L) {
 #ifdef _WIN32
 
 static int os_tmpname(lua_State *L) {
-  char buff[LUA_TMPNAMBUFSIZE];
+  char buff[100] = {0};
   const char *template = "lua_XXXXXX";
+  
   GetTempPathA(sizeof(buff), buff);
-  long fd = GetTempFileNameA(buff, template, 0, buff);
+ 
+  UINT  fd = GetTempFileNameA(buff, template, 0, buff);
   if (fd == -1) {
     return luaL_error(L, "unable to generate a unique filename");
   }
-  CloseHandle((HANDLE) fd);
-
+  close(fd);
   // Empurrar o nome do arquivo temporário para a pilha Lua
   lua_pushstring(L, buff);
   return 1;
