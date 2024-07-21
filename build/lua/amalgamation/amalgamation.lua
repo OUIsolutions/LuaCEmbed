@@ -9,6 +9,7 @@
 ---@field string_starts_now boolean
 ---@field index number
 ---@field is_end_string boolean
+---@field buffer string
 
 ---@param start_point string
 ---@param already_included_list  StringArray | nil
@@ -42,7 +43,8 @@
          is_start_string=false,
          index=1,
          string_starts_now = false,
-         is_end_string = false
+         is_end_string = false,
+         buffer=""
     }
 
 
@@ -54,15 +56,8 @@
 
         Verify_if_is_start_string_char(state_machine)
         Verify_if_is_end_string_char(state_machine)
-
-       if Include_char_to_string_buffer(is_start_string,is_end_string,inside_string) then
-            string_buffer = string_buffer..clib.get_char(content,i)
-        end
-
-       if Include_string_buffer_to_final(waiting_include,is_end_string) then
-            clib.print("end buffer"..string_buffer.."\n")
-            final_text = final_text..'"'..string_buffer..'"'
-        end
+        Include_char_to_string_buffer(state_machine)
+        Include_buffer_to_final(state_machine)
 
         if Is_include_point(content,i,inside_string) then
         	waiting_include = true

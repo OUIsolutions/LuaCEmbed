@@ -12,19 +12,18 @@
     end
     return true
 end
----@param waiting_include boolean
----@param is_end_string boolean
- function Include_string_buffer_to_final(waiting_include,is_end_string)
+---@param state_machine AMalgamationStateMachine
+ function Include_buffer_to_final(state_machine)
 
-    if waiting_include then
-    	return false
+    if state_machine.waiting_include then
+    	return
     end
-    if is_end_string then
-    	return true
+    if not state_machine.is_end_string then
+    	return
     end
-
-    return false
+    state_machine.final_text = state_machine.final_text..'"'..state_machine.buffer..'"'
 end
+
 ---@param content string
 ---@param index number
 ---@param inside_string boolean
@@ -48,21 +47,22 @@ end
     return buffer == INCLUDE_TEXT
 end
 
----@param is_start_string boolean
----@param is_end_string boolean
----@param is_inside_string boolean
- function Include_char_to_string_buffer(is_start_string,is_end_string,is_inside_string)
-    if is_start_string then
-    	return false
-    end
-    if is_end_string then
-    	return false
-    end
-    if is_inside_string then
-    	return true
+---@param state_machine AMalgamationStateMachine
+ function Include_char_to_string_buffer(state_machine)
+
+    if not state_machine.inside_string then
+        return
     end
 
-    return false
+    if state_machine.string_starts_now then
+    	return
+    end
+    if state_machine.is_end_string then
+    	return
+    end
+
+    state_machine.buffer = state_machine.buffer..clib.get_char(state_machine.content,state_machine.index)
+
 end
 
 ---@param  waiting_include boolean
