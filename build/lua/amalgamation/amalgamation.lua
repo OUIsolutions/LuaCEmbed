@@ -62,19 +62,12 @@
         Include_buffer_to_final(state_machine)
         Multiline_coment_start(state_machine)
         Multiline_coment_end(state_machine)
-
-        --Is_include_point(state_machine)
-
-        ---        if Anulate_inclusion(waiting_include,content,i) then-
-        --            final_text = final_text.."#include "
-        ---        	waiting_include = false
-        --        end
-
-        --        if Include_char_to_final(waiting_include,inside_string) then
-        --        	final_text = final_text..clib.get_char(content,i)
-        --        end
-
-
+        Single_line_coment_start(state_machine)
+        Single_line_coment_end(state_machine)
+        Is_include_point(state_machine)
+        Anulate_inclusion(state_machine)
+        Include_char_to_final(state_machine)
+        Make_recursive_call(state_machine)
 
           --      if Make_recursive_call(waiting_include,is_end_string) then
           --          local dir = dtw.newPath(start_point).get_dir()
@@ -86,10 +79,6 @@
              --   	waiting_include = false
         --        end
 
-          --      if is_end_string then
-          --         inside_string = false
-          --         string_buffer = ""
-          --      end
 
            end
 
