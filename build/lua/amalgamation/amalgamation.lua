@@ -1,5 +1,14 @@
 
-
+---@class AMalgamationStateMachine
+---@field content string
+---@field size number
+---@field inside_string boolean
+---@field waiting_include boolean
+---@field string_buffer string
+---@field final_text string
+---@field string_starts_now boolean
+---@field index number
+---@field is_end_string boolean
 
 ---@param start_point string
 ---@param already_included_list  StringArray | nil
@@ -22,23 +31,29 @@
     end
 
     already_included_list.append(start_point_sha)
+    ---@type AMalgamationStateMachine
+    local state_machine ={
+         content = dtw.load_file(start_point),
+         size = clib.get_str_size(content),
+         inside_string = false,
+         waiting_include = false,
+         string_buffer = "",
+         final_text = "//path: "..start_point.."\n",
+         is_start_string=false,
+         index=1,
+         string_starts_now = false,
+         is_end_string = false
+    }
 
 
-    local content = dtw.load_file(start_point)
-
-    local size = clib.get_str_size(content)
-    local inside_string = false
-    local waiting_include = false
-    local string_buffer = ""
-    local final_text = "//path: "..start_point.."\n"
-
-    for i=1,size do
-        local is_start_string = Verify_if_is_start_string_char(content,i,inside_string)
-        if is_start_string  then
-            inside_string = true
+    for i=1,state_machine.size do
+        state_machine.index = i
+        if state_machine.string_starts_now then
+        	state_machine.string_starts_now = false
         end
 
-        local is_end_string = Verify_if_is_end_string_char(is_start_string,content,i,inside_string)
+        Verify_if_is_start_string_char(state_machine)
+        Verify_if_is_end_string_char(state_machine)
 
        if Include_char_to_string_buffer(is_start_string,is_end_string,inside_string) then
             string_buffer = string_buffer..clib.get_char(content,i)
