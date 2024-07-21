@@ -9,6 +9,9 @@
 ---@field index number
 ---@field is_end_string boolean
 ---@field buffer string
+---@field inside_coment boolean
+---@field inside_multiline_coment boolean
+---@field insde_single_coment boolean
 
 
 ---@param start_point string
@@ -45,6 +48,9 @@
          index=0,
          is_end_string = false,
          buffer="",
+         inside_coment = false,
+         inside_multiline_coment=false,
+         insde_single_coment=false
     }
 
 
@@ -54,6 +60,9 @@
         Verify_if_is_end_string_char(state_machine)
         Include_char_to_string_buffer(state_machine)
         Include_buffer_to_final(state_machine)
+        Multiline_coment_start(state_machine)
+        Multiline_coment_end(state_machine)
+
         --Is_include_point(state_machine)
 
         ---        if Anulate_inclusion(waiting_include,content,i) then-

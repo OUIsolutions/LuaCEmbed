@@ -5,7 +5,9 @@
 	if state_machine.inside_string == true then
 		return
 	end
-
+    if state_machine.inside_coment then
+    	return
+    end
     local last_char = clib.get_char(state_machine.content,state_machine.index-1)
     if last_char == "'" then
     	return
@@ -25,7 +27,9 @@ end
     if state_machine.inside_string == false then
     	return
     end
-
+    if state_machine.inside_coment then
+    	return
+    end
     local last_last_char = clib.get_char(state_machine.content,state_machine.index-2)
     local last_char = clib.get_char(state_machine.content,state_machine.index-1)
     local current_char = clib.get_char(state_machine.content,state_machine.index)
