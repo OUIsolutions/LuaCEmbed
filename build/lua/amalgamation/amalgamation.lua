@@ -33,8 +33,9 @@
 
     already_included_list.append(start_point_sha)
     ---@type AMalgamationStateMachine
+    local content = dtw.load_file(start_point)
     local state_machine ={
-         content = dtw.load_file(start_point),
+         content = content,
          size = clib.get_str_size(content),
          inside_string = false,
          waiting_include = false,
@@ -53,10 +54,7 @@
         Verify_if_is_end_string_char(state_machine)
         Include_char_to_string_buffer(state_machine)
         Include_buffer_to_final(state_machine)
-
-        --        if Is_include_point(content,i,inside_string) then
-        --        	waiting_include = true
-        --        end
+        --Is_include_point(state_machine)
 
         ---        if Anulate_inclusion(waiting_include,content,i) then-
         --            final_text = final_text.."#include "

@@ -25,6 +25,8 @@ end
 
     state_machine.final_text = state_machine.final_text..'"'..state_machine.buffer..'"'
     state_machine.is_end_string = false
+    state_machine.buffer = ""
+
 end
 
 ---@param content string

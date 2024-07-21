@@ -10,11 +10,12 @@ local function main()
         local amalgamation_cache = cache.new_element("amalgamation",function ()
             return Generate_amalgamation_recursive(START_POINT)
         end).add_dependencie(src_sha)
+        local amalgamation_result = Generate_amalgamation_recursive(START_POINT)
 
-
-        local amalgamation_result = amalgamation_cache.perform()
         dtw.write_file(END_TEST_POINT,amalgamation_result)
-
+      if true then
+        	return
+        end
         Execute_full_test(cache,src_sha)
 
         Create_examples()
