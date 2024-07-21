@@ -54,18 +54,26 @@ end
     if not state_machine.inside_string then
         return
     end
-
     state_machine.buffer = state_machine.buffer..clib.get_char(state_machine.content,state_machine.index)
 
 end
 
 ---@param state_machine AMalgamationStateMachine
  function Make_recursive_call(state_machine)
-	if waiting_include and is_end_string then
-		return true
+	if not state_machine.waiting_include then
+		return
+	end
+	if not state_machine.is_end_string then
+		return
 	end
 
+	local dir = dtw.newPath(state_machine.start_path).get_dir()
+	local full_path = dtw.concat_path(dir,state_machine.buffer)
+	--clib.print("calling "..full_path.." from"..state_machine.start_path.."\n")
+    local acumulated = Generate_amalgamation_recursive(full_path,state_machine.aleady_included)
+    state_machine.final_text= state_machine.final_text.. acumulated.."\n"
 end
+
 
 ---@param state_machine AMalgamationStateMachine
  function Anulate_inclusion(state_machine)

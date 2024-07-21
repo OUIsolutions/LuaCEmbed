@@ -12,7 +12,8 @@
 ---@field inside_coment boolean
 ---@field inside_multiline_coment boolean
 ---@field insde_single_coment boolean
-
+---@field start_path string
+---@field aleady_included StringArray
 
 ---@param start_point string
 ---@param already_included_list  StringArray | nil
@@ -50,7 +51,9 @@
          buffer="",
          inside_coment = false,
          inside_multiline_coment=false,
-         insde_single_coment=false
+         insde_single_coment=false,
+         start_path = start_point,
+         already_include =already_included_list
     }
 
 
@@ -69,19 +72,10 @@
         Include_char_to_final(state_machine)
         Make_recursive_call(state_machine)
 
-          --      if Make_recursive_call(waiting_include,is_end_string) then
-          --          local dir = dtw.newPath(start_point).get_dir()
-          --          local full_path = dtw.concat_path(dir,string_buffer)
-                    -- clib.print("calling "..full_path.." from"..start_point.."\n")
-          --          local acumulated = Generate_amalgamation_recursive(full_path,already_included_list)
-           --         final_text = final_text.. acumulated.."\n"
-
-             --   	waiting_include = false
-        --        end
 
 
-           end
+    end
 
            clib.print(ANSI_GREEN.."amalgamated: "..start_point.."\n")
            return state_machine.final_text
-    end
+end
