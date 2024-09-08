@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 void LuaCembedTable_destroy_prop(LuaCEmbedTable *self, const char *name);
 

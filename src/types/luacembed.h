@@ -1,4 +1,7 @@
+#include "unique.type_dependencies.h"
 
+#ifndef PRIVATE_LUACEMBED_LUACEMBE_TYPE
+#define PRIVATE_LUACEMBED_LUACEMBE_TYPE
 typedef struct LuaCEmbed{
     lua_State *state;
     const char *current_function;
@@ -13,7 +16,4 @@ typedef struct LuaCEmbed{
     char *main_lib_table;
     bool field_protection;
 }LuaCEmbed;
-
-int lua_cembed_timeout = -1;
-LuaCEmbed  *global_current_lua_embed_object;
-
+#endif

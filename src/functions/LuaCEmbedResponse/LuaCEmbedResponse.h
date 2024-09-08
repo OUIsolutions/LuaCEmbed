@@ -1,13 +1,5 @@
+#include "../unique.declaration_requirements.h"
 
-typedef struct {
-
-    int type;
-    double num_val;
-    bool its_string_ref;
-    long string_size;
-    char *string_val;
-
-}LuaCEmbedResponse;
 
 LuaCEmbedResponse *private_LuaCEmbedReturn_raw();
 
@@ -25,6 +17,11 @@ LuaCEmbedResponse * LuaCEmbed_send_error(const char *format,...);
 
 LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code);
 
+
+LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table);
+
+
+LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table);
 
 
 

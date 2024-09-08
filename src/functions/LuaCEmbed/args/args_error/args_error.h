@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 int LuaCEmbed_ensure_arg_exist(LuaCEmbed *self, private_lua_cembed_incremented_arg index);
 

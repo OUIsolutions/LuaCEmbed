@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 
 LuaCEmbedTable * private_newLuaCembedTable(LuaCEmbed *main_embed, const char *format, ...);

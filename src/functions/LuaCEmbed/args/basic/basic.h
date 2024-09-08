@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index);
 
@@ -20,4 +21,3 @@ char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index);
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index);
 
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns);
-

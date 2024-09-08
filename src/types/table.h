@@ -1,5 +1,6 @@
-
-
+#include "luacembed.h"
+#ifndef PRIVATE_LUACEMBED_TABLE
+#define PRIVATE_LUACEMBED_TABLE
 typedef struct {
     LuaCEmbed  *main_object;
     char *prop_name;
@@ -8,3 +9,4 @@ typedef struct {
     long index;
 
 }LuaCEmbedTable;
+#endif

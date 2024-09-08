@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 void LuaCEmbed_set_global_string(LuaCEmbed *self, const char *name, const  char *value);
 

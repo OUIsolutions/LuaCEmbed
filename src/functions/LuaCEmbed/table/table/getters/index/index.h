@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index);
 
@@ -20,5 +21,3 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index);
 char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index);
 
 bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index);
-
-

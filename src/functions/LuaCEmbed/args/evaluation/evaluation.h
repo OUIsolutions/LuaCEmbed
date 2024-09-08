@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 int private_LuaCembed_run_code_with_args(LuaCEmbed *self,int index,const char *code,va_list args);
 
@@ -16,4 +17,3 @@ double LuaCEmbed_get_double_arg_clojure_evalation(LuaCEmbed *self,int index,cons
 bool LuaCEmbed_get_bool_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
 
 char* LuaCEmbed_get_string_arg_clojure_evalation(LuaCEmbed *self,int index,const char *code,...);
-

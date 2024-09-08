@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const char *value);
 

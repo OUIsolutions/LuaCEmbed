@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char *name, int expected_type);
 

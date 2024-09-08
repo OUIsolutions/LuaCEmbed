@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 int private_LuaCemb_internal_free(lua_State *L);
 

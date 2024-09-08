@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 
 LuaCEmbed * newLuaCEmbedEvaluation();
@@ -36,5 +37,3 @@ void  privata_LuaCEmbed_increment_stack_(LuaCEmbed *self);
 void  privata_LuaCEmbed_decrement_stack(LuaCEmbed *self);
 
 void LuaCEmbed_free(LuaCEmbed *self);
-
-

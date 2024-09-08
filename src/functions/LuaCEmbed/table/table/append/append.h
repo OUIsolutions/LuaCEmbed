@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table);
 

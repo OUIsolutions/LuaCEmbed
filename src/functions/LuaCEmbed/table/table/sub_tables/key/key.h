@@ -1,3 +1,4 @@
+#include "../unique.declaration_requirements.h"
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const char *name);
 

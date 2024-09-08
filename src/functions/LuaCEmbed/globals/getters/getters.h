@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name);
 

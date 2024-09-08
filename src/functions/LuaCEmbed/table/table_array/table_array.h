@@ -1,11 +1,6 @@
+#include "../unique.declaration_requirements.h"
 
 
-typedef struct {
-
-    LuaCEmbedTable **tables;
-    long size;
-
-}privateLuaCEmbedTableArray;
 
 privateLuaCEmbedTableArray *newprivateLuaCEmbedTableArray();
 

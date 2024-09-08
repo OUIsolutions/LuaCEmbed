@@ -1,12 +1,13 @@
+#include "../unique.declaration_requirements.h"
 
 
 #ifdef _WIN32
 VOID CALLBACK TimerHandler(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
-#else 
+#else
 
 void private_LuaCembed_handle_timeout(int signum);
 
-#endif 
+#endif
 
 int privateLuaCEmbed_start_func_evaluation(lua_State *state);
 
@@ -32,5 +33,3 @@ long long  LuaCEmbed_get_evaluation_long(LuaCEmbed *self,const char *code, ...);
 double LuaCEmbed_get_evaluation_double(LuaCEmbed *self,const char *code, ...);
 
 bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self,const char *code, ...);
-
-

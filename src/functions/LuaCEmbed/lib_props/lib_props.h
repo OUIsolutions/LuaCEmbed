@@ -1,4 +1,5 @@
 
+#include "../unique.declaration_requirements.h"
 
 void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value);
 
@@ -22,4 +23,3 @@ bool LuaCEmbed_get_bool_lib_prop(LuaCEmbed *self,const char *name);
 char * LuaCEmbed_get_string_lib_prop(LuaCEmbed *self,const char *name);
 
 LuaCEmbedTable *LuaCEmbed_get_table_lib_prop(LuaCEmbed *self,const char *name);
-
