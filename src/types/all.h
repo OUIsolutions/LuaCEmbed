@@ -1,0 +1,3 @@
+#ifndef PRIVATE_LUACEMBED_TYPE
+#define PRIVATE_LUACEMBED_TYPE
+#endif

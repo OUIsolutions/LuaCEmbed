@@ -9,11 +9,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include "dependencies/dependencies.h"
-#include "constants/all.h"
-#include "LuaCEmbedResponse/LuaCEmbedResponse.h"
-#include "LuaCEmbed/declaration.h"
-#include "LuaCEmbedResponse/LuaCembedResponse_pt2.h"
 
-#include "extra/extra.h"
-#include "namespace/declaration.h"
+#include "dependencies/declaration.h"
+#include "constants/all.h"
+#include "types/all.h"
