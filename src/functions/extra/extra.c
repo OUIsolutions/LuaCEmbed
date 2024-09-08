@@ -1,4 +1,5 @@
 
+#include "../unique.defintions_requirements.h"
 
 const char * LuaCembed_convert_arg_code(int arg_code){
     if(arg_code == LUA_CEMBED_NOT_FOUND){
