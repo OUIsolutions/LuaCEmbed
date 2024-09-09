@@ -5,7 +5,6 @@
 //silver_chain_scope_end
 
 
-#include "../../LuaCEmbed/basic/basic.h"
 
 LuaCEmbedNamespace newLuaCEmbedNamespace(){
     LuaCEmbedNamespace self = {0};
