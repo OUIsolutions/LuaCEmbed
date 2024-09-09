@@ -1,5 +1,0 @@
-
-#ifndef PRIVATE_LUACEMBED_MACROS
-#define PRIVATE_LUACEMBED_MACROS
-
-#endif
