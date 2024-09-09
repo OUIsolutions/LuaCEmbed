@@ -1,4 +1,4 @@
-#include "imports.typesB.h"
+#include "imports.typesD.h"
 #ifndef privateluacembed_fdeclare
 #define privateluacembed_fdeclare
 #include "../LuaCEmbedResponse/fdeclare.LuaCEmbedResponse.h"
