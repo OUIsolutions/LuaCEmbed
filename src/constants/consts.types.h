@@ -1,3 +1,8 @@
+
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../imports/imports.dependencies.h"
+//silver_chain_scope_end
 #define LUA_CEMBED_NOT_FOUND LUA_TNONE
 #define LUA_CEMBED_STRING LUA_TSTRING
 #define LUA_CEMBED_NUMBER LUA_TNUMBER
