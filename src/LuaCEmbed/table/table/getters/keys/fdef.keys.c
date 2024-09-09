@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../../../imports/imports.fdeclare.h"
+//silver_chain_scope_end
+
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
     lua_getglobal(self->main_object->state,self->global_name);

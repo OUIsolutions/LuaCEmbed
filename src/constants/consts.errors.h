@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../imports/imports.dependencies.h"
+//silver_chain_scope_end
+
 
 #define  PRIVATE_LUA_CEMBED_TIMEOUT_ERROR "timeout error"
 #define PRIVATE_LUA_CEMBED_ARG_NOT_PROVIDED "arg %ld at function:%s not provided"

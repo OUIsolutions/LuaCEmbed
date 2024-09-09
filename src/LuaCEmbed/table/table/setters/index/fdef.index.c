@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../../../imports/imports.fdeclare.h"
+//silver_chain_scope_end
+
 
 void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const char *value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID

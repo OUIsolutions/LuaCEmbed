@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../imports/imports.typesB.h"
+//silver_chain_scope_end
+
 
 int privateLuaCEmbed_main_callback_handler(lua_State  *L);
 

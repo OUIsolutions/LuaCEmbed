@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../imports/imports.typesB.h"
+//silver_chain_scope_end
+
 int privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index);
 
 int  LuaCEmbed_get_total_args(LuaCEmbed *self);

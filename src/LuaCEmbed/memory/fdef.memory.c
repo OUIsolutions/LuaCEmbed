@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../imports/imports.fdeclare.h"
+//silver_chain_scope_end
+
 
 void LuaCEmbed_set_memory_limit(LuaCEmbed *self, double limit){
     lua_setallocf(self->state, private_LuaCembed_custom_allocator, &lua_cembed_used_memory);

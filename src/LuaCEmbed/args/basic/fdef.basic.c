@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../imports/imports.fdeclare.h"
+//silver_chain_scope_end
+
 int  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;

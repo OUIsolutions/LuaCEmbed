@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../imports/imports.dependencies.h"
+//silver_chain_scope_end
+
 #define PRIVATE_LUA_CEMBED_TOTAL_LIBS "private_lua_c_embed_total_running_libs"
 #define PRIVATE_LUA_CEMBED_STACK_LEVEL "private_lua_c_embed_stack_level"
 

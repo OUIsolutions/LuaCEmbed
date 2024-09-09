@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../imports/imports.typesB.h"
+//silver_chain_scope_end
+
 
 void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value);
 

@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../../../imports/imports.typesB.h"
+//silver_chain_scope_end
+
 
 char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index);
 

@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../../../imports/imports.fdeclare.h"
+//silver_chain_scope_end
+
 
 long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM

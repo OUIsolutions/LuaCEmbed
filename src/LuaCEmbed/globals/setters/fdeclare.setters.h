@@ -1,4 +1,9 @@
 
+//silver_chain_scope_start
+//mannaged by silver chain
+#include "../../../imports/imports.typesB.h"
+//silver_chain_scope_end
+
 void LuaCEmbed_set_global_string(LuaCEmbed *self, const char *name, const  char *value);
 
 void LuaCEmbed_set_global_raw_string(LuaCEmbed *self, const char *name, const  char *value,long size);

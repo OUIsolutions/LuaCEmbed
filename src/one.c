@@ -1,9 +1,7 @@
 
-
 #ifndef LUACEMBED_H
-#include "declaration.h"
-#include "definition.h"
+#include "imports/imports.fdef.h"
 
 
 #define LUACEMBED_H
-#endif 
+#endif
