@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+old
 main.c
 doTheWorld.h
 teste.png

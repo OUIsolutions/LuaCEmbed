@@ -1,9 +1,9 @@
-#include "LuaCEmbed.h"
+#include "old/src/one.c"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
-    
-   
+
+    LuaCEmbedTypeModule
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     //NEVER USE THESE IF YOU DONT TRUSt IN THE CLIENT
