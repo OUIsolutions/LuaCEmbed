@@ -1,14 +1,4 @@
 
-typedef struct {
-
-    int type;
-    double num_val;
-    bool its_string_ref;
-    long string_size;
-    char *string_val;
-
-}LuaCEmbedResponse;
-
 LuaCEmbedResponse *private_LuaCEmbedReturn_raw();
 
 
@@ -38,3 +28,9 @@ LuaCEmbedResponse  * LuaCEmbed_send_long(long value);
 
 
 void private_LuaCEmbedResponse_free(LuaCEmbedResponse  *self);
+
+
+LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table);
+
+
+LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table);
