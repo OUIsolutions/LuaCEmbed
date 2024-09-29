@@ -1,6 +1,6 @@
 
 #ifndef LUACEMBED_H
-#include "imports/imports.fdef.h"
+#include "imports/imports.fdefine.h"
 
 
 #define LUACEMBED_H
