@@ -1,4 +1,5 @@
 # Prerequisites
+luaDoTheWorld
 *.d
 old
 main.c
