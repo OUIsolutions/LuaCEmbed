@@ -27,6 +27,7 @@ LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
     double result = first_num - second_num;
     return lua_n.response.send_double(result);
 }
+
 int luaopen_my_lib(lua_State *state){
     lua_n = newLuaCEmbedNamespace();
     //functions will be only assescible by the required reciver
@@ -37,3 +38,6 @@ int luaopen_my_lib(lua_State *state){
 return lua_n.perform(l);
 
 }
+
+
+int __declspec(dllexport) luaopen_my_lib(lua_State* lua);
