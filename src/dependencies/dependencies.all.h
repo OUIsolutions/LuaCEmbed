@@ -1,11 +1,6 @@
 #include "UniversalGarbage.h"
 
-#ifdef LUACEMBED_LIB_MODE
+#define LUA_LIB
 
-#include "lua/lua.h"
-#include "lua/lauxlib.h"
-#include "lua/lualib.h"
-
-#else
 #include "lua/onelua.c"
-#endif
+
