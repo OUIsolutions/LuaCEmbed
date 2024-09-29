@@ -26,6 +26,7 @@
 #include "../LuaCEmbed/table/table/sub_tables/key/fdeclare.key.h"
 #include "../LuaCEmbed/table/table_array/fdeclare.table_array.h"
 #include "../LuaCEmbedResponse/fdeclare.LuaCEmbedResponse.h"
+#include "../extra/fdeclare.extra.h"
 #include "../namespace/LuaCEmbedNamespace/fdeclare.LuaCEmbedNamespace.h"
 #include "../namespace/args/fdeclare.args.h"
 #include "../namespace/globals/fdeclare.globals.h"
