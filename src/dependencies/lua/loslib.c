@@ -182,11 +182,11 @@ static int os_tmpname(lua_State *L) {
 
 static int os_tmpname(lua_State *L) {
   char buff[100] = {0};
-  const char *template = "lua_XXXXXX";
+  const char *template_file = "lua_XXXXXX";
   
   GetTempPathA(sizeof(buff), buff);
  
-  UINT  fd = GetTempFileNameA(buff, template, 0, buff);
+  UINT  fd = GetTempFileNameA(buff, template_file, 0, buff);
   if (fd == -1) {
     return luaL_error(L, "unable to generate a unique filename");
   }

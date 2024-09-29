@@ -28,16 +28,18 @@ LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
     return lua_n.response.send_double(result);
 }
 
-int luaopen_my_lib(lua_State *state){
-    lua_n = newLuaCEmbedNamespace();
-    //functions will be only assescible by the required reciver
-    LuaCEmbed * l  = lua_n.newLuaLib(state);
-    lua_n.add_callback(l,"add",add_cfunc);
-    lua_n.add_callback(l,"sub",sub_cfunc);
 
-return lua_n.perform(l);
+
+
+
+int luaopen_my_lib(lua_State *state){
+        lua_n = newLuaCEmbedNamespace();
+        //functions will be only assescible by the required reciver
+        LuaCEmbed * l  = lua_n.newLuaLib(state);
+        lua_n.add_callback(l,"add",add_cfunc);
+        lua_n.add_callback(l,"sub",sub_cfunc);
+
+                return lua_n.perform(l);
 
 }
 
-
-int __declspec(dllexport) luaopen_my_lib(lua_State* lua);
