@@ -190,8 +190,6 @@ static int os_tmpname(lua_State *L) {
   if (fd == -1) {
     return luaL_error(L, "unable to generate a unique filename");
   }
-  close(fd);
-  // Empurrar o nome do arquivo temporário para a pilha Lua
   lua_pushstring(L, buff);
   return 1;
 }
