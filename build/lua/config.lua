@@ -3,7 +3,7 @@ START_POINT = "src/one.c"
 LINUX_COMPILER = "gcc"
 WINDOWS_COMPILER = "x86_64-w64-mingw32-gcc"
 
-OUTPUT_SINGLE_FILE = "LuaCembed.h"
+OUTPUT_SINGLE_FILE = "LuaCEmbed.h"
 END_TEST_POINT= "tests/LuaCEmbed.h"
 SIDE_EFFECT = "tests/target"
 TEST_POINT = "tests/main_test"
