@@ -1491,14 +1491,14 @@ type boolean
 value: 1
 ------------------------------------------
 index: 2
-key: name
-type string
-value: Mateus
-------------------------------------------
-index: 3
 key: age
 type number
 value: 27.000000
+------------------------------------------
+index: 3
+key: name
+type string
+value: Mateus
 ------------------------------------------
 
 ~~~
