@@ -1486,9 +1486,9 @@ type string
 value: indexable random string
 ------------------------------------------
 index: 1
-key: age
-type number
-value: 27.000000
+key: single
+type boolean
+value: 1
 ------------------------------------------
 index: 2
 key: name
@@ -1496,9 +1496,9 @@ type string
 value: Mateus
 ------------------------------------------
 index: 3
-key: single
-type boolean
-value: 1
+key: age
+type number
+value: 27.000000
 ------------------------------------------
 
 ~~~
