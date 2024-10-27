@@ -42,6 +42,7 @@ typedef struct {
     void  (*set_bool_prop)(LuaCEmbedTable *self , const char *name, bool value);
     int  (*get_type_prop)(LuaCEmbedTable *self, const char *name);
     char*  (*get_string_prop)(LuaCEmbedTable *self , const char *name);
+    char*  (*get_raw_string_prop)(LuaCEmbedTable *self, const char *name,long *size);
     long long   (*get_long_prop)(LuaCEmbedTable *self , const char *name);
     double  (*get_double_prop)(LuaCEmbedTable *self , const char *name);
     bool  (*get_bool_prop)(LuaCEmbedTable *self , const char *name);
@@ -59,6 +60,8 @@ typedef struct {
     long long  (*get_long_by_index)(LuaCEmbedTable *self, int index);
     double (*get_double_by_index)(LuaCEmbedTable *self, int index);
     char * (*get_string_by_index)(LuaCEmbedTable *self, int index);
+    char * (*get_raw_string_by_index)(LuaCEmbedTable *self, int index, long *size);
+
     bool (*get_bool_by_index)(LuaCEmbedTable *self, int index);
 
 }LuaCembedTableModule;

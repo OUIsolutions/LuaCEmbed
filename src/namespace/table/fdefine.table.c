@@ -38,6 +38,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.get_double_prop = LuaCembedTable_get_double_prop;
     self.get_long_prop = LuaCembedTable_get_long_prop;
     self.get_string_prop = LuaCembedTable_get_string_prop;
+    self.get_raw_string_prop=  LuaCembedTable_get_raw_string_prop;
     self.get_type_prop = LuaCEmbedTable_get_type_prop;
     self.destroy_prop = LuaCembedTable_destroy_prop;
 
@@ -58,6 +59,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.get_double_by_index = LuaCEmbedTable_get_double_by_index;
     self.get_bool_by_index = LuaCEmbedTable_get_bool_by_index;
     self.get_string_by_index= LuaCEmbedTable_get_string_by_index;
+    self.get_raw_string_by_index =LuaCEmbedTable_get_raw_string_by_index;
     self.get_sub_table_by_index = LuaCEmbedTable_get_sub_table_by_index;
     return self;
 }

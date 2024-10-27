@@ -2,6 +2,7 @@
 //silver_chain_scope_start
 //mannaged by silver chain
 #include "../../../../../imports/imports.fdeclare.h"
+#include <cstddef>
 //silver_chain_scope_end
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
@@ -28,6 +29,19 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
     return value;
 }
 
+char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,long *size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    privateLuaCEmbd_get_field_protected(self->main_object,name);
+    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_STRING)){
+        return NULL;
+    }
+
+    char *value = (char*)lua_tolstring(self->main_object->state,-1,(size_t*)size);
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+    return value;
+}
 
 long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM

@@ -243,6 +243,44 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
     return NULL;
 }
 
+char * LuaCEmbedTable_get_raw_string_by_index(LuaCEmbedTable *self, int index, long *size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+
+    int formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    int table_index = lua_gettop(self->main_object->state);
+    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+    int total = 1;
+    lua_pushnil(self->main_object->state);
+    while(lua_next(self->main_object->state,table_index)){
+        if(total == converted_index){
+            if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_STRING)){
+                lua_pop(self->main_object->state,1);
+                PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+                return NULL;
+            }
+            char * result = (char*)lua_tolstring(self->main_object->state,-1,(size_t*)size);
+            lua_pop(self->main_object->state,1);
+            PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+            return result;
+        }
+        lua_pop(self->main_object->state,1);
+        total+=1;
+
+    }
+
+    privateLuaCEmbed_raise_error_not_jumping(
+            self->main_object,
+            PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
+            index,
+            self->global_name,
+            LuaCembed_convert_arg_code(LUA_CEMBED_NIL),
+            LuaCembed_convert_arg_code(LUA_CEMBED_STRING)
+    );
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+    return NULL;
+}
 bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
 
