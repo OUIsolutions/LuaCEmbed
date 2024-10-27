@@ -23,6 +23,7 @@ typedef struct {
 
     void (*set_sub_table_by_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table);
     void  (*set_string_by_index)(LuaCEmbedTable *self, long index, const char *value);
+    void  (*set_raw_string_by_index)(LuaCEmbedTable *self, long index, const char *value,long size);
     void  (*set_long_by_index)(LuaCEmbedTable *self, long long  index, long  value);
     void  (*set_double_by_index)(LuaCEmbedTable *self, long index, double  value);
     void  (*set_bool_by_index)(LuaCEmbedTable *self, long index, bool value);
@@ -34,6 +35,8 @@ typedef struct {
 
     void (*set_method)(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args));
     void  (*set_string_prop)(LuaCEmbedTable *self , const char *name, const char *value);
+    void  (*set_raw_string_prop)(LuaCEmbedTable *self , const char *name, const char *value,long size);
+
     void  (*set_long_prop)(LuaCEmbedTable *self , const char *name, long long   value);
     void  (*set_double_prop)(LuaCEmbedTable *self , const char *name, double  value);
     void  (*set_bool_prop)(LuaCEmbedTable *self , const char *name, bool value);

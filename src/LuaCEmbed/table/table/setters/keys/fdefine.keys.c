@@ -72,6 +72,16 @@ void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, co
     lua_settop(self->main_object->state, 0);
 
 }
+void  LuaCEmbedTable_set_raw_string_prop(LuaCEmbedTable *self , const char *name, const char *value,long size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushstring(self->main_object->state,name);
+    lua_pushlstring(self->main_object->state,value,size);
+    lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
+}
 
 void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long long   value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID

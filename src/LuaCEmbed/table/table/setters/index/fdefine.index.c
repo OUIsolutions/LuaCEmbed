@@ -19,8 +19,26 @@ void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const
     lua_pushstring(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
     lua_settop(self->main_object->state, 0);
-
 }
+
+
+void  LuaCEmbedTable_set_raw_string_by_index(LuaCEmbedTable *self, long index, const char *value,long size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
+    char *possible_key = LuaCembedTable_get_key_by_index(self,index);
+    if(possible_key){
+        LuaCEmbedTable_set_string_prop(self,possible_key,value);
+        return;
+    }
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushnumber(self->main_object->state,(double)formatted_index);
+    lua_pushlstring(self->main_object->state,value,size);
+    lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+}
+
+
 
 void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long long  index, long  value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
