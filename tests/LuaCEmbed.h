@@ -27862,6 +27862,7 @@ typedef struct {
 
     void (*set_sub_table_by_index)(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table);
     void  (*set_string_by_index)(LuaCEmbedTable *self, long index, const char *value);
+    void  (*set_raw_string_by_index)(LuaCEmbedTable *self, long index, const char *value,long size);
     void  (*set_long_by_index)(LuaCEmbedTable *self, long long  index, long  value);
     void  (*set_double_by_index)(LuaCEmbedTable *self, long index, double  value);
     void  (*set_bool_by_index)(LuaCEmbedTable *self, long index, bool value);
@@ -27873,11 +27874,14 @@ typedef struct {
 
     void (*set_method)(LuaCEmbedTable *self , const char *name, LuaCEmbedResponse *(*callback)(LuaCEmbedTable  *self, LuaCEmbed *args));
     void  (*set_string_prop)(LuaCEmbedTable *self , const char *name, const char *value);
+    void  (*set_raw_string_prop)(LuaCEmbedTable *self , const char *name, const char *value,long size);
+
     void  (*set_long_prop)(LuaCEmbedTable *self , const char *name, long long   value);
     void  (*set_double_prop)(LuaCEmbedTable *self , const char *name, double  value);
     void  (*set_bool_prop)(LuaCEmbedTable *self , const char *name, bool value);
     int  (*get_type_prop)(LuaCEmbedTable *self, const char *name);
     char*  (*get_string_prop)(LuaCEmbedTable *self , const char *name);
+    char*  (*get_raw_string_prop)(LuaCEmbedTable *self, const char *name,long *size);
     long long   (*get_long_prop)(LuaCEmbedTable *self , const char *name);
     double  (*get_double_prop)(LuaCEmbedTable *self , const char *name);
     bool  (*get_bool_prop)(LuaCEmbedTable *self , const char *name);
@@ -27895,6 +27899,8 @@ typedef struct {
     long long  (*get_long_by_index)(LuaCEmbedTable *self, int index);
     double (*get_double_by_index)(LuaCEmbedTable *self, int index);
     char * (*get_string_by_index)(LuaCEmbedTable *self, int index);
+    char * (*get_raw_string_by_index)(LuaCEmbedTable *self, int index, long *size);
+
     bool (*get_bool_by_index)(LuaCEmbedTable *self, int index);
 
 }LuaCembedTableModule;
@@ -28329,9 +28335,9 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index);
 
 char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index);
 
+char * LuaCEmbedTable_get_raw_string_by_index(LuaCEmbedTable *self, int index, long *size);
+
 bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index);
-
-
 
 
 //path: src/imports/../LuaCEmbed/table/table/getters/keys/fdeclare.keys.h
@@ -28341,6 +28347,8 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index);
 
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self, const char *name);
+
+char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,long *size);
 
 long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self, const char *name);
 
@@ -28356,6 +28364,8 @@ int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name);
 
 
 void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const char *value);
+
+void  LuaCEmbedTable_set_raw_string_by_index(LuaCEmbedTable *self, long index, const char *value,long size);
 
 void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long long  index, long  value);
 
@@ -28398,6 +28408,8 @@ void LuaCEmbedTable_set_method(LuaCEmbedTable *self, const char *name, LuaCEmbed
 
 void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self, const char *name, const char *value);
 
+void  LuaCEmbedTable_set_raw_string_prop(LuaCEmbedTable *self , const char *name, const char *value,long size);
+
 void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self, const char *name, long long   value);
 
 void  LuaCEmbedTable_set_double_prop(LuaCEmbedTable *self, const char *name, double  value);
@@ -28406,7 +28418,6 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self, const char *name, bool 
 
 
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...);
-
 
 
 //path: src/imports/../LuaCEmbed/table/table/sub_tables/index/fdeclare.index.h
@@ -30596,6 +30607,44 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
     return NULL;
 }
 
+char * LuaCEmbedTable_get_raw_string_by_index(LuaCEmbedTable *self, int index, long *size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+
+    int formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    int table_index = lua_gettop(self->main_object->state);
+    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+    int total = 1;
+    lua_pushnil(self->main_object->state);
+    while(lua_next(self->main_object->state,table_index)){
+        if(total == converted_index){
+            if(privateLuaCEmbedTable_ensure_type_with_index(self,converted_index,LUA_CEMBED_STRING)){
+                lua_pop(self->main_object->state,1);
+                PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+                return NULL;
+            }
+            char * result = (char*)lua_tolstring(self->main_object->state,-1,(size_t*)size);
+            lua_pop(self->main_object->state,1);
+            PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+            return result;
+        }
+        lua_pop(self->main_object->state,1);
+        total+=1;
+
+    }
+
+    privateLuaCEmbed_raise_error_not_jumping(
+            self->main_object,
+            PRIVATE_LUA_CEMBED_WRONG_TYPE_INDEX,
+            index,
+            self->global_name,
+            LuaCembed_convert_arg_code(LUA_CEMBED_NIL),
+            LuaCembed_convert_arg_code(LUA_CEMBED_STRING)
+    );
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+    return NULL;
+}
 bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
 
@@ -30634,6 +30683,7 @@ bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
     return LUA_CEMBED_GENERIC_ERROR;
 }
 
+
 //path: src/imports/../LuaCEmbed/table/table/getters/keys/fdefine.keys.c
 //mannaged by silver chain
 
@@ -30662,6 +30712,19 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
     return value;
 }
 
+char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,long *size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    privateLuaCEmbd_get_field_protected(self->main_object,name);
+    if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_STRING)){
+        return NULL;
+    }
+
+    char *value = (char*)lua_tolstring(self->main_object->state,-1,(size_t*)size);
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+    return value;
+}
 
 long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
@@ -30727,8 +30790,26 @@ void  LuaCEmbedTable_set_string_by_index(LuaCEmbedTable *self, long index, const
     lua_pushstring(self->main_object->state,value);
     lua_settable(self->main_object->state,-3);
     lua_settop(self->main_object->state, 0);
-
 }
+
+
+void  LuaCEmbedTable_set_raw_string_by_index(LuaCEmbedTable *self, long index, const char *value,long size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
+    char *possible_key = LuaCembedTable_get_key_by_index(self,index);
+    if(possible_key){
+        LuaCEmbedTable_set_string_prop(self,possible_key,value);
+        return;
+    }
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushnumber(self->main_object->state,(double)formatted_index);
+    lua_pushlstring(self->main_object->state,value,size);
+    lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+}
+
+
 
 void  LuaCEmbedTable_set_long_by_index(LuaCEmbedTable *self, long long  index, long  value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
@@ -31005,6 +31086,16 @@ void  LuaCEmbedTable_set_string_prop(LuaCEmbedTable *self , const char *name, co
     lua_settop(self->main_object->state, 0);
 
 }
+void  LuaCEmbedTable_set_raw_string_prop(LuaCEmbedTable *self , const char *name, const char *value,long size){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushstring(self->main_object->state,name);
+    lua_pushlstring(self->main_object->state,value,size);
+    lua_settable(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
+}
 
 void  LuaCEmbedTable_set_long_prop(LuaCEmbedTable *self , const char *name, long long   value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
@@ -31064,6 +31155,7 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     lua_settop(self->main_object->state, 0);
 
 }
+
 
 //path: src/imports/../LuaCEmbed/table/table/sub_tables/index/fdefine.index.c
 //mannaged by silver chain
@@ -31707,7 +31799,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.set_double_prop = LuaCEmbedTable_set_double_prop;
     self.set_long_prop = LuaCEmbedTable_set_long_prop;
     self.set_string_prop = LuaCEmbedTable_set_string_prop;
-
+    self.set_raw_string_prop = LuaCEmbedTable_set_raw_string_prop;
     self.get_sub_table_prop = LuaCEmbedTable_get_sub_table_by_key;
     self.new_sub_table_prop = LuaCEmbedTable_new_sub_table_by_key;
     self.set_sub_table_prop = LuaCEmbedTable_set_sub_table_prop;
@@ -31718,6 +31810,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.get_double_prop = LuaCembedTable_get_double_prop;
     self.get_long_prop = LuaCembedTable_get_long_prop;
     self.get_string_prop = LuaCembedTable_get_string_prop;
+    self.get_raw_string_prop=  LuaCembedTable_get_raw_string_prop;
     self.get_type_prop = LuaCEmbedTable_get_type_prop;
     self.destroy_prop = LuaCembedTable_destroy_prop;
 
@@ -31725,10 +31818,10 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.set_bool_by_index= LuaCEmbedTable_set_bool_by_index;
     self.set_double_by_index =LuaCEmbedTable_set_double_by_index;
     self.set_string_by_index = LuaCEmbedTable_set_string_by_index;
+    self.set_raw_string_by_index = LuaCEmbedTable_set_raw_string_by_index;
     self.set_evaluation_by_index = LuaCEmbedTable_set_evaluation_by_index;
 
     self.get_listable_size = LuaCEmbedTable_get_listable_size;
-
     self.new_sub_table_appending = LuaCEmbedTable_new_sub_table_appending;
     self.has_key = LuaCembedTable_has_key_at_index;
     self.get_key_by_index = LuaCembedTable_get_key_by_index;
@@ -31738,6 +31831,7 @@ LuaCembedTableModule newLuaCembedTableModule(){
     self.get_double_by_index = LuaCEmbedTable_get_double_by_index;
     self.get_bool_by_index = LuaCEmbedTable_get_bool_by_index;
     self.get_string_by_index= LuaCEmbedTable_get_string_by_index;
+    self.get_raw_string_by_index =LuaCEmbedTable_get_raw_string_by_index;
     self.get_sub_table_by_index = LuaCEmbedTable_get_sub_table_by_index;
     return self;
 }

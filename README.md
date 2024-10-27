@@ -17,25 +17,25 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 [Link to Web Site](oui.tec.br)
 
 #### Download Link
-[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.76/LuaCEmbed.h)
+[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.75/LuaCEmbed.h)
 
 
 ### Instalation
 Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
-into your project, and compile with gcc/clang
+into your project, and compile with gcc/clang 
 
 ~~~c
 #include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
-
+    
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.evaluate(l,"r = 30");
     long calc = lua_n.get_evaluation_long(l,"r + 20");
     printf("result %ld",calc);
-
+    
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
@@ -55,9 +55,9 @@ result 50
 
 ### Runting Native functions
 <h3 style="color:red;">
-NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER
+NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
 </h3>
-You can load native lua functions by the usage of **load_native_libs** function
+You can load native lua functions by the usage of **load_native_libs** function 
 
 
 ~~~c
@@ -134,13 +134,13 @@ return lua_n.perform(l);
 ~~~
 Compile the code with:
 ~~~shell
-gcc -Wall -shared -fpic -o my_lib.so  main.c
+gcc -Wall -shared -fpic -o my_lib.so  main.c 
 ~~~
 
 
 than you can call into your lua code
 
-~~~lua
+~~~lua 
 
 local lib = require("my_lib")
 
@@ -152,7 +152,7 @@ print("y",y)
 ~~~
 ### Lib Props
 you can determine library props into your lib:
-~~~c
+~~~c 
 
 
 #include "LuaCEmbed.h"
@@ -181,7 +181,7 @@ int luaopen_my_lib(lua_State *state){
 
 testing with lua:
 
-~~~lua
+~~~lua 
 
 lib = require("my_lib")
 print("long_prop",lib.long_prop)
@@ -1010,7 +1010,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%ld\n",result);
-
+    
     lua_n.free(l);
 
     return 0;
@@ -1051,7 +1051,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%lf\n",result);
-
+    
     lua_n.free(l);
 
     return 0;
@@ -1092,7 +1092,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%s\n",result);
-
+    
     lua_n.free(l);
 
     return 0;
@@ -1133,7 +1133,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%d\n",result);
-
+    
     lua_n.free(l);
 
     return 0;
@@ -1178,7 +1178,7 @@ int main(int argc, char *argv[]){
     }
 
    printf("value of created.a = %s\n",a);
-
+    
     lua_n.free(l);
 
     return 0;
@@ -1380,7 +1380,7 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
 
         printf("------------------------------------------\n");
     }
-
+    
     return NULL;
 
 }
@@ -1486,9 +1486,9 @@ type string
 value: indexable random string
 ------------------------------------------
 index: 1
-key: single
-type boolean
-value: 1
+key: name
+type string
+value: Mateus
 ------------------------------------------
 index: 2
 key: age
@@ -1496,9 +1496,9 @@ type number
 value: 27.000000
 ------------------------------------------
 index: 3
-key: name
-type string
-value: Mateus
+key: single
+type boolean
+value: 1
 ------------------------------------------
 
 ~~~
@@ -2262,3 +2262,4 @@ It will produce
 result of r.a internal text
 
 ~~~
+

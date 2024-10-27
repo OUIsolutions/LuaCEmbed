@@ -2,7 +2,6 @@
 //silver_chain_scope_start
 //mannaged by silver chain
 #include "../../../../../imports/imports.fdeclare.h"
-#include <cstddef>
 //silver_chain_scope_end
 
 int  LuaCEmbedTable_get_type_prop(LuaCEmbedTable *self, const char *name){
