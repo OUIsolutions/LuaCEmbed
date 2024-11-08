@@ -22,20 +22,20 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 
 ### Instalation
 Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
-into your project, and compile with gcc/clang 
+into your project, and compile with gcc/clang
 
 ~~~c
 #include "LuaCEmbed.h"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
-    
+
     lua_n =  newLuaCEmbedNamespace();
     LuaCEmbed * l = lua_n.newLuaEvaluation();
     lua_n.evaluate(l,"r = 30");
     long calc = lua_n.get_evaluation_long(l,"r + 20");
     printf("result %ld",calc);
-    
+
     if(lua_n.has_errors(l)){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
@@ -55,9 +55,9 @@ result 50
 
 ### Runting Native functions
 <h3 style="color:red;">
-NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
+NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER
 </h3>
-You can load native lua functions by the usage of **load_native_libs** function 
+You can load native lua functions by the usage of **load_native_libs** function
 
 
 ~~~c
@@ -121,26 +121,27 @@ LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
     double result = first_num - second_num;
     return lua_n.response.send_double(result);
 }
+
 int luaopen_my_lib(lua_State *state){
     lua_n = newLuaCEmbedNamespace();
-    //functions will be only assescible by the required reciver
     LuaCEmbed * l  = lua_n.newLuaLib(state);
     lua_n.add_callback(l,"add",add_cfunc);
     lua_n.add_callback(l,"sub",sub_cfunc);
 
-return lua_n.perform(l);
-
+    return lua_n.send_self_as_lib(l);
 }
+
+
 ~~~
 Compile the code with:
 ~~~shell
-gcc -Wall -shared -fpic -o my_lib.so  main.c 
+gcc -Wall -shared -fpic -o my_lib.so  main.c
 ~~~
 
 
 than you can call into your lua code
 
-~~~lua 
+~~~lua
 
 local lib = require("my_lib")
 
@@ -152,7 +153,7 @@ print("y",y)
 ~~~
 ### Lib Props
 you can determine library props into your lib:
-~~~c 
+~~~c
 
 
 #include "LuaCEmbed.h"
@@ -181,7 +182,7 @@ int luaopen_my_lib(lua_State *state){
 
 testing with lua:
 
-~~~lua 
+~~~lua
 
 lib = require("my_lib")
 print("long_prop",lib.long_prop)
@@ -1010,7 +1011,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%ld\n",result);
-    
+
     lua_n.free(l);
 
     return 0;
@@ -1051,7 +1052,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%lf\n",result);
-    
+
     lua_n.free(l);
 
     return 0;
@@ -1092,7 +1093,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%s\n",result);
-    
+
     lua_n.free(l);
 
     return 0;
@@ -1133,7 +1134,7 @@ int main(int argc, char *argv[]){
         printf("error: %s\n",lua_n.get_error_message(l));
     }
    printf("resullt :%d\n",result);
-    
+
     lua_n.free(l);
 
     return 0;
@@ -1178,7 +1179,7 @@ int main(int argc, char *argv[]){
     }
 
    printf("value of created.a = %s\n",a);
-    
+
     lua_n.free(l);
 
     return 0;
@@ -1380,7 +1381,7 @@ LuaCEmbedResponse  * show_table(LuaCEmbed *args){
 
         printf("------------------------------------------\n");
     }
-    
+
     return NULL;
 
 }
@@ -2262,4 +2263,3 @@ It will produce
 result of r.a internal text
 
 ~~~
-

@@ -69,3 +69,20 @@ int LuaCembed_perform(LuaCEmbed *self){
     free(lib_main_table);
     return 1;
 }
+
+int LuaCembed_send_self_as_lib(LuaCEmbed *self){
+    return LuaCembed_perform(self);
+}
+
+int LuaCembed_send_global_as_lib(LuaCEmbed *self,const char *global_name){
+    if(global_name == NULL){
+        return 0;
+    }
+
+    lua_getglobal(self->state,global_name);
+    int type  = lua_type(self->state,-1);
+    if(type == LUA_CEMBED_NIL){
+        return 0;
+    }
+    return 1;
+}

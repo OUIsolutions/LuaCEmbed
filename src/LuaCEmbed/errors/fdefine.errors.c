@@ -66,7 +66,7 @@ void LuaCEmbed_dangerous_raise_error_jumping(LuaCEmbed *self,const char *error_m
     lua_error(self->state);
 }
 
-void LuaCEmbed_dangerous_raise_self_error_jumping(LuaCEmbed *self,const char *error_msg,...){
+void LuaCEmbed_dangerous_raise_self_error_jumping(LuaCEmbed *self){
     if(!LuaCEmbed_has_errors(self)){
         return;
     }

@@ -13,6 +13,9 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.newLuaEvaluation = newLuaCEmbedEvaluation;
     self.set_delete_function = LuaCembed_set_delete_function;
     self.perform = LuaCembed_perform;
+    self.send_self_as_lib = LuaCembed_send_self_as_lib;
+    self.send_global_as_lib = LuaCembed_send_global_as_lib;
+
     self.load_native_libs = LuaCEmbed_load_native_libs;
     self.set_memory_limit = LuaCEmbed_set_memory_limit;
     self.clear_errors = LuaCEmbed_clear_errors;

@@ -28,14 +28,14 @@ LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
 }
 int luaopen_my_lib(lua_State *state){
     lua_n = newLuaCEmbedNamespace();
-
-
-    //functions will be only assescible by the required reciver
     LuaCEmbed * l  = lua_n.newLuaLib(state);
-   // lua_n.dangerous_raise_error_jumping(l,"tesddddt");
 
     lua_n.add_callback(l,"add",add_cfunc);
     lua_n.add_callback(l,"sub",sub_cfunc);
-
-return lua_n.perform(l);
+    lua_n.evaluate(l,"r = 320");
+    if(lua_n.has_errors(l)){
+        lua_n.dangerous_raise_self_error_jumping(l);
+        return 0;
+    }
+    return lua_n.send_self_as_lib(l);
 }

@@ -17,6 +17,9 @@ typedef struct{
     void (*load_native_libs)(LuaCEmbed *self);
     void (*load_lib_from_c)(LuaCEmbed *self,int (*callback)(lua_State *l),const char *name);
     int (*perform)(LuaCEmbed *self);
+    int (*send_self_as_lib)(LuaCEmbed *self);
+    int (*send_global_as_lib)(LuaCEmbed *self,const char *global_name);
+
     const char * (*convert_arg_code)(int arg_code);
     void (*set_memory_limit)(LuaCEmbed *self, double limit);
 
@@ -49,7 +52,7 @@ typedef struct{
     void (*add_global_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
 
     void (*dangerous_raise_error_jumping)(LuaCEmbed *self,const char *error_msg,...);
-    void (*dangerous_raise_self_error_jumping)(LuaCEmbed *self,const char *error_msg,...);
+    void (*dangerous_raise_self_error_jumping)(LuaCEmbed *self);
 
     void (*free)(LuaCEmbed *self);
 
