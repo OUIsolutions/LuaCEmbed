@@ -48,6 +48,9 @@ typedef struct{
     void (*add_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
     void (*add_global_callback)(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args) );
 
+    void (*dangerous_raise_error_jumping)(LuaCEmbed *self,const char *error_msg,...);
+    void (*dangerous_raise_self_error_jumping)(LuaCEmbed *self,const char *error_msg,...);
+
     void (*free)(LuaCEmbed *self);
 
 } LuaCEmbedNamespace;

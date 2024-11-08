@@ -6,6 +6,7 @@
 #include "../LuaCEmbed/args/evaluation/fdeclare.evaluation.h"
 #include "../LuaCEmbed/basic/fdeclare.basic.h"
 #include "../LuaCEmbed/callback_handle/fdeclare.callback_handle.h"
+#include "../LuaCEmbed/errors/fdeclare.errors.h"
 #include "../LuaCEmbed/evaluation/fdeclare.evaluation.h"
 #include "../LuaCEmbed/globals/errors/fdeclare.errors.h"
 #include "../LuaCEmbed/globals/getters/fdeclare.getters.h"

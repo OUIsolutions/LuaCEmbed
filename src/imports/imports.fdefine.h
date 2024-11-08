@@ -6,6 +6,7 @@
 #include "../LuaCEmbed/args/evaluation/fdefine.evaluation.c"
 #include "../LuaCEmbed/basic/fdefine.basic.c"
 #include "../LuaCEmbed/callback_handle/fdefine.callback_handle.c"
+#include "../LuaCEmbed/errors/fdefine.errors.c"
 #include "../LuaCEmbed/evaluation/fdefine.evaluation.c"
 #include "../LuaCEmbed/globals/errors/fdefine.errors.c"
 #include "../LuaCEmbed/globals/getters/fdefine.getters.c"

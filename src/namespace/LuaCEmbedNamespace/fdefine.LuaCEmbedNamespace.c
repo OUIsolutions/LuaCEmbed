@@ -45,6 +45,8 @@ LuaCEmbedNamespace newLuaCEmbedNamespace(){
     self.get_bool_lib_prop  = LuaCEmbed_get_bool_lib_prop;
     self.get_string_lib_prop = LuaCEmbed_get_string_lib_prop;
     self.get_table_lib_prop = LuaCEmbed_get_table_lib_prop;
+    self.dangerous_raise_error_jumping = LuaCEmbed_dangerous_raise_error_jumping;
+    self.dangerous_raise_self_error_jumping = LuaCEmbed_dangerous_raise_self_error_jumping;
 
     self.free = LuaCEmbed_free;
     return self;
