@@ -17,7 +17,7 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 [Link to Web Site](oui.tec.br)
 
 #### Download Link
-[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.75/LuaCEmbed.h)
+[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.778/LuaCEmbed.h)
 
 
 ### Instalation
@@ -121,17 +121,16 @@ LuaCEmbedResponse  *sub_cfunc(LuaCEmbed *args){
     double result = first_num - second_num;
     return lua_n.response.send_double(result);
 }
-
 int luaopen_my_lib(lua_State *state){
     lua_n = newLuaCEmbedNamespace();
+    //functions will be only assescible by the required reciver
     LuaCEmbed * l  = lua_n.newLuaLib(state);
     lua_n.add_callback(l,"add",add_cfunc);
     lua_n.add_callback(l,"sub",sub_cfunc);
 
-    return lua_n.send_self_as_lib(l);
+return lua_n.perform(l);
+
 }
-
-
 ~~~
 Compile the code with:
 ~~~shell

@@ -33,6 +33,8 @@ int luaopen_my_lib(lua_State *state){
     lua_n.add_callback(l,"add",add_cfunc);
     lua_n.add_callback(l,"sub",sub_cfunc);
     lua_n.evaluate(l,"r = 320");
+
+
     if(lua_n.has_errors(l)){
         lua_n.dangerous_raise_self_error_jumping(l);
         return 0;
