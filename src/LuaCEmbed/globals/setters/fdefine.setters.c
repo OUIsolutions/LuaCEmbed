@@ -19,10 +19,10 @@ void LuaCEmbed_set_global_raw_string(LuaCEmbed *self, const char *name, const  c
 }
 
 
-void LuaCEmbed_set_global_long(LuaCEmbed *self, const char *name, long long  value){
+void LuaCEmbed_set_global_long(LuaCEmbed *self, const char *name, lua_Integer  value){
     PRIVATE_LUA_CEMBED_PROTECT_VOID
 
-    lua_pushnumber(self->state,(double )value);
+    lua_pushinteger(self->state,value);
     lua_setglobal(self->state,name);
 }
 

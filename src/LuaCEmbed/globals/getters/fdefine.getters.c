@@ -12,14 +12,14 @@ int LuaCEmbed_get_global_type(LuaCEmbed *self,const char *name){
     return lua_type(self->state,-1);
 }
 
-long long  LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
+lua_Integer  LuaCEmbed_get_global_long(LuaCEmbed *self,const char *name){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
     if(LuaCEmbed_ensure_global_type(self,name,LUA_CEMBED_NUMBER)){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
     lua_getglobal(self->state, name);
-    return (long )lua_tonumber(self->state,-1);
+    return lua_tointeger(self->state,-1);
 }
 
 double LuaCEmbed_get_global_double(LuaCEmbed *self,const char *name){
@@ -158,4 +158,3 @@ LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, L
 
     return result;
 }
-

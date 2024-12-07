@@ -34,14 +34,14 @@ typedef struct{
     double (*get_evaluation_double)(LuaCEmbed *self,const char *code,...);
     bool (*get_evaluation_bool)(LuaCEmbed *self, const char *code,...);
 
-    void (*set_long_lib_prop)(LuaCEmbed *self,const char *name,long long  value);
+    void (*set_long_lib_prop)(LuaCEmbed *self,const char *name,lua_Integer value);
 
     void (*set_double_lib_prop)(LuaCEmbed *self,const char *name,double value);
     void (*set_bool_lib_prop)(LuaCEmbed *self,const char *name,bool value);
     void (*set_string_lib_prop)(LuaCEmbed *self,const char *name,const char * value);
     void (*set_table_lib_prop)(LuaCEmbed *self,const char *name,LuaCEmbedTable *value);
 
-    long long  (*get_long_lib_prop)(LuaCEmbed *self,const char *name);
+    lua_Integer  (*get_long_lib_prop)(LuaCEmbed *self,const char *name);
     double (*get_double_lib_prop)(LuaCEmbed *self,const char *name);
     bool (*get_bool_lib_prop)(LuaCEmbed *self,const char *name);
     char * (*get_string_lib_prop)(LuaCEmbed *self,const char *name);

@@ -104,7 +104,7 @@ lua_Integer LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self,lua_Integer
     if(privateLuaCembed_ensure_arg_evaluation_type(self,index,LUA_CEMBED_NUMBER)){
         return  LUA_CEMBED_GENERIC_ERROR;
     }
-    return (long long) lua_tonumber(self->state,-1);
+    return lua_tointeger(self->state,-1);
 
 }
 

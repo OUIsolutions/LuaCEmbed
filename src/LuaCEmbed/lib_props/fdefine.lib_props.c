@@ -5,7 +5,7 @@
 //silver_chain_scope_end
 
 
-void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,long long value){
+void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self,const char *name,lua_Integer value){
     char *main_lib_table = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MAIN_LIB_TABLE_NAME__,self->lib_identifier);
 
     lua_getglobal(self->state,main_lib_table);
@@ -75,7 +75,7 @@ int private_LuaCEmbed_ensure_lib_prop_type(LuaCEmbed *self,const char *name,int 
     return LUA_CEMBED_OK;
 }
 
-long long  LuaCEmbed_get_long_lib_prop(LuaCEmbed *self,const char *name){
+lua_Integer LuaCEmbed_get_long_lib_prop(LuaCEmbed *self,const char *name){
     lua_getglobal(self->state,self->main_lib_table);
     lua_getfield(self->state, -1,name);
     if(private_LuaCEmbed_ensure_lib_prop_type(self,name,LUA_CEMBED_NUMBER)){

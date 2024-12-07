@@ -27,13 +27,13 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
 
 }
 
-void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  long long  value){
+void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  lua_Integer value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
 
     long size = LuaCEmbedTable_get_listable_size(self);
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,size+1);
-    lua_pushnumber(self->main_object->state,(double)value);
+    lua_pushinteger(self->main_object->state,value);
     lua_rawset(self->main_object->state,-3);
     lua_settop(self->main_object->state, 0);
 
