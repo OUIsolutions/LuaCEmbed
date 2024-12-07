@@ -30,7 +30,7 @@ LuaCEmbedResponse * LuaCEmbed_send_str(const char *text){
     return self;
 }
 
-LuaCEmbedResponse * LuaCEmbed_send_raw_string(const char *text,long size){
+LuaCEmbedResponse * LuaCEmbed_send_raw_string(const char *text,lua_Integer size){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
     self->string_size = size;
@@ -49,7 +49,7 @@ LuaCEmbedResponse * LuaCEmbed_send_str_reference(const char *text){
     return self;
 }
 
-LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference(const  char *text,long size){
+LuaCEmbedResponse * LuaCEmbed_send_raw_string_reference(const  char *text,lua_Integer size){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_STRING_RESPONSE;
     self->string_size = size;
@@ -104,7 +104,7 @@ LuaCEmbedResponse  * LuaCEmbed_send_double(double value){
     return self;
 }
 
-LuaCEmbedResponse  * LuaCEmbed_send_long(long value){
+LuaCEmbedResponse  * LuaCEmbed_send_long(lua_Integer value){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_LONG_RESPONSE;
     self->num_val = (double)value;

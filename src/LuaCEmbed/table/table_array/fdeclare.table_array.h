@@ -20,6 +20,6 @@ LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_global_name(privateLuaCEmbed
 
 LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_prop_name(privateLuaCEmbedTableArray *self, const char *name);
 
-LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_internal_index(privateLuaCEmbedTableArray *self, long internal_index);
+LuaCEmbedTable  *privateLuaCEmbedTableArray_find_by_internal_index(privateLuaCEmbedTableArray *self, lua_Integer internal_index);
 
 void  privateLuaCEmbedTableArray_free(privateLuaCEmbedTableArray *self);
