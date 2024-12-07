@@ -4,9 +4,9 @@
 #include "../../../imports/imports.fdeclare.h"
 //silver_chain_scope_end
 
-int  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, int index){
+int  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
-    long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    lua_Integer  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(formatted_index > self->total_args){
         privateLuaCEmbed_raise_error_not_jumping(self,PRIVATE_LUA_CEMBED_ARG_NOT_PROVIDED,formatted_index,self->current_function);
@@ -32,9 +32,9 @@ int  LuaCEmbed_get_total_args(LuaCEmbed *self){
 
 
 
-int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
+int  LuaCEmbed_get_arg_type(LuaCEmbed *self,lua_Integer index){
 
-    long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    lua_Integer  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(formatted_index > self->total_args){
         return LUA_CEMBED_NIL;
@@ -49,36 +49,36 @@ int  LuaCEmbed_get_arg_type(LuaCEmbed *self,int index){
 }
 
 
-long long LuaCEmbed_get_long_arg(LuaCEmbed *self, int index){
+lua_Integer LuaCEmbed_get_long_arg(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
 
     if(privateLuaCEmbed_put_arg_on_top(self,index)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
-       return (long )LUA_CEMBED_NOT_FOUND;
+       return (lua_Integer )LUA_CEMBED_NOT_FOUND;
     }
 
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
-        return (long )LUA_CEMBED_NOT_FOUND;
+        return (lua_Integer )LUA_CEMBED_NOT_FOUND;
     }
 
-    long long result =  (long long)lua_tonumber(self->state,-1);
+    lua_Integer result =  lua_tointeger(self->state,-1);
     PRIVATE_LUA_CEMBED_CLEAR_STACK
     return result;
 }
 
 
-double LuaCEmbed_get_double_arg(LuaCEmbed *self, int index){
+double LuaCEmbed_get_double_arg(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
 
     if(privateLuaCEmbed_put_arg_on_top(self,index)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
-       return (long )LUA_CEMBED_NOT_FOUND;
+       return LUA_CEMBED_NOT_FOUND;
     }
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_NUMBER)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
-        return (long )LUA_CEMBED_NOT_FOUND;
+        return LUA_CEMBED_NOT_FOUND;
     }
     double result = lua_tonumber(self->state,-1);
     PRIVATE_LUA_CEMBED_CLEAR_STACK
@@ -208,4 +208,3 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedT
     return result;
 
 }
-
