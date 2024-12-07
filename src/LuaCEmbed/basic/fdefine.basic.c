@@ -67,7 +67,7 @@ void privata_LuaCEmbed_increment_stack_(LuaCEmbed *self){
     if(lua_type(self->state,-1) == LUA_CEMBED_NUMBER){
         value =  lua_tonumber(self->state,-1);
     }
-    int new_value = value+1;
+    lua_Integer new_value = value+1;
     lua_pushinteger(self->state,new_value);
     lua_setglobal(self->state,PRIVATE_LUA_CEMBED_STACK_LEVEL);
     self->stack_leve =new_value;

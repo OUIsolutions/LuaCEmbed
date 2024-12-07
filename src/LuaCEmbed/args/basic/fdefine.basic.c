@@ -4,7 +4,7 @@
 #include "../../../imports/imports.fdeclare.h"
 //silver_chain_scope_end
 
-int  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, lua_Integer index){
+lua_Integer  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
     lua_Integer  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -26,13 +26,13 @@ int  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, lua_Integer index){
     return LUA_OK;
 }
 
-int  LuaCEmbed_get_total_args(LuaCEmbed *self){
+lua_Integer  LuaCEmbed_get_total_args(LuaCEmbed *self){
     return self->total_args;
 }
 
 
 
-int  LuaCEmbed_get_arg_type(LuaCEmbed *self,lua_Integer index){
+lua_Integer  LuaCEmbed_get_arg_type(LuaCEmbed *self,lua_Integer index){
 
     lua_Integer  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
@@ -85,16 +85,16 @@ double LuaCEmbed_get_double_arg(LuaCEmbed *self, lua_Integer index){
     return result;
 }
 
-bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
+bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_BOOL
 
     if(privateLuaCEmbed_put_arg_on_top(self,index)){
         PRIVATE_LUA_CEMBED_CLEAR_STACK
-       return (long )LUA_CEMBED_NOT_FOUND;
+       return LUA_CEMBED_NOT_FOUND;
     }
     if(private_LuaCEmbed_ensure_top_stack_arg_type(self,index,LUA_CEMBED_BOOL)){
     PRIVATE_LUA_CEMBED_CLEAR_STACK
-        return (long )LUA_CEMBED_NOT_FOUND;
+        return LUA_CEMBED_NOT_FOUND;
     }
     bool result = lua_toboolean(self->state,-1);
     PRIVATE_LUA_CEMBED_CLEAR_STACK
@@ -102,7 +102,7 @@ bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, int index){
 }
 
 
-char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
+char * LuaCEmbed_get_str_arg(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
     PRIVATE_LUA_CEMBED_CLEAR_STACK
 
@@ -118,7 +118,7 @@ char * LuaCEmbed_get_str_arg(LuaCEmbed *self, int index){
     PRIVATE_LUA_CEMBED_CLEAR_STACK
     return result;
 }
-char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index){
+char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,lua_Integer *size, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
     PRIVATE_LUA_CEMBED_CLEAR_STACK
 
@@ -135,7 +135,7 @@ char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,long *size, int index){
     return result;
 }
 
-LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
+LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NULL
 
     if(privateLuaCEmbed_put_arg_on_top(self,index)){
@@ -156,7 +156,7 @@ LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,int index){
 
 }
 
-LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, int index, LuaCEmbedTable *args_to_call, int total_returns){
+LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, lua_Integer index, LuaCEmbedTable *args_to_call, lua_Integer total_returns){
 
     long  formatted_index = index + LUA_CEMBED_INDEX_DIF;
     char *formatted_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->stack_leve,formatted_index-1);
