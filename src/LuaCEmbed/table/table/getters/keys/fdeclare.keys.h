@@ -8,9 +8,9 @@
 
 char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self, const char *name);
 
-char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,long *size);
+char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,lua_Integer *size);
 
-long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self, const char *name);
+lua_Integer  LuaCembedTable_get_long_prop(LuaCEmbedTable *self, const char *name);
 
 double  LuaCembedTable_get_double_prop(LuaCEmbedTable *self, const char *name);
 

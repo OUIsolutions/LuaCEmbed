@@ -5,14 +5,14 @@
 //silver_chain_scope_end
 
 
-long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
+lua_Integer  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
 
 
 
     lua_getglobal(self->main_object->state,self->global_name);
     int index = lua_gettop(self->main_object->state);
-    long total = 0;
+    lua_Integer total = 0;
 
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,index)){
@@ -24,7 +24,7 @@ long  LuaCEmbedTable_get_full_size(LuaCEmbedTable *self){
     return total;
 }
 
-long  LuaCEmbedTable_get_listable_size(LuaCEmbedTable *self){
+lua_Integer  LuaCEmbedTable_get_listable_size(LuaCEmbedTable *self){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -32,7 +32,7 @@ long  LuaCEmbedTable_get_listable_size(LuaCEmbedTable *self){
 }
 
 
-long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cembed_incremented_arg index){
+lua_Integer  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cembed_incremented_arg index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
 
     if(index >= 0){
@@ -42,7 +42,7 @@ long  privateLuaCEmbedTable_convert_index(LuaCEmbedTable *self, private_lua_cemb
     return LuaCEmbedTable_get_full_size(self) + index;
 }
 
-int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
+int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -66,7 +66,7 @@ int LuaCEmbedTable_get_type_by_index(LuaCEmbedTable *self, int index){
     PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return LUA_CEMBED_NOT_FOUND;
 }
-char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
+char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
 
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -74,7 +74,7 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
     lua_getglobal(self->main_object->state,self->global_name);
     int table_index = lua_gettop(self->main_object->state);
     long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
-    int total = 1;
+    lua_Integer total = 1;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,table_index)){
 
@@ -97,7 +97,7 @@ char *LuaCembedTable_get_key_by_index(LuaCEmbedTable *self, long index){
     PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return NULL;
 }
-bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
+bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
     lua_settop(self->main_object->state,0);
 
@@ -123,7 +123,7 @@ bool LuaCembedTable_has_key_at_index(LuaCEmbedTable *self, long index){
     return false;
 }
 
-long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
+lua_Integer  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
     lua_settop(self->main_object->state,0);
 
@@ -131,8 +131,8 @@ long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
 
     lua_getglobal(self->main_object->state,self->global_name);
     int table_index = lua_gettop(self->main_object->state);
-    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
-    int total = 1;
+    lua_Integer converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+    lua_Integer total = 1;
 
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,table_index)){
@@ -165,7 +165,7 @@ long long  LuaCEmbedTable_get_long_by_index(LuaCEmbedTable *self, int index){
     return LUA_CEMBED_GENERIC_ERROR;
 }
 
-double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
+double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -173,7 +173,7 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
     lua_getglobal(self->main_object->state,self->global_name);
     int table_index = lua_gettop(self->main_object->state);
     long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
-    int total = 1;
+    lua_Integer total = 1;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,table_index)){
         if(total == converted_index){
@@ -204,7 +204,7 @@ double LuaCEmbedTable_get_double_by_index(LuaCEmbedTable *self, int index){
     return LUA_CEMBED_GENERIC_ERROR;
 }
 
-char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
+char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -212,7 +212,7 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
     lua_getglobal(self->main_object->state,self->global_name);
     int table_index = lua_gettop(self->main_object->state);
     long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
-    int total = 1;
+    lua_Integer total = 1;
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,table_index)){
         if(total == converted_index){
@@ -243,7 +243,7 @@ char * LuaCEmbedTable_get_string_by_index(LuaCEmbedTable *self, int index){
     return NULL;
 }
 
-char * LuaCEmbedTable_get_raw_string_by_index(LuaCEmbedTable *self, int index, long *size){
+char * LuaCEmbedTable_get_raw_string_by_index(LuaCEmbedTable *self, lua_Integer index, lua_Integer *size){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;
@@ -281,7 +281,7 @@ char * LuaCEmbedTable_get_raw_string_by_index(LuaCEmbedTable *self, int index, l
     PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return NULL;
 }
-bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, int index){
+bool LuaCEmbedTable_get_bool_by_index(LuaCEmbedTable *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_BOOL
 
     int formatted_index = index + LUA_CEMBED_INDEX_DIF;

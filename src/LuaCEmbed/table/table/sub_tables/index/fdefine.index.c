@@ -47,7 +47,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
     return created;
 }
 
-LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, long index){
+LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lua_Integer index){
 
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
 
@@ -55,9 +55,9 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
     long formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     lua_getglobal(self->main_object->state,self->global_name);
-    int table_index = lua_gettop(self->main_object->state);
-    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
-    int total = 1;
+    lua_Integer table_index = lua_gettop(self->main_object->state);
+    lua_Integer converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+    lua_Integer total = 1;
 
     lua_pushnil(self->main_object->state);
     while(lua_next(self->main_object->state,table_index)){
@@ -115,7 +115,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lon
     return NULL;
 }
 
-void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaCEmbedTable *sub_table){
+void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, lua_Integer index,LuaCEmbedTable *sub_table){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
 
 
@@ -126,7 +126,7 @@ void LuaCEmbedTable_set_sub_table_by_index(LuaCEmbedTable *self, long index,LuaC
         return;
     }
 
-    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    lua_Integer formatted_index = index + LUA_CEMBED_INDEX_DIF;
     lua_getglobal(self->main_object->state,self->global_name);
     lua_pushinteger(self->main_object->state,formatted_index);
     lua_getglobal(self->main_object->state,sub_table->global_name);

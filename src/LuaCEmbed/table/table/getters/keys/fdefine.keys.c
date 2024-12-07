@@ -28,7 +28,7 @@ char*  LuaCembedTable_get_string_prop(LuaCEmbedTable *self , const char *name){
     return value;
 }
 
-char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,long *size){
+char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name,lua_Integer *size){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NULL
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -42,7 +42,7 @@ char*  LuaCembedTable_get_raw_string_prop(LuaCEmbedTable *self, const char *name
     return value;
 }
 
-long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
+lua_Integer LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_NUM
 
     lua_getglobal(self->main_object->state,self->global_name);
@@ -50,7 +50,7 @@ long long   LuaCembedTable_get_long_prop(LuaCEmbedTable *self , const char *name
     if(privateLuaCEmbedTable_ensure_type_with_key(self, name, LUA_CEMBED_NUMBER)){
         return LUA_CEMBED_GENERIC_ERROR;
     }
-    long long value = (long long)lua_tonumber(self->main_object->state,-1);
+    lua_Integer value = lua_tointeger(self->main_object->state,-1);
     PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
     return value;
 }
