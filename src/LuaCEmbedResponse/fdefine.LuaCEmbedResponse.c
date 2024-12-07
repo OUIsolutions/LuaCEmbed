@@ -15,7 +15,7 @@ LuaCEmbedResponse *private_LuaCEmbedReturn_raw(){
 LuaCEmbedResponse  * LuaCEmbed_send_bool(bool value){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_BOOL_RESPONSE;
-    self->num_val = (double)value;
+    self->int_val = value;
     return self;
 }
 
@@ -100,14 +100,14 @@ LuaCEmbedResponse * LuaCEmbed_send_evaluation(const char *code){
 LuaCEmbedResponse  * LuaCEmbed_send_double(double value){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE;
-    self->num_val = value;
+    self->double_val = value;
     return self;
 }
 
 LuaCEmbedResponse  * LuaCEmbed_send_long(lua_Integer value){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
     self->type = PRIVATE_LUA_CEMBED_LONG_RESPONSE;
-    self->num_val = (double)value;
+    self->int_val = value;
     return self;
 }
 

@@ -79,19 +79,19 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_LONG_RESPONSE){
-        lua_pushinteger(L, (int)possible_return->num_val);
+        lua_pushinteger(L, possible_return->int_val);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_BOOL_RESPONSE){
-        lua_pushboolean(L, (bool)possible_return->num_val);
+        lua_pushboolean(L, (bool)possible_return->int_val);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE){
-        lua_pushnumber(L, possible_return->num_val);
+        lua_pushnumber(L, possible_return->double_val);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
@@ -102,11 +102,6 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
 
-    if(possible_return->type == PRIVATE_LUA_CEMBED_DOUBLE_RESPONSE){
-        lua_pushboolean(L, (bool)possible_return->num_val);
-        private_LuaCEmbedResponse_free(possible_return);
-        return PRIVATE_LUACEMBED_ONE_RETURN;
-    }
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_TABLE_RESPONSE){
         lua_getglobal(self->state, PRIVATE_LUA_CEMBED_TABLE_RETURN);
