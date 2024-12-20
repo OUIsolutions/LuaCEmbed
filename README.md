@@ -17,7 +17,7 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 [Link to Web Site](oui.tec.br)
 
 #### Download Link
-[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.779/LuaCEmbed.h)
+[Click Here to Download](https://github.com/OUIsolutions/LuaCEmbed/releases/download/v0.75/LuaCEmbed.h)
 
 
 ### Instalation
@@ -1486,19 +1486,19 @@ type string
 value: indexable random string
 ------------------------------------------
 index: 1
+key: single
+type boolean
+value: 1
+------------------------------------------
+index: 2
 key: name
 type string
 value: Mateus
 ------------------------------------------
-index: 2
+index: 3
 key: age
 type number
 value: 27.000000
-------------------------------------------
-index: 3
-key: single
-type boolean
-value: 1
 ------------------------------------------
 
 ~~~
