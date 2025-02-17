@@ -1,7 +1,11 @@
 function create_c_example(src)
+    
+    local extension = dtw.newPath(src).get_extension()
     local content = dtw.load_file(src)
-
-    return "```c\n" .. content .. "\n```"
+    if extension == "c" then
+        return "```c\n" .. content .. "\n```"
+    end 
+    return "```bash\n" .. content .. "\n```"
 end
 
 ---@return string |nil
