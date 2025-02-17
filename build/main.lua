@@ -21,7 +21,7 @@ function main()
     end
 
     if argv.flags_exist({ "zip" }) then
-        os.execute("zip  release/doTheWorld.zip -r src dependencies")
+        os.execute("zip  release/LuaCEmbed.zip -r src ")
     end
 
 
