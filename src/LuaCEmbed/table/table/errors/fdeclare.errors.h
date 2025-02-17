@@ -1,7 +1,7 @@
 
 //silver_chain_scope_start
 //mannaged by silver chain
-#include "../../../../imports/imports.macros.h"
+#include "../../../../imports/imports.typesD.h"
 //silver_chain_scope_end
 
 int privateLuaCEmbedTable_ensure_type_with_key(LuaCEmbedTable *self, const char *name, int expected_type);

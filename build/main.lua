@@ -10,7 +10,7 @@ function main()
         silverchain.generate({
             src = "src",
             project_short_cut = "privateLuaCembed",
-            tags = { "dependencies", "consts", "macros", "macros", "globals", "fdeclare", "fdef" }
+            tags = { "dependencies", "consts", "macros", "types", "globals", "fdeclare", "fdef" }
         })
     end
 
