@@ -22,8 +22,26 @@ DESPITE BEING 100% COVERED BY TESTS, THIS LIBRARY IS NOT CONSIDERED PRODUCTION R
 
 {HASHTAG}{HASHTAG}{HASHTAG} Instalation
 Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
-into your project, and compile with gcc/clang 
+into your project, and compile with gcc/clang
 {create_c_example("exemples/evaluation/hello_world.c")}
+
+{HASHTAG} Bulding the Project
+
+{HASHTAG}  Bulding the Project
+if you want to build the project from scracth, you will need  to have [Darwin](https://github.com/OUIsolutions/Darwin)
+on version **0.018** dowloaded,then you can call:
+
+~~~shel
+darwin run_blueprint build/ --mode folder --amalgamate --zip  --silverchain_organize
+~~~
+
+These will create all the outputs into the release folder.
+If you want to make all the tests and recreate the examples and readme , call:
+
+~~~shell
+darwin run_blueprint build/ --mode folder a --amalgamate --zip  --silverchain_organize --test --create_examples --create_readme
+
+~~~
 
 
 
@@ -34,9 +52,9 @@ It will produce:
 
 {HASHTAG}{HASHTAG}{HASHTAG} Runting Native functions
 <h3 style="color:red;">
-NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
+NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER
 </h3>
-You can load native lua functions by the usage of **load_native_libs** function 
+You can load native lua functions by the usage of **load_native_libs** function
 
 {create_c_example("exemples/evaluation/basic_evaluation_with_loaded_libs.c")}
 
@@ -91,13 +109,13 @@ return lua_n.perform(l);
 ~~~
 Compile the code with:
 ~~~shell
-gcc -Wall -shared -fpic -o my_lib.so  main.c 
+gcc -Wall -shared -fpic -o my_lib.so  main.c
 ~~~
 
 
 than you can call into your lua code
 
-~~~lua 
+~~~lua
 
 local lib = require("my_lib")
 
@@ -109,7 +127,7 @@ print("y",y)
 ~~~
 {HASHTAG}{HASHTAG}{HASHTAG} Lib Props
 you can determine library props into your lib:
-~~~c 
+~~~c
 
 
 {HASHTAG}include "LuaCEmbed.h"
@@ -138,7 +156,7 @@ int luaopen_my_lib(lua_State *state)#{
 
 testing with lua:
 
-~~~lua 
+~~~lua
 
 lib = require("my_lib")
 print("long_prop",lib.long_prop)
@@ -657,5 +675,3 @@ its possible to create a new global table, the vallues will be automaticaly sett
 It will produce
 
 {create_c_example("tests/main_test/globals/T_set_table/expected.txt")}
-
-
