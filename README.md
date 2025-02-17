@@ -43,7 +43,6 @@ int main(int argc, char *argv[]){
 }
 ```
 
-# Bulding the Project
 
 #  Bulding the Project
 if you want to build the project from scracth, you will need  to have [Darwin](https://github.com/OUIsolutions/Darwin)
