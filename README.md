@@ -52,10 +52,26 @@ It will produce:
 ~~~txt
 result 50
 ~~~
-### Building from scratch 
-for build from scratch just clone the repository and run the following commands
-```bash
-```
+
+# Bulding the Project
+
+#  Bulding the Project
+if you want to build the project from scracth, you will need  to have [Darwin](https://github.com/OUIsolutions/Darwin)
+on version **0.018** dowloaded,then you can call:
+
+~~~shel
+darwin run_blueprint build/ --mode folder --amalgamate --zip  --silverchain_organize
+~~~
+
+These will create all the outputs into the release folder.
+If you want to make all the tests and recreate the examples and readme , call:
+
+~~~shell
+darwin run_blueprint build/ --mode folder a --amalgamate --zip  --silverchain_organize --test --create_examples --create_readme
+
+~~~
+
+
 ### Runting Native functions
 <h3 style="color:red;">
 NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
