@@ -6,6 +6,7 @@ end
 
 ---@return string |nil
 function Create_readme()
+    HASHTAG = "#"
     local result = candango.Render_text(
         dtw.load_file("extras/INTERNAL.md")
     )
