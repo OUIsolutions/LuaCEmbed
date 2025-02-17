@@ -118,7 +118,7 @@ LuaCEmbedNamespace  lua_n;
 
 
 
-int luaopen_my_lib(lua_State *state){
+int luaopen_my_lib(lua_State *state)#{
     lua_n = newLuaCEmbedNamespace();
     //functions will be only assescible by the required reciver
     bool set_functions_as_public  = false;
@@ -133,7 +133,7 @@ int luaopen_my_lib(lua_State *state){
 
     return lua_n.perform(l);
 
-}
+}#/
 ~~~
 
 testing with lua:
