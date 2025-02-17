@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "custom_math.h": "c",
-        "pthread.h": "c"
-    },
-    "terminal.explorerKind": "external",
-    "terminal.integrated.accessibleViewFocusOnCommandExecution": true,
-    "terminal.integrated.accessibleViewPreserveCursorPosition": true
-}
