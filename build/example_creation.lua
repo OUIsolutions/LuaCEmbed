@@ -8,7 +8,7 @@ function Create_examples()
             return
         end
         local content = tree_part.get_value()
-        formated_content = string.gsub(content, '../../../../release/doTheWorld.h', OUTPUT_SINGLE_FILE);
+        formated_content = string.gsub(content, "../../../LuaCEmbed.h", OUTPUT_SINGLE_FILE);
         tree_part.set_value(formated_content)
         path.insert_dir_at_index(0, EXAMPLES_FOLDER)
         path.remove_sub_dirs_at(TEST_POINT)
@@ -24,8 +24,4 @@ function Create_examples()
     end)
     test_tree.commit()
 
-
-    local locker = dtw.load_file("tests/locker_test/locker_test.c")
-    locker = string.gsub(locker,"../../release/doTheWorld.h","doTheWorld.h")
-    dtw.write_file("exemples/locker/locker_test.c",locker)
 end
