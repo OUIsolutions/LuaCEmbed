@@ -1,7 +1,7 @@
 
 //silver_chain_scope_start
 //mannaged by silver chain
-#include "../../../imports/imports.typesD.h"
+#include "../../../imports/imports.macros.h"
 //silver_chain_scope_end
 
 lua_Integer privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, lua_Integer index);

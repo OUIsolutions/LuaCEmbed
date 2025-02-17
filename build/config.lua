@@ -3,7 +3,7 @@ LINUX_COMPILER           = "gcc"
 WINDOWS_COMPILER         = "x86_64-w64-mingw32-gcc"
 RELEASE_FOLDER           = "release"
 
-OUTPUT_SINGLE_FILE       = "LuaCembed.c"
+OUTPUT_SINGLE_FILE       = "LuaCEmbed.h"
 
 SIDE_EFFECT              = "tests/target"
 TEST_POINT               = "tests/main_test"

@@ -1,6 +1,6 @@
-#include "imports.typesD.h"
-#ifndef privateluacembed_fdeclare
-#define privateluacembed_fdeclare
+#include "imports.macros.h"
+#ifndef privateLuaCembed_fdeclare
+#define privateLuaCembed_fdeclare
 #include "../LuaCEmbed/args/args_error/fdeclare.args_error.h"
 #include "../LuaCEmbed/args/basic/fdeclare.basic.h"
 #include "../LuaCEmbed/args/evaluation/fdeclare.evaluation.h"

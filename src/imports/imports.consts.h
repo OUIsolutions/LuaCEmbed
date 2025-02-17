@@ -1,6 +1,6 @@
 #include "imports.dependencies.h"
-#ifndef privateluacembed_consts
-#define privateluacembed_consts
+#ifndef privateLuaCembed_consts
+#define privateLuaCembed_consts
 #include "../constants/consts.aplication.h"
 #include "../constants/consts.errors.h"
 #include "../constants/consts.lua_code.h"

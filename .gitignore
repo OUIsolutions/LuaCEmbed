@@ -5,7 +5,11 @@ old
 main.c
 doTheWorld.h
 teste.png
+release
 teste.lua
+LuaCembed.c
+LuaCEmbed.h
+teste.c
 # Object files
 *.o
 cache2
