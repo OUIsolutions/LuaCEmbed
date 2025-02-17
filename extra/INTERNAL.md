@@ -643,11 +643,9 @@ It will produce
 {HASHTAG}{HASHTAG}{HASHTAG}{HASHTAG} Set Bool
 {create_c_example(" exemples/globals/set_bool.c")}
 
-
 It will produce
 
 {create_c_example(" tests/main_test/globals/T_set_bool/expected.txt")}
-
 
 {HASHTAG}{HASHTAG}{HASHTAG}{HASHTAG} New Table
 its possible to create a new global table, the vallues will be automaticaly setted
@@ -656,10 +654,8 @@ its possible to create a new global table, the vallues will be automaticaly sett
 {HASHTAG}{HASHTAG}{HASHTAG}{HASHTAG} Set Bool
 {create_c_example(" exemples/globals/set_table.c")}
 
-
 It will produce
 
 {create_c_example(" tests/main_test/globals/T_set_table/expected.txt")}
-
 
 
