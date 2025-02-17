@@ -25,7 +25,6 @@ Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you
 into your project, and compile with gcc/clang
 {create_c_example("exemples/evaluation/hello_world.c")}
 
-{HASHTAG} Bulding the Project
 
 {HASHTAG}  Bulding the Project
 if you want to build the project from scracth, you will need  to have [Darwin](https://github.com/OUIsolutions/Darwin)
