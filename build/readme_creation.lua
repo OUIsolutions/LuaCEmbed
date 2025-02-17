@@ -8,7 +8,7 @@ end
 function Create_readme()
     HASHTAG = "#"
     local result = candango.Render_text(
-        dtw.load_file("extras/INTERNAL.md")
+        dtw.load_file("extra/INTERNAL.md")
     )
     if result.exist_error then
         print(result.error_message)
