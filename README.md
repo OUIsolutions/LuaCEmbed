@@ -52,7 +52,10 @@ It will produce:
 ~~~txt
 result 50
 ~~~
-
+### Building from scratch 
+for build from scratch just clone the repository and run the following commands
+```bash
+```
 ### Runting Native functions
 <h3 style="color:red;">
 NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER 
