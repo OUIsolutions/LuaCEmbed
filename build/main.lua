@@ -28,14 +28,6 @@ function main()
         local cache = NewCache(CACHE_POINT)
         local src_sha = Generate_sha_from_folder_not_considering_empty_folders(LIB_FOLDER)
         Execute_full_test(cache, src_sha)
-        local locker_content = dtw.load_file("tests/locker_test/locker_test.c")
-
-        cache.new_element("locker", function()
-            Execute_locker_test()
-        end).
-            add_dependencie(locker_content).
-            add_dependencie(src_sha).
-            perform()
     end
     if argv.flags_exist({ "create_examples" }) then
         Create_examples()

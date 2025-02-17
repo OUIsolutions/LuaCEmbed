@@ -53,7 +53,6 @@ It will produce:
 result 50
 ~~~
 
-# Bulding the Project
 
 #  Bulding the Project
 if you want to build the project from scracth, you will need  to have [Darwin](https://github.com/OUIsolutions/Darwin)
