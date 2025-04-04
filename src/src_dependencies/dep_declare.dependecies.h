@@ -1,4 +1,7 @@
 
+#if defined(__unix__) || defined(__APPLE__)
+    #include <unistd.h>
+#endif 
 
 #if !defined(lua_h) && !defined(LUA_CEMBED_MOCK_LUA)
     #include "../../dependencies/lua_single_unity.h"
