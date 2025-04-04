@@ -1,3 +1,0 @@
-index-value: 10.000000
-index-value: sss
-called the delete function

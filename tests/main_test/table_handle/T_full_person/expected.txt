@@ -1,5 +1,0 @@
-person description:
-name: test
-age: 30
-height: 1.400000
-married 1

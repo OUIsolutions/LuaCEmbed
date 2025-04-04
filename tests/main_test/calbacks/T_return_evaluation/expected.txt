@@ -1,1 +1,0 @@
-resullt :func result
