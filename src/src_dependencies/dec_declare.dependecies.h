@@ -2,6 +2,7 @@
 
 #if !defined(lua_h) && !defined(LUA_CEMBED_MOCK_LUA)
     #include "../../dependencies/lua_single_unity.h"
+    #define LUA_CEMBED_LUA_DECLARATED
 #endif 
 
 

@@ -13,7 +13,7 @@ function install_dependencies()
     os.execute("curl -L https://github.com/OUIsolutions/Universal-Garbage-Colector/releases/download/3.0.0/UniversalGarbage.c -o dependencies/UniversalGarbage.c")
     os.execute("curl -L https://github.com/OUIsolutions/Universal-Garbage-Colector/releases/download/3.0.0/UniversalGarbage.h -o dependencies/UniversalGarbage.h")   
 
-    os.execute("curl -L https://github.com/OUIsolutions/LuaSingleUnity/releases/download/5.4.7/lua_single_unity_classic_onelua.c -o dependencies/lua_single_unity_classic_onelua.c")
+    os.execute("curl -L https://github.com/OUIsolutions/LuaSingleUnity/releases/download/5.4.7/lua_single_unity_custom_onelua.c -o dependencies/lua_single_unity_custom_onelua.c")
     os.execute("curl -L https://github.com/OUIsolutions/LuaSingleUnity/releases/download/5.4.7/lua_single_unity.h -o dependencies/lua_single_unity.h ")
 
 
