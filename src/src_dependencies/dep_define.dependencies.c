@@ -6,17 +6,16 @@
 //silver_chain_scope_end
 
 #if !defined(LUA_CEMBED_MOCK_LUA_DEFINE) && defined(LUA_CEMBED_LUA_DECLARATED)
-    
-    #define l_unlikely luai_unlikely
-    #define l_likely luai_likely
+    /*
+      #define LUA_SINGLE_UNITY_GUESS_OS
+
 
     #define LUA_SINGLE_UNITY_EMBED_MODE
     #if !defined(LUA_CEMBED_NOT_IMPLEMENT_MATH)
         #define LUA_SINGLE_UNITY_IMPLEMENT_MATH
     #endif
-    #define LUA_SINGLE_UNITY_GUESS_OS
-
-#include "../../dependencies/lua_single_unity_classic_onelua.c"
+    #include "../../dependencies/lua_single_unity_classic_onelua.c"
+    */
 #endif
 
 
