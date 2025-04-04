@@ -1,6 +1,6 @@
-#include "imports.fdeclare.h"
-#ifndef privateLuaCembed_fdefine
-#define privateLuaCembed_fdefine
+#include "imports.dep_define.h"
+#ifndef LuaCEmbed_fdefine
+#define LuaCEmbed_fdefine
 #include "../LuaCEmbed/args/args_error/fdefine.args_error.c"
 #include "../LuaCEmbed/args/basic/fdefine.basic.c"
 #include "../LuaCEmbed/args/evaluation/fdefine.evaluation.c"

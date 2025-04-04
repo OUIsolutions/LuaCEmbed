@@ -1,6 +1,6 @@
 #include "imports.macros.h"
-#ifndef privateLuaCembed_types
-#define privateLuaCembed_types
+#ifndef LuaCEmbed_types
+#define LuaCEmbed_types
 #include "../LuaCEmbed/types.LuaCEmbed.h"
 #include "../LuaCEmbedResponse/types.LuaCembedResponse.h"
 #include "../types.typedefs.h"

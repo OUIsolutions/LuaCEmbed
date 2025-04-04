@@ -1,7 +1,9 @@
 
 //silver_chain_scope_start
-//mannaged by silver chain
-#include "../../../../../imports/imports.fdeclare.h"
+//DONT MODIFY THIS COMMENT
+//this import is computationally generated
+//mannaged by SilverChain: https://github.com/OUIsolutions/SilverChain
+#include "../../../../../imports/imports.dep_define.h"
 //silver_chain_scope_end
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const char *name){

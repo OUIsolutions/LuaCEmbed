@@ -1,5 +1,5 @@
 #include "imports.typesC.h"
-#ifndef privateLuaCembed_typesD
-#define privateLuaCembed_typesD
+#ifndef LuaCEmbed_typesD
+#define LuaCEmbed_typesD
 #include "../namespace/LuaCEmbedNamespace/typesD.LuaCEmbedNamespace.h"
 #endif

@@ -3,10 +3,12 @@ luaDoTheWorld
 *.d
 old
 main.c
+dependencies
 doTheWorld.h
 teste.png
 release
 teste.lua
+src/imports/
 side_effect_copy
 output_test
 side_effect
