@@ -1,6 +1,7 @@
 
 #if defined(__unix__) || defined(__APPLE__)
     #include <unistd.h>
+    #include <signal.h>
 #endif 
 
 #if !defined(lua_h) && !defined(LUA_CEMBED_MOCK_LUA)
