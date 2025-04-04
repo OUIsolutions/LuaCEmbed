@@ -2,6 +2,7 @@
 luaDoTheWorld
 *.d
 old
+.vscode
 main.c
 dependencies
 doTheWorld.h
