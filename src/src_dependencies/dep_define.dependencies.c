@@ -11,10 +11,10 @@
     #define l_likely luai_likely
 
     #define LUA_SINGLE_UNITY_EMBED_MODE
-    #define LUA_SINGLE_UNITY_GUESS_OS
     #if !defined(LUA_CEMBED_NOT_IMPLEMENT_MATH)
         #define LUA_SINGLE_UNITY_IMPLEMENT_MATH
     #endif
+    #define LUA_SINGLE_UNITY_GUESS_OS
 
 #include "../../dependencies/lua_single_unity_classic_onelua.c"
 #endif
