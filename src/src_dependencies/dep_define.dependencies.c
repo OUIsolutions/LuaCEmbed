@@ -6,7 +6,7 @@
 //silver_chain_scope_end
 
 #if !defined(LUA_CEMBED_MOCK_LUA_DEFINE) && defined(LUA_CEMBED_LUA_DECLARATED)
-
+    #define LUA_SINGLE_UNITY_GUESS_OS
     #define LUA_SINGLE_UNITY_EMBED_MODE
     #if !defined(LUA_CEMBED_NOT_IMPLEMENT_MATH)
         #define LUA_SINGLE_UNITY_IMPLEMENT_MATH
