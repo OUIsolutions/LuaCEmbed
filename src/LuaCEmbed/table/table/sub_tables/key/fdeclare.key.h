@@ -3,7 +3,7 @@
 //DONT MODIFY THIS COMMENT
 //this import is computationally generated
 //mannaged by SilverChain: https://github.com/OUIsolutions/SilverChain
-#include "../../../../../imports/imports.typesD.h"
+#include "../../../../../imports/imports.consts.h"
 //silver_chain_scope_end
 
 LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_by_key(LuaCEmbedTable *self, const char *name);

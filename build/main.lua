@@ -2,7 +2,7 @@ function main()
     install_dependencies()
     darwin.silverchain.generate({
         src = "src",
-        tags = { "dep_declare", "macros", "types", "fdeclare","globals", "dep_define","fdefine" },
+        tags = { "dep_declare", "macros", "types","consts", "fdeclare","globals", "dep_define","fdefine" },
         project_short_cut = "LuaCEmbed",
         implement_main = false
     })
