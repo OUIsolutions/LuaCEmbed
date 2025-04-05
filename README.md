@@ -1,7 +1,5 @@
 ### WARNING: THIS IS ALPHA SOFTWARE. USE AT YOUR OWN RISK. NO WARRANTY IS PROVIDED AND BUGS ARE EXPECTED.
 
-
-
 LuaCEmbed it's  a lua wrapper to allow easy interoperability beetwen C and Lua
 providing any methods to control Lua Code from C
 
@@ -12,8 +10,6 @@ providing any methods to control Lua Code from C
 |[LuaCEmbed.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.c)| Definition|
 |[LuaCEmbed.h](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.h)| Header|
 |[LuaCEmbed.zip](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.zip)| Zip Mode|
-
-
 
 ### Most Basic Example
 ```c
@@ -38,5 +34,19 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
 
+## Documentation
+
+| Item | Description |
+|------|-------------|
+|[build_and_install.md](/docs/build_and_install.md)| Installation and Compilation |
+|[dependencies.md](/docs/dependencies.md)| Licenses and Attributions |
+|[native_functions.md](/docs/native_functions.md)| Running Native Functions |
+|[making_a_library.md](/docs/making_a_library.md)| Creating Libraries |
+|[evaluations.md](/docs/evaluations.md)| Lua Evaluation |
+|[timeout.md](/docs/timeout.md)| Timeout |
+|[memory_usage.md](/docs/memory_usage.md)| Memory Usage |
+|[callbacks.md](/docs/callbacks.md)| Callbacks |
+|[table_handling.md](/docs/table_handling.md)| Table Handling |
+|[table_setting.md](/docs/table_setting.md)| Setting Table Properties |
+|[table_size.md](/docs/table_size.md)| Table Size |
