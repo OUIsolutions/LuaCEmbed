@@ -15,11 +15,12 @@ providing any methods to control Lua Code from C
 
 
 
-### Instalation
-Like all Oui librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbed.h** file
+### Most Basic Example
+```c
+Like all OUI librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbedOne.c** file
 into your project, and compile with gcc/clang
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
@@ -72,7 +73,7 @@ NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER
 You can load native lua functions by the usage of **load_native_libs** function
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
@@ -106,7 +107,7 @@ in the same way we can execute lua from C, we also can generate dll/so to be ace
 
 ~~~c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedNamespace  lua_n;
 
@@ -167,7 +168,7 @@ you can determine library props into your lib:
 ~~~c
 
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedNamespace  lua_n;
 
@@ -214,7 +215,7 @@ To evaluate Lua Code from C, you can use all the evaluation methods, provided by
 #### Evaluating string
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -249,7 +250,7 @@ result: hello world
 It's also possible to evaluate a file by using the **evaluete_file** method
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -290,7 +291,7 @@ You can determine the type of the evaluation by using the **get_evaluation_type*
 #### Evaluating Long
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -329,7 +330,7 @@ result: string
 Its also possible to determine the size of a table by using the **get_evaluation_size** method
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -364,7 +365,7 @@ size: 3
 #### Evaluating Long
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -398,7 +399,7 @@ result: 50
 #### Evaluating Double
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -433,7 +434,7 @@ result: 50.000000
 #### Evaluating Bool
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -469,7 +470,7 @@ You can set timeout to your functions, by using the timeout method:
 
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 
 LuaCEmbedNamespace  lua_n;
@@ -527,7 +528,7 @@ AND IT WILL KILL THE APPLICATION
 
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedNamespace  lua_n;
 
@@ -565,7 +566,7 @@ Callbacks i'ts a way to make c functions assesible in lua code, this it's the mo
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -607,7 +608,7 @@ you can accept callback arguments into your function,check their types, and make
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -681,7 +682,7 @@ The lua native language index first elements in position 1, authogth LuaCEmbed u
 ```c
 
 #define LUA_CEMBED_INDEX_DIF 0
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedNamespace  lua_n;
 
@@ -758,7 +759,7 @@ in these example, we are creating an 'print' function ,to allow print values
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -830,7 +831,7 @@ it's also possible to modify callbacks by lua code , by using the evaluation arg
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -883,7 +884,7 @@ if you recive a lambda as argument , you can run the function with rguments and 
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 
 LuaCEmbedNamespace  lua_n;
@@ -937,7 +938,7 @@ you can control table arguments easly with the **get_table** method, where you c
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -999,7 +1000,7 @@ You also can return  values or errors, with the **response** methods
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1040,7 +1041,7 @@ resullt :30
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1081,7 +1082,7 @@ resullt :30.000000
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1122,7 +1123,7 @@ resullt :str return
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1163,7 +1164,7 @@ resullt :1
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1210,7 +1211,7 @@ You also can return multi values at once  with the **return_multi_return** metho
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1265,7 +1266,7 @@ you can "raise" a error by returning a error in the function
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1306,7 +1307,7 @@ you can easly handle tables, with the getters and setters methods
 #### Retriving table props
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * show_table(LuaCEmbed *args){
@@ -1361,7 +1362,7 @@ age: 27
 
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * show_table(LuaCEmbed *args){
@@ -1426,7 +1427,7 @@ age: 30
 #### Iterating over table
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1519,7 +1520,7 @@ its possible to set values of table in a lot of different ways
 
 #### Seting  basic Props
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){
@@ -1578,7 +1579,7 @@ married 0
 you also can set a method to a table, passing a callback function for it
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * describe( LuaCEmbedTable  *self,LuaCEmbed *args){
@@ -1641,7 +1642,7 @@ Meta methods like **__gc** or **__index** works fine tool
 
 ```c
 
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedNamespace  lua_n;
 
@@ -1717,7 +1718,7 @@ called the delete function
 in these example we are creating a **full class ** of a person
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1790,7 +1791,7 @@ married 1
 you also can work with arrays , by using the **append** methods
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){
@@ -1846,7 +1847,7 @@ test3
 sub tables can be constructed, setted and autocreated
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 LuaCEmbedResponse  * create_table(LuaCEmbed *args){
@@ -1900,7 +1901,7 @@ Glbals can be fully handled by the LuaCEmbed Api
 #### Getting a global string
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1934,7 +1935,7 @@ result hello world
 #### Getting a global bool
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -1969,7 +1970,7 @@ result 1
 #### Getting a double global
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2004,7 +2005,7 @@ result 30.500000
 #### Getting a long global
 
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2037,7 +2038,7 @@ result 30
 
 #### Getting a type global
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2071,7 +2072,7 @@ result string
 #### Getting a table
 Tables are by default auto created, so yoou can just use the **get_table_auto_creating**  method
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2108,7 +2109,7 @@ Its also possible to set global variables
 
 #### Set Long
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2139,7 +2140,7 @@ result 30.000000
 
 #### Set Double
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2170,7 +2171,7 @@ result 30.000000
 
 #### Set string
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2203,7 +2204,7 @@ result hello world
 
 #### Set Bool
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
@@ -2238,7 +2239,7 @@ its possible to create a new global table, the vallues will be automaticaly sett
 
 #### Set Bool
 ```c
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
 
