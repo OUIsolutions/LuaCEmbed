@@ -1,7 +1,8 @@
 ### WARNING: THIS IS ALPHA SOFTWARE. USE AT YOUR OWN RISK. NO WARRANTY IS PROVIDED AND BUGS ARE EXPECTED.
 
 LuaCEmbed it's  a lua wrapper to allow easy interoperability beetwen C and Lua
-providing any methods to control Lua Code from C
+providing any methods to control Lua Code from C,Make Lua  Libs, or create ambients
+for safe evaluation of Lua code.
 
 ## Releases
 | Item | Description |
