@@ -1,10 +1,4 @@
 
-//silver_chain_scope_start
-//DONT MODIFY THIS COMMENT
-//this import is computationally generated
-//mannaged by SilverChain: https://github.com/OUIsolutions/SilverChain
-#include "../imports/imports.typesD.h"
-//silver_chain_scope_end
 #define LUA_CEMBED_NOT_FOUND LUA_TNONE
 #define LUA_CEMBED_STRING LUA_TSTRING
 #define LUA_CEMBED_NUMBER LUA_TNUMBER

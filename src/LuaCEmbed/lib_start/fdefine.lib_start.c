@@ -1,10 +1,4 @@
 
-//silver_chain_scope_start
-//DONT MODIFY THIS COMMENT
-//this import is computationally generated
-//mannaged by SilverChain: https://github.com/OUIsolutions/SilverChain
-#include "../../imports/imports.dep_define.h"
-//silver_chain_scope_end
 
 int private_LuaCemb_internal_free(lua_State *L){
     LuaCEmbed  *self = (LuaCEmbed*)lua_touserdata(L, lua_upvalueindex(1));
