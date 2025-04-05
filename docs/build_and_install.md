@@ -2,15 +2,15 @@
 
 ## Install
 
-To install the lib just copy the [Amalgamation](https://github.com/OUIsolutions/CWebStudio/releases/download/4.0.0/CWebStudioOne.c) into your project and include it in your code:
+To install the lib just copy the [Amalgamation](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbedOne.c) into your project and include it in your code:
 ```c
-#include "CWebStudioOne.c"
+#include "LuaCEmbedOne.c"
 ```
 
 
 If  you are on Linux, you can download the lib with:
 ```bash
-curl -L https://github.com/OUIsolutions/CWebStudio/releases/download/4.0.0/CWebStudioOne.c -o CWebStudioOne.c
+curl -L https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbedOne.c -o LuaCEmbedOne.c 
 ```
 
 ## Compile on Linux
@@ -54,28 +54,27 @@ It will generate all the **releases** in the **/release** dir.
 
 The following defines toggle dependencies or just the definitions.
 It is useful for  working with dynamic compilation or mocking dependencies.
+check [dep_declare.dependecies.h](/src/src_dependencies/dep_declare.dependecies.h) and 
+[dep_define.dependencies.c](/src/src_dependencies/dep_define.dependencies.c) for more information.
 ```c
-// unallow universal socket definition
-#define CWEB_MOCK_UNIVERSAL_SOCKET_DEFINE
 
-// unallow universal socket att all
-#define CWEB_MOCK_UNIVERSAL_SOCKET
+//unallow lua 
+#define LUA_CEMBED_MOCK_LUA
 
-// unallow cjson at all
-// NOTE: Hiding CJSON will force the lib to use **get_addrinfo** which
-// can leak memory in some cases.
-#define CWEB_MOCK_CJSON
+//unallow Universal Garbage
+#define LUA_CEMBED_MOCK_UNIVERSAL_GARBAGE
 
-// unallow cjson definition
-#define CWEB_MOCK_CJSON_DEFINE
+//unallow lua definition
+#define LUA_CEMBED_MOCK_LUA_DEFINE
 
-//  unallow universal gargabe collector
-#define CWEB_MOCK_UNIVERSAL_GARBAGE
+//unallow universal garbage definition
+#define LUA_CEMBED_MOCK_UNIVERSAL_GARBAGE_DEFINE
 
-// unallow universal gargabe collector definition
-#define CWEB_MOCK_UNIVERSAL_GARBAGE_DEFINE
+//unallow custom math.h  (-lm on compilation ill be required)
+#define LUA_CEMBED_NOT_IMPLEMENT_MATH
 
-//import the lib only after the flags
-#include "CWebStudioOne.c"
+
+#include "LuaCEmbedOne.c"
+
 
 ```
