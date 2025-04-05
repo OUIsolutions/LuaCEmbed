@@ -1,50 +1,8 @@
-### WARNING: THIS IS ALPHA SOFTWARE. USE AT YOUR OWN RISK. NO WARRANTY IS PROVIDED AND BUGS ARE EXPECTED.
-
-
-
-LuaCEmbed it's  a lua wrapper to allow easy interoperability beetwen C and Lua
-providing any methods to control Lua Code from C
-
-## Releases
-| Item | Description |
-|------|-------------|
-|[LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbedOne.c) |One File|
-|[LuaCEmbed.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.c)| Definition|
-|[LuaCEmbed.h](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.h)| Header|
-|[LuaCEmbed.zip](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.zip)| Zip Mode|
-
-
-
-### Most Basic Example
-```c
-Like all OUI librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the **LuaCEmbedOne.c** file
-into your project, and compile with gcc/clang
-```c
-#include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
-
-int main(int argc, char *argv[]){
-    
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate(l,"r = 30");
-    long calc = lua_n.get_evaluation_long(l,"r + 20");
-    printf("result %ld",calc);
-    
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
-    }
-    lua_n.free(l);
-
-    return 0;
-}
-```
-
 
 ### Table Size
 Its also possible to determine the size of a table by using the **get_evaluation_size** method
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -65,23 +23,23 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 
 It will produce:
 
-```bash
+~~~bash
 size: 3
 
-```
+~~~
 
 
 
 ### Callbacks
 Callbacks i'ts a way to make c functions assesible in lua code, this it's the most basic callback:
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -107,15 +65,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 my first callback
 
-```
+~~~
 
 
 
@@ -123,7 +81,7 @@ my first callback
 #### CallBack args
 you can accept callback arguments into your function,check their types, and make operations with them.
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -177,26 +135,26 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 no argument providided
 number: 10.000000
 str: hello
 bool: 1
 type: table
 
-```
+~~~
 
 
 #### Index type
 The lua native language index first elements in position 1, authogth LuaCEmbed use the C style for indexation, starting at
 0, but these can be easly reverted with the int macro **LUA_CEMBED_INDEX_DIF**
 
-```c
+~~~c
 
 #define LUA_CEMBED_INDEX_DIF 0
 #include "LuaCEmbedOne.c"
@@ -252,20 +210,20 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 
 It will produce:
 
-```bash
+~~~bash
 no argument providided
 number: 10.000000
 str: hello
 bool: 1
 type: table
 
-```
+~~~
 
 
 
@@ -274,7 +232,7 @@ type: table
 
 in these example, we are creating an 'print' function ,to allow print values
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -326,19 +284,19 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 10.000000
 30.000000
 aa
 true
 table
 
-```
+~~~
 
 
 
@@ -346,7 +304,7 @@ table
 
 it's also possible to modify callbacks by lua code , by using the evaluation args mechanism.
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -384,22 +342,22 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 resullt :40.000000
 
-```
+~~~
 
 
 #### Calling args callback
 
 if you recive a lambda as argument , you can run the function with rguments and retriving its result
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 
@@ -436,15 +394,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 result 30.000000
 
-```
+~~~
 
 
 
@@ -453,7 +411,7 @@ you can control table arguments easly with the **get_table** method, where you c
 **LuaCEmbedTable** object
 
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -497,15 +455,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 resullt :40.000000
 
-```
+~~~
 
 
 ### Callbacks Response
@@ -515,7 +473,7 @@ You also can return  values or errors, with the **response** methods
 #### Returning a Long
 
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -542,21 +500,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 resullt :30
 
-```
+~~~
 
 
 #### Returning a Double
 
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -583,21 +541,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 resullt :30.000000
 
-```
+~~~
 
 
 #### Returning a String
 
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -624,21 +582,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 resullt :str return
 
-```
+~~~
 
 
 #### Returning a Bool
 
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -665,21 +623,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 resullt :1
 
-```
+~~~
 
 
 #### Returning a Table
 
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -710,15 +668,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 value of created.a = test message
 
-```
+~~~
 
 
 
@@ -726,7 +684,7 @@ value of created.a = test message
 
 You also can return multi values at once  with the **return_multi_return** method
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -762,17 +720,17 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 
 It will produce:
 
-```bash
+~~~bash
 a = first
 b = 10
 
-```
+~~~
 
 
 you can return multiple values using the multi return method
@@ -781,7 +739,7 @@ you can return multiple values using the multi return method
 #### Returning a a Error
 you can "raise" a error by returning a error in the function
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
@@ -807,15 +765,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 error: my custom error menssage
 
-```
+~~~
 
 
 ### Table Handling
@@ -823,7 +781,7 @@ you can easly handle tables, with the getters and setters methods
 
 #### Retriving table props
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -862,23 +820,23 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 name : mateus
 age: 27
 
-```
+~~~
 
 
 
 #### Retriving Sub Tables
 
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -925,12 +883,12 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 name : mateus
 age: 27
 ------------------------------------------
@@ -938,12 +896,12 @@ name : john
 age: 30
 ------------------------------------------
 
-```
+~~~
 
 
 #### Iterating over table
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1001,12 +959,12 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 index: 0
 key: Not provided
 type string
@@ -1028,7 +986,7 @@ type number
 value: 27.000000
 ------------------------------------------
 
-```
+~~~
 
 
 
@@ -1036,7 +994,7 @@ value: 27.000000
 its possible to set values of table in a lot of different ways
 
 #### Seting  basic Props
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1077,25 +1035,25 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 name: Mateus
 age: 27
 height: 1.820000
 married 0
 
-```
+~~~
 
 
 
 #### Setting Methods
 you also can set a method to a table, passing a callback function for it
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1139,25 +1097,25 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 person description:
 name: Mateus
 age: 27
 height: 1.820000
 married 0
 
-```
+~~~
 
 
 #### Setting Meta Methods
 Meta methods like **__gc** or **__index** works fine tool
 
-```c
+~~~c
 
 #include "LuaCEmbedOne.c"
 
@@ -1217,24 +1175,24 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 index-value: 10.000000
 index-value: sss
 called the delete function
 
-```
+~~~
 
 
 ### Full Object construction
 
 in these example we are creating a **full class ** of a person
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1289,25 +1247,25 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 person description:
 name: test
 age: 30
 height: 1.400000
 married 1
 
-```
+~~~
 
 
 ### Appending Props
 you also can work with arrays , by using the **append** methods
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1347,23 +1305,23 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 test1
 test2
 test3
 
-```
+~~~
 
 
 ### Setting sub tables
 sub tables can be constructed, setted and autocreated
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1398,15 +1356,15 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 custom text
 
-```
+~~~
 
 
 
@@ -1417,7 +1375,7 @@ Glbals can be fully handled by the LuaCEmbed Api
 
 #### Getting a global string
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1438,20 +1396,20 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 result hello world
 
-```
+~~~
 
 
 #### Getting a global bool
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1472,21 +1430,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
 
-```bash
+~~~bash
 result 1
 
-```
+~~~
 
 
 #### Getting a double global
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1507,21 +1465,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 result 30.500000
 
-```
+~~~
 
 
 
 #### Getting a long global
 
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1542,19 +1500,19 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 result 30
 
-```
+~~~
 
 
 #### Getting a type global
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1576,19 +1534,19 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce:
 
-```bash
+~~~bash
 result string
 
-```
+~~~
 
 #### Getting a table
 Tables are by default auto created, so yoou can just use the **get_table_auto_creating**  method
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1610,14 +1568,14 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 It will produce:
 
-```bash
+~~~bash
 value of r.a = internal text
 
-```
+~~~
 
 
 ### Setting Globals
@@ -1625,7 +1583,7 @@ value of r.a = internal text
 Its also possible to set global variables
 
 #### Set Long
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1646,17 +1604,17 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 It will produce
 
-```bash
+~~~bash
 result 30.000000
 
-```
+~~~
 
 #### Set Double
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1677,17 +1635,17 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 It will produce
 
-```bash
+~~~bash
 result 30.000000
 
-```
+~~~
 
 #### Set string
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1708,19 +1666,19 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 
 It will produce
 
-```bash
+~~~bash
 result hello world
 
-```
+~~~
 
 
 #### Set Bool
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1741,21 +1699,21 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 It will produce
 
-```bash
+~~~bash
 result 1
 
-```
+~~~
 
 #### New Table
 its possible to create a new global table, the vallues will be automaticaly setted
 
 
 #### Set Bool
-```c
+~~~c
 #include "LuaCEmbedOne.c"
 LuaCEmbedNamespace  lua_n;
 
@@ -1778,11 +1736,11 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-```
+~~~
 
 It will produce
 
-```bash
+~~~bash
 result of r.a internal text
 
-```
+~~~
