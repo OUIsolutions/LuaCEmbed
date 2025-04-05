@@ -40,7 +40,6 @@ int main(int argc, char *argv[]){
 | Item | Description |
 |------|-------------|
 |[build_and_install.md](/docs/build_and_install.md)| Installation and Compilation |
-|[dependencies.md](/docs/dependencies.md)| Licenses and Attributions |
 |[native_functions.md](/docs/native_functions.md)| Running Native Functions |
 |[making_a_library.md](/docs/making_a_library.md)| Creating Libraries |
 |[evaluations.md](/docs/evaluations.md)| Lua Evaluation |
@@ -50,3 +49,4 @@ int main(int argc, char *argv[]){
 |[table_handling.md](/docs/table_handling.md)| Table Handling |
 |[table_setting.md](/docs/table_setting.md)| Setting Table Properties |
 |[table_size.md](/docs/table_size.md)| Table Size |
+|[dependencies.md](/docs/dependencies.md)| Licenses and Attributions |
