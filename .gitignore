@@ -2,6 +2,7 @@
 luaDoTheWorld
 *.d
 old
+.TreinAiCache
 .vscode
 main.c
 dependencies
