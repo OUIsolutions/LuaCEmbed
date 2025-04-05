@@ -5,8 +5,13 @@
 LuaCEmbed it's  a lua wrapper to allow easy interoperability beetwen C and Lua
 providing any methods to control Lua Code from C
 
-
-
+## Releases
+| Item | Description |
+|------|-------------|
+|[LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbedOne.c) |One File|
+|[LuaCEmbed.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.c)| Definition|
+|[LuaCEmbed.h](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.h)| Header|
+|[LuaCEmbed.zip](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.0/LuaCEmbed.zip)| Zip Mode|
 
 
 
