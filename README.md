@@ -41,31 +41,6 @@ int main(int argc, char *argv[]){
 ```
 
 
-#  Bulding the Project
-if you want to build the project from scracth, you will need  to have [Darwin](https://github.com/OUIsolutions/Darwin)
-on version **0.018** dowloaded,then you can call:
-
-~~~shel
-darwin run_blueprint build/ --mode folder --amalgamate --zip  --silverchain_organize
-~~~
-
-These will create all the outputs into the release folder.
-If you want to make all the tests and recreate the examples and readme , call:
-
-~~~shell
-darwin run_blueprint build/ --mode folder a --amalgamate --zip  --silverchain_organize --test --create_examples --create_readme
-
-~~~
-
-
-
-It will produce:
-
-```bash
-result 50
-```
-
-
 ### Runting Native functions
 <h3 style="color:red;">
 NEVER CALL THE FUNCTION 'load_native_libs' IF YOU DON TRUST IN THE USER
