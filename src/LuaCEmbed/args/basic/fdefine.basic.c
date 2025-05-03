@@ -2,7 +2,7 @@
 
 lua_Integer  privateLuaCEmbed_put_arg_on_top(LuaCEmbed *self, lua_Integer index){
     PRIVATE_LUA_CEMBED_PROTECT_NUM
-    lua_Integer  formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    int  formatted_index = index + LUA_CEMBED_INDEX_DIF;
 
     if(formatted_index > self->total_args){
         privateLuaCEmbed_raise_error_not_jumping(self,PRIVATE_LUA_CEMBED_ARG_NOT_PROVIDED,formatted_index,self->current_function);
