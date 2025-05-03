@@ -7,7 +7,7 @@ LuaCEmbedTable  *LuaCEmbedTable_new_sub_table_appending(LuaCEmbedTable *self){
 
     //equivalent of: full_sub_table_name = {}
     long index= LuaCEmbedTable_get_listable_size(self) +1;
-    char *full_sub_table_name = private_LuaCembed_format("%s_%d", self->global_name, index);
+    char *full_sub_table_name = private_LuaCembed_format("%s_%ld", self->global_name, index);
     lua_newtable(self->main_object->state);
     lua_setglobal(self->main_object->state,full_sub_table_name);
 
@@ -66,7 +66,7 @@ LuaCEmbedTable  *LuaCEmbedTable_get_sub_table_by_index(LuaCEmbedTable *self, lua
             }
 
             //equivalent of full_sub_table_name = table[index]
-            char *full_sub_table_name = private_LuaCembed_format("%s_%d", self->global_name, index);
+            char *full_sub_table_name = private_LuaCembed_format("%s_%ld", self->global_name, (long)index);
             lua_setglobal(self->main_object->state,full_sub_table_name);
 
             LuaCEmbedTable  *possible = privateLuaCEmbedTableArray_find_by_internal_index(
