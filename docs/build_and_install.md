@@ -2,7 +2,7 @@
 
 ## Install
 
-To install the lib just copy the [Amalgamation](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.1/LuaCEmbedOne.c) into your project and include it in your code:
+To install the lib just copy the [Amalgamation](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbedOne.c) into your project and include it in your code:
 ```c
 #include "LuaCEmbedOne.c"
 ```
@@ -10,7 +10,7 @@ To install the lib just copy the [Amalgamation](https://github.com/OUIsolutions/
 
 If  you are on Linux, you can download the lib with:
 ```bash
-curl -L https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.1/LuaCEmbedOne.c -o LuaCEmbedOne.c 
+curl -L https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbedOne.c -o LuaCEmbedOne.c 
 ```
 
 ## Compile on Linux
