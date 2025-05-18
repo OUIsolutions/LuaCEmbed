@@ -7,13 +7,13 @@ for safe evaluation of Lua code.
 ## Releases
 | Item | Description |
 |------|-------------|
-|[LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbedOne.c) |One File|
-|[LuaCEmbed.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbed.c)| Definition|
-|[LuaCEmbed.h](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbed.h)| Header|
-|[LuaCEmbed.zip](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbed.zip)| Zip Mode|
+|[LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbedOne.c) |One File|
+|[LuaCEmbed.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbed.c)| Definition|
+|[LuaCEmbed.h](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbed.h)| Header|
+|[LuaCEmbed.zip](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbed.zip)| Zip Mode|
 
 ### Most Basic Example
-Like all OUI librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the [LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.2/LuaCEmbedOne.c) file
+Like all OUI librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the [LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbedOne.c) file
 into your project, and compile with gcc/clang
 ```c
 #include "LuaCEmbedOne.c"
