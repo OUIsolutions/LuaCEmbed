@@ -3,7 +3,9 @@
     #include <unistd.h>
     #include <signal.h>
 #endif 
-
+#if defined(_WIN32)
+    #include <windows.h>
+#endif 
 #if !defined(lua_h) && !defined(LUA_CEMBED_MOCK_LUA)
     #define LUA_SINGLE_UNITY_GUESS_OS
     #define LUA_SINGLE_UNITY_EMBED_MODE
