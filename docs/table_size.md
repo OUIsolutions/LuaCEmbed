@@ -4,20 +4,18 @@ It's also possible to determine the size of a table by using the **get_evaluatio
 
 ```c
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace lua_n;
 
 int main(int argc, char *argv[]) {
 
-    lua_n = newLuaCEmbedNamespace();
-    LuaCEmbed *l = lua_n.newLuaEvaluation();
-    lua_n.evaluate(l, "r = {1,2,3}");
+    LuaCEmbed *l = newLuaCEmbedEvaluation();
+    LuaCEmbed_evaluate(l, "r = {1,2,3}");
 
-    long result = lua_n.get_evaluation_size(l, "r");
+    long result = LuaCEmbed_get_evaluation_table_size(l, "r");
     printf("size: %ld\n", result);
-    if (lua_n.has_errors(l)) {
-        printf("error: %s\n", lua_n.get_error_message(l));
+    if (LuaCEmbed_has_errors(l)) {
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-    lua_n.free(l);
+    LuaCEmbed_free(l);
 
     return 0;
 }
