@@ -2,6 +2,7 @@
 luaDoTheWorld
 *.d
 old
+LuaCEmbedOne.c
 .TreinAiCache
 .vscode
 main.c
