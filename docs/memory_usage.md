@@ -1,12 +1,8 @@
-
 ### Memory usage
 by using the method **set_memory_limit** you can control the max ram usage of lua, the default its 100mb
-<h5 style="color:red;">NOTE THAT EXTRA MEMORY ALOCATED OUTSIDE CALLBACKS OR EVALUATIONS  ARE CONSIDER UNPROTECTED GEHAVIOR
+<h5 style="color:red;">NOTE THAT EXTRA MEMORY ALOCATED OUTSIDE CALLBACKS OR EVALUATIONS ARE CONSIDER UNPROTECTED GEHAVIOR
 AND IT WILL KILL THE APPLICATION
-
 </h5>
-
-
 
 ```c
 #include "LuaCEmbedOne.c"
@@ -33,11 +29,8 @@ int main(int argc, char *argv[]){
 }
 ```
 
-
 It will produce:
 
 ```bash
 error: not enough memory
-
 ```
-
