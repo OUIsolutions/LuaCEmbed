@@ -1,8 +1,6 @@
 ### WARNING: THIS IS ALPHA SOFTWARE. USE AT YOUR OWN RISK. NO WARRANTY IS PROVIDED AND BUGS ARE EXPECTED.
 
-LuaCEmbed it's  a lua wrapper to allow easy interoperability beetwen C and Lua
-providing any methods to control Lua Code from C,Make Lua  Libs, or create ambients
-for safe evaluation of Lua code.
+LuaCEmbed is a Lua wrapper to allow easy interoperability between C and Lua, providing methods to control Lua code from C, create Lua libraries, or set up environments for safe evaluation of Lua code.
 
 ## Releases
 | Item | Description |
@@ -13,28 +11,24 @@ for safe evaluation of Lua code.
 |[LuaCEmbed.zip](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbed.zip)| Zip Mode|
 
 ### Most Basic Example
-Like all OUI librarys, the LuaCEmbed addopt the ideia of single file lib, so you just need to copy the [LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbedOne.c) file
-into your project, and compile with gcc/clang
+Like all OUI libraries, LuaCEmbed adopts the idea of a single-file library, so you just need to copy the [LuaCEmbedOne.c](https://github.com/OUIsolutions/LuaCEmbed/releases/download/0.8.3/LuaCEmbedOne.c) file into your project and compile with gcc/clang.
 ```c
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
 
 int main(int argc, char *argv[]){
+    LuaCEmbed *l = newLuaCEmbedEvaluation();
+    LuaCEmbed_evaluate(l, "r = 30");
+    long calc = LuaCEmbed_get_evaluation_long(l, "r + 20");
+    printf("result %ld", calc);
     
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate(l,"r = 30");
-    long calc = lua_n.get_evaluation_long(l,"r + 20");
-    printf("result %ld",calc);
-    
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-    lua_n.free(l);
-
+    LuaCEmbed_free(l);
     return 0;
 }
 ```
+
 ## Documentation
 
 | Item | Description |
