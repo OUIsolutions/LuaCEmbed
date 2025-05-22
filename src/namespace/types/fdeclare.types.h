@@ -1,0 +1,5 @@
+
+
+
+
+LuaCEmbedTypeModule newLuaCEmbedTypeModule();

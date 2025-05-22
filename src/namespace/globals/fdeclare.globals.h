@@ -1,0 +1,3 @@
+
+
+LuaCEmbedGlobalModule newLuaCEmbedGlobalModule();
