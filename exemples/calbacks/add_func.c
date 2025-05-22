@@ -1,36 +1,28 @@
-
 #include "LuaCEmbed.h"
-LuaCEmbedNamespace  lua_n;
-
 
 LuaCEmbedResponse  * add_func(LuaCEmbed *args){
+    double num1 = LuaCEmbed_get_double_arg(args, 0);
+    double num2 = LuaCEmbed_get_double_arg(args, 1);
 
-    double num1 = lua_n.args.get_double(args,0);
-    double num2 = lua_n.args.get_double(args,1);
-
-    if(lua_n.has_errors(args)){
-        char *error_message = lua_n.get_error_message(args);
-        return lua_n.response.send_error(error_message);
+    if(LuaCEmbed_has_errors(args)){
+        char *error_message = LuaCEmbed_get_error_message(args);
+        return LuaCEmbed_send_error(error_message);
     }
-    return lua_n.response.send_double(num1+num2);
-    return NULL;
+    return LuaCEmbed_send_double(num1 + num2);
 }
 
 int main(int argc, char *argv[]){
+    LuaCEmbed *l = newLuaCEmbedEvaluation();
+    LuaCEmbed_add_callback(l, "add", add_func);
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"add",add_func);
+    double result = LuaCEmbed_get_evaluation_double(l, "add(10,20)");
 
-
-   double result = lua_n.get_evaluation_double(l,"add(10,20)");
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-   printf("resullt :%lf\n",result);
+    printf("result: %lf\n", result);
 
-    lua_n.free(l);
+    LuaCEmbed_free(l);
 
     return 0;
 }
