@@ -1,1 +1,0 @@
-/* This file is intentionally empty as the namespace structure has been removed. Type constants are now defined as macros in the header file. */

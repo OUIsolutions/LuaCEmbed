@@ -1,1 +1,0 @@
-/* This file is no longer needed as the namespace structure has been removed. All functions are now declared as pure C functions. */

@@ -1,1 +1,0 @@
-/* This file is intentionally empty as the namespace structure has been removed. All functions are now declared as pure C functions in the header file. */
