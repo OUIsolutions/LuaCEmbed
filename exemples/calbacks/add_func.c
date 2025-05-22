@@ -1,4 +1,4 @@
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedResponse  * add_func(LuaCEmbed *args){
     double num1 = LuaCEmbed_get_double_arg(args, 0);

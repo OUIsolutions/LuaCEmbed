@@ -1,6 +1,6 @@
 
 #define LUA_CEMBED_INDEX_DIF 0
-#include "LuaCEmbed.h"
+#include "LuaCEmbedOne.c"
 
 LuaCEmbedNamespace  lua_n;
 
