@@ -1,4 +1,37 @@
-
-
-
-LuaCEmbedNamespace newLuaCEmbedNamespace();
+LuaCEmbed * newLuaCEmbedLib(lua_State *state);
+void LuaCembed_set_delete_function(LuaCEmbed *self, void (*delelte_function)(struct LuaCEmbed *self));
+LuaCEmbed * newLuaCEmbedEvaluation();
+void LuaCEmbed_load_native_libs(LuaCEmbed *self);
+void LuaCEmbed_load_lib_from_c(LuaCEmbed *self, int (*callback)(lua_State *l), const char *name);
+int LuaCembed_perform(LuaCEmbed *self);
+int LuaCembed_send_self_as_lib(LuaCEmbed *self);
+int LuaCembed_send_global_as_lib(LuaCEmbed *self, const char *global_name);
+const char * LuaCembed_convert_arg_code(int arg_code);
+void LuaCEmbed_set_memory_limit(LuaCEmbed *self, double limit);
+void LuaCEmbed_clear_errors(LuaCEmbed *self);
+char * LuaCEmbed_get_error_message(LuaCEmbed *self);
+bool LuaCEmbed_has_errors(LuaCEmbed *self);
+void LuaCEmbed_set_timeout(int seconds);
+int LuaCEmbed_evaluate(LuaCEmbed *self, const char *code, ...);
+char * LuaCEmbed_get_evaluation_string(LuaCEmbed *self, const char *code, ...);
+int LuaCEmbed_get_evaluation_type(LuaCEmbed *self, const char *code, ...);
+long LuaCEmbed_get_evaluation_table_size(LuaCEmbed *self, const char *code, ...);
+long long LuaCEmbed_get_evaluation_long(LuaCEmbed *self, const char *code, ...);
+double LuaCEmbed_get_evaluation_double(LuaCEmbed *self, const char *code, ...);
+bool LuaCEmbed_get_evaluation_bool(LuaCEmbed *self, const char *code, ...);
+void LuaCEmbed_set_long_lib_prop(LuaCEmbed *self, const char *name, lua_Integer value);
+void LuaCEmbed_set_double_lib_prop(LuaCEmbed *self, const char *name, double value);
+void LuaCEmbed_set_bool_lib_prop(LuaCEmbed *self, const char *name, bool value);
+void LuaCEmbed_set_string_lib_prop(LuaCEmbed *self, const char *name, const char *value);
+void LuaCEmbed_set_table_lib_prop(LuaCEmbed *self, const char *name, LuaCEmbedTable *value);
+lua_Integer LuaCEmbed_get_long_lib_prop(LuaCEmbed *self, const char *name);
+double LuaCEmbed_get_double_lib_prop(LuaCEmbed *self, const char *name);
+bool LuaCEmbed_get_bool_lib_prop(LuaCEmbed *self, const char *name);
+char * LuaCEmbed_get_string_lib_prop(LuaCEmbed *self, const char *name);
+LuaCEmbedTable * LuaCEmbed_get_table_lib_prop(LuaCEmbed *self, const char *name);
+int LuaCEmbed_evaluete_file(LuaCEmbed *self, const char *file);
+void LuaCEmbed_add_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args));
+void LuaCEmbed_add_global_callback(LuaCEmbed *self, const char *callback_name, LuaCEmbedResponse* (*callback)(LuaCEmbed *args));
+void LuaCEmbed_dangerous_raise_error_jumping(LuaCEmbed *self, const char *error_msg, ...);
+void LuaCEmbed_dangerous_raise_self_error_jumping(LuaCEmbed *self);
+void LuaCEmbed_free(LuaCEmbed *self);

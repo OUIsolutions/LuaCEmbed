@@ -1,51 +1,37 @@
-
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
-
 
 LuaCEmbedResponse  * print_func(LuaCEmbed *args){
-    long size = lua_n.args.size(args);
-   for(int index =0;index < size;index++ ){
-       int arg_type = lua_n.args.get_type(args,index);
+    long size = LuaCEmbed_get_total_args(args);
+    for(int index = 0; index < size; index++){
+        int arg_type = LuaCEmbed_get_arg_type(args, index);
 
-       if(arg_type  == lua_n.types.NUMBER){
-           printf("%lf\n",lua_n.args.get_double(args,index));
-       }
-
-       else if(arg_type  == lua_n.types.STRING){
-           printf("%s\n",lua_n.args.get_str(args,index));
-       }
-
-       else if(arg_type  == lua_n.types.BOOL){
-           bool result = lua_n.args.get_bool(args,index);
-          const  char *converted_bool = result? "true":"false";
-           printf("%s\n", converted_bool);
-       }
-       else{
-           const char *converted_to_str = lua_n.convert_arg_code(arg_type);
-           printf("%s\n",converted_to_str);
-       }
-
-   }
-
-
+        if(arg_type == LUA_CEMBED_NUMBER){
+            printf("%lf\n", LuaCEmbed_get_double_arg(args, index));
+        }
+        else if(arg_type == LUA_CEMBED_STRING){
+            printf("%s\n", LuaCEmbed_get_str_arg(args, index));
+        }
+        else if(arg_type == LUA_CEMBED_BOOL){
+            bool result = LuaCEmbed_get_bool_arg(args, index);
+            const char *converted_bool = result ? "true" : "false";
+            printf("%s\n", converted_bool);
+        }
+        else{
+            const char *converted_to_str = LuaCembed_convert_arg_code(arg_type);
+            printf("%s\n", converted_to_str);
+        }
+    }
     return NULL;
 }
 
 int main(int argc, char *argv[]){
+    LuaCEmbed *l = newLuaCEmbedEvaluation();
+    LuaCEmbed_add_callback(l, "print", print_func);
+    LuaCEmbed_evaluate(l, "print(10,30,'aa',true,{a=30})");
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"print",print_func);
-
-
-    lua_n.evaluate(l,"print(10,30,'aa',true,{a=30})");
-
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-    lua_n.free(l);
-
+    LuaCEmbed_free(l);
     return 0;
 }

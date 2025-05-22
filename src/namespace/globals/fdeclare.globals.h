@@ -1,3 +1,16 @@
-
-
-LuaCEmbedGlobalModule newLuaCEmbedGlobalModule();
+int LuaCEmbed_ensure_global_type(LuaCEmbed *self, const char *name, int expected_type);
+int LuaCEmbed_get_global_type(LuaCEmbed *self, const char *name);
+lua_Integer LuaCEmbed_get_global_long(LuaCEmbed *self, const char *name);
+double LuaCEmbed_get_global_double(LuaCEmbed *self, const char *name);
+bool LuaCEmbed_get_global_bool(LuaCEmbed *self, const char *name);
+char * LuaCEmbed_get_global_string(LuaCEmbed *self, const char *name);
+LuaCEmbedTable* LuaCEmbed_run_global_lambda(LuaCEmbed *self, const char *name, LuaCEmbedTable *args_to_call, int total_returns);
+void LuaCEmbed_set_global_table(LuaCEmbed *self, const char *name, LuaCEmbedTable *table);
+void LuaCEmbed_set_global_raw_string(LuaCEmbed *self, const char *name, const char *value, long size);
+char * LuaCEmbed_get_global_raw_string(LuaCEmbed *self, const char *name, long *size);
+void LuaCEmbed_set_global_string(LuaCEmbed *self, const char *name, const char *value);
+void LuaCEmbed_set_global_long(LuaCEmbed *self, const char *name, lua_Integer value);
+void LuaCEmbed_set_global_double(LuaCEmbed *self, const char *name, double value);
+void LuaCEmbed_set_global_bool(LuaCEmbed *self, const char *name, bool value);
+LuaCEmbedTable * LuaCembed_get_global_table(LuaCEmbed *self, const char *name);
+LuaCEmbedTable * LuaCembed_new_global_table(LuaCEmbed *self, const char *name);

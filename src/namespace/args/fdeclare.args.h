@@ -1,3 +1,15 @@
-
-
-LuaCembedArgsModule newLuaCembedArgsModule();
+lua_Integer LuaCEmbed_get_total_args(LuaCEmbed *self);
+lua_Integer LuaCEmbed_get_arg_type(LuaCEmbed *self, lua_Integer index);
+lua_Integer LuaCEmbed_get_long_arg(LuaCEmbed *self, lua_Integer index);
+double LuaCEmbed_get_double_arg(LuaCEmbed *self, lua_Integer index);
+bool LuaCEmbed_get_bool_arg(LuaCEmbed *self, lua_Integer index);
+char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self, lua_Integer *size, lua_Integer index);
+char * LuaCEmbed_get_str_arg(LuaCEmbed *self, lua_Integer index);
+LuaCEmbedTable * LuaCEmbed_get_arg_table(LuaCEmbed *self, lua_Integer index);
+lua_Integer LuaCEmbed_generate_arg_clojure_evalation(LuaCEmbed *self, lua_Integer index, const char *code, ...);
+lua_Integer LuaCEmbed_get_type_clojure_evalation(LuaCEmbed *self, lua_Integer index, const char *code, ...);
+lua_Integer LuaCEmbed_get_long_arg_clojure_evalation(LuaCEmbed *self, lua_Integer index, const char *code, ...);
+double LuaCEmbed_get_double_arg_clojure_evalation(LuaCEmbed *self, lua_Integer index, const char *code, ...);
+bool LuaCEmbed_get_bool_arg_clojure_evalation(LuaCEmbed *self, lua_Integer index, const char *code, ...);
+char* LuaCEmbed_get_string_arg_clojure_evalation(LuaCEmbed *self, lua_Integer index, const char *code, ...);
+LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, lua_Integer index, LuaCEmbedTable *args_to_call, lua_Integer total_returns);

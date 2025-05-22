@@ -1,26 +1,20 @@
-
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
-
 
 LuaCEmbedResponse  * test_func(LuaCEmbed *args){
-    return lua_n.response.send_evaluation_function("function() return 'func result' end");
+    return LuaCEmbed_send_evaluation("function() return 'func result' end");
 }
+
 int main(int argc, char *argv[]){
+    LuaCEmbed * l = newLuaCEmbedEvaluation();
+    LuaCEmbed_add_callback(l, "test", test_func);
+    char * result = LuaCEmbed_get_evaluation_string(l, "test()");
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"test",test_func);
-
-
-   char * result = lua_n.get_string_evaluation(l,"test()");
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-   printf("resullt :%s\n",result);
+    printf("result: %s\n", result);
     
-    lua_n.free(l);
+    LuaCEmbed_free(l);
 
     return 0;
 }

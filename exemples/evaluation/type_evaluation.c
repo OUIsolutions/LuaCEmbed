@@ -1,21 +1,17 @@
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
-
-
 
 int main(int argc, char *argv[]){
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate(l,"r = 'hello world'");
+    LuaCEmbed * l = newLuaCEmbedEvaluation();
+    LuaCEmbed_evaluate(l, "r = 'hello world'");
 
-    int r_type = lua_n.get_evaluation_type(l,"r");
-    const char*converted =  lua_n.convert_arg_code(r_type);
-    printf("result: %s\n",converted);
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    int r_type = LuaCEmbed_get_evaluation_type(l, "r");
+    const char* converted = LuaCembed_convert_arg_code(r_type);
+    printf("result: %s\n", converted);
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-    lua_n.free(l);
+    LuaCEmbed_free(l);
 
     return 0;
 }

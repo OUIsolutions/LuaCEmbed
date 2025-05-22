@@ -1,20 +1,15 @@
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
-
-
 
 int main(int argc, char *argv[]){
+    LuaCEmbed * l = newLuaCEmbedEvaluation();
+    LuaCEmbed_evaluate(l, "r = true");
 
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.evaluate(l,"r = true");
-
-    bool result = lua_n.get_evaluation_bool(l,"r");
-    printf("result: %d\n",result);
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    bool result = LuaCEmbed_get_evaluation_bool(l, "r");
+    printf("result: %d\n", result);
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n", LuaCEmbed_get_error_message(l));
     }
-    lua_n.free(l);
+    LuaCEmbed_free(l);
 
     return 0;
 }

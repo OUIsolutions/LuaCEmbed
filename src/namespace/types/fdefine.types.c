@@ -1,13 +1,1 @@
-
-
-LuaCEmbedTypeModule newLuaCEmbedTypeModule(){
-    LuaCEmbedTypeModule  self = {0};
-    self.NOT_FOUND = LUA_CEMBED_NOT_FOUND;
-    self.STRING = LUA_CEMBED_STRING;
-    self.NUMBER = LUA_CEMBED_NUMBER;
-    self.BOOL = LUA_CEMBED_BOOL;
-    self.NILL = LUA_CEMBED_NIL;
-    self.TABLE = LUA_CEMBED_TABLE;
-    self.FUNCTION = LUA_CEMBED_FUNCTION;
-    return self;
-}
+/* This file is intentionally empty as the namespace structure has been removed. Type constants are now defined as macros in the header file. */

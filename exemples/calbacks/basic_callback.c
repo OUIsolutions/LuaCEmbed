@@ -1,7 +1,4 @@
-
 #include "LuaCEmbedOne.c"
-LuaCEmbedNamespace  lua_n;
-
 
 LuaCEmbedResponse  * hello(LuaCEmbed *args){
     printf("my first callback\n");
@@ -9,17 +6,13 @@ LuaCEmbedResponse  * hello(LuaCEmbed *args){
 }
 
 int main(int argc, char *argv[]){
-
-    lua_n =  newLuaCEmbedNamespace();
-    LuaCEmbed * l = lua_n.newLuaEvaluation();
-    lua_n.add_callback(l,"hello",hello);
-
-    lua_n.evaluate(l,"hello()");
-
-    if(lua_n.has_errors(l)){
-        printf("error: %s\n",lua_n.get_error_message(l));
+    LuaCEmbed * l = newLuaCEmbedEvaluation();
+    LuaCEmbed_add_callback(l,"hello",hello);
+    LuaCEmbed_evaluate(l,"hello()");
+    
+    if(LuaCEmbed_has_errors(l)){
+        printf("error: %s\n",LuaCEmbed_get_error_message(l));
     }
-    lua_n.free(l);
-
+    LuaCEmbed_free(l);
     return 0;
 }
