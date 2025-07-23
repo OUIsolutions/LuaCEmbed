@@ -25,3 +25,5 @@ char * LuaCEmbed_get_raw_str_arg(LuaCEmbed *self,lua_Integer *size, lua_Integer 
 LuaCEmbedTable  * LuaCEmbed_get_arg_table(LuaCEmbed *self,lua_Integer index);
 
 LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, lua_Integer index, LuaCEmbedTable *args_to_call, lua_Integer total_returns);
+
+LuaCEmbedTable  * LuaCEmbed_transform_args_in_table(LuaCEmbed *self);

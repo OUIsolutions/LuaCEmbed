@@ -208,3 +208,10 @@ LuaCEmbedTable* LuaCEmbed_run_args_lambda(LuaCEmbed *self, lua_Integer index, Lu
     return result;
 
 }
+LuaCEmbedTable  * LuaCEmbed_transform_args_in_table(LuaCEmbed *self){
+    LuaCEmbedTable  *result = LuaCembed_new_anonymous_table(self);
+    for(int i = 0; i < self->total_args; i++){
+        LuaCEmbedTable_append_arg(result,i);
+    }
+    return result;
+}
