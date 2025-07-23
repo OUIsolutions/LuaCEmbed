@@ -6,6 +6,7 @@ LuaCEmbedOne.c
 .TreinAiCache
 .vscode
 main.c
+llm_docs
 dependencies
 doTheWorld.h
 teste.png
