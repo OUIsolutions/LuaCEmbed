@@ -1,3 +1,7 @@
+//silver_chain_scope_start
+//mannaged by silver chain: https://github.com/OUIsolutions/SilverChain
+#include "../imports/imports.typesD.h"
+//silver_chain_scope_end
 
 
 #define PRIVATE_LUA_CEMBED_TOTAL_LIBS "private_lua_c_embed_total_running_libs"

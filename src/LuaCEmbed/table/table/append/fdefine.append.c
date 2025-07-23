@@ -1,3 +1,7 @@
+//silver_chain_scope_start
+//mannaged by silver chain: https://github.com/OUIsolutions/SilverChain
+#include "../../../../imports/imports.dep_define.h"
+//silver_chain_scope_end
 
 void  LuaCEmbedTable_append_table(LuaCEmbedTable *self, LuaCEmbedTable *table){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID

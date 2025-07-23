@@ -1,3 +1,7 @@
+//silver_chain_scope_start
+//mannaged by silver chain: https://github.com/OUIsolutions/SilverChain
+#include "../imports/imports.typesD.h"
+//silver_chain_scope_end
 
 #define PRIVATE_LUA_CEMBED_STRING_RESPONSE 1
 #define PRIVATE_LUA_CEMBED_LONG_RESPONSE 2
