@@ -148,4 +148,22 @@ void LuaCEmbedTable_copy_prop_to_global_var(LuaCEmbedTable *self,const char *pro
     privateLuaCEmbd_get_field_protected(self->main_object,prop);
     lua_setglobal(self->main_object->state,name);
 }
+void LuaCEmbedTable_set_table_prop_with_table_prop(LuaCEmbedTable *self, const char *self_prop, LuaCEmbedTable *table,const char * table_prop ){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s['%s']",
+                       self->global_name,
+                       self_prop,
+                       table->global_name,
+                       table_prop
+    );
+}
 
+void LuaCEmbedTable_set_table_prop_with_table_index(LuaCEmbedTable *self, const char *self_prop, LuaCEmbedTable *table,const char * table_index ){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s[%d]",
+                       self->global_name,
+                       self_prop,
+                       table->global_name,
+                       table_index
+    );
+}
