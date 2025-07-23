@@ -13,4 +13,7 @@ typedef struct {
     lua_Integer string_size;
     char *string_val;
 
+    char *table_name;
+    char *table_prop_name;
+        
 }LuaCEmbedResponse;

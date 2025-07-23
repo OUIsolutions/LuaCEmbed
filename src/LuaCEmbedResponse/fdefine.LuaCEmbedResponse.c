@@ -19,6 +19,13 @@ LuaCEmbedResponse  * LuaCEmbed_send_bool(bool value){
     return self;
 }
 
+LuaCEmbedResponse  * LuaCEmbed_send_table_prop(LuaCEmbedTable *table,const char *prop){
+    LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
+    self->type = PRIVATE_LUA_CEMBED_TABLE_PROP_RESPONSE;
+    self->table_name = strdup(table->global_name);
+    self->table_prop_name = strdup(prop);
+    return self;
+}
 
 LuaCEmbedResponse * LuaCEmbed_send_str(const char *text){
     LuaCEmbedResponse * self= private_LuaCEmbedReturn_raw();
