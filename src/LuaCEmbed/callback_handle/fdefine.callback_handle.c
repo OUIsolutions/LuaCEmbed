@@ -101,11 +101,17 @@ int privateLuaCEmbed_main_callback_handler(lua_State  *L){
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }
-
+    
 
     if(possible_return->type == PRIVATE_LUA_CEMBED_TABLE_RESPONSE){
         lua_getglobal(self->state, PRIVATE_LUA_CEMBED_TABLE_RETURN);
         lua_pushvalue(self->state,-1);
+        private_LuaCEmbedResponse_free(possible_return);
+        return PRIVATE_LUACEMBED_ONE_RETURN;
+    }
+    if(possible_return->type == PRIVATE_LUA_CEMBED_TABLE_PROP_RESPONSE){
+        lua_getglobal(self->state, possible_return->table_name);
+        lua_getfield(self->state,-1,possible_return->table_prop_name);
         private_LuaCEmbedResponse_free(possible_return);
         return PRIVATE_LUACEMBED_ONE_RETURN;
     }

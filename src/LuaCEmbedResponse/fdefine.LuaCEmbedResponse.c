@@ -125,5 +125,11 @@ void private_LuaCEmbedResponse_free(LuaCEmbedResponse  *self){
     if(self->string_val && self->its_string_ref == false){
         free(self->string_val);
     }
+    if(self->table_name){
+        free(self->table_name);
+    }
+    if(self->table_prop_name){
+        free(self->table_prop_name);
+    }
     free(self);
 }
