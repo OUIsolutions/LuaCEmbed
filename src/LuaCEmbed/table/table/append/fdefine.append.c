@@ -27,6 +27,8 @@ void  LuaCEmbedTable_append_string(LuaCEmbedTable *self,  const char *value){
 
 }
 
+
+
 void  LuaCEmbedTable_append_long(LuaCEmbedTable *self,  lua_Integer value){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
 
@@ -87,4 +89,16 @@ void  LuaCEmbedTable_append_evaluation(LuaCEmbedTable *self, const char *code, .
     lua_getglobal(self->main_object->state,PRIVATE_LUA_CEMBED_EVALUATION_NAME);
     lua_rawset(self->main_object->state,-3);
     lua_settop(self->main_object->state, 0);
+}
+
+void  LuaCEmbedTable_append_global(LuaCEmbedTable *self,  const char *global_name){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+
+    long size = LuaCEmbedTable_get_listable_size(self);
+    lua_getglobal(self->main_object->state,self->global_name);
+    lua_pushinteger(self->main_object->state,size+1);
+    lua_getglobal(self->main_object->state,global_name);
+    lua_rawset(self->main_object->state,-3);
+    lua_settop(self->main_object->state, 0);
+
 }
