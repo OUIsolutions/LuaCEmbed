@@ -18,6 +18,8 @@
 #include "../LuaCEmbed/table/table/basic/fdefine.basic.c"
 #include "../LuaCEmbed/table/table/destroy/fdefine.destroy.c"
 #include "../LuaCEmbed/table/table/errors/fdefine.errors.c"
+#include "../LuaCEmbed/table/table/evaluation/index/fdefine.index.c"
+#include "../LuaCEmbed/table/table/evaluation/key/fdefine.key.c"
 #include "../LuaCEmbed/table/table/getters/index/fdefine.index.c"
 #include "../LuaCEmbed/table/table/getters/keys/fdefine.keys.c"
 #include "../LuaCEmbed/table/table/setters/index/fdefine.index.c"

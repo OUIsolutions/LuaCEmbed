@@ -18,6 +18,8 @@
 #include "../LuaCEmbed/table/table/basic/fdeclare.basic.h"
 #include "../LuaCEmbed/table/table/destroy/fdeclare.destroy.h"
 #include "../LuaCEmbed/table/table/errors/fdeclare.errors.h"
+#include "../LuaCEmbed/table/table/evaluation/index/fdeclare.index.h"
+#include "../LuaCEmbed/table/table/evaluation/key/fdeclare.key.h"
 #include "../LuaCEmbed/table/table/getters/index/fdeclare.index.h"
 #include "../LuaCEmbed/table/table/getters/keys/fdeclare.keys.h"
 #include "../LuaCEmbed/table/table/setters/index/fdeclare.index.h"
