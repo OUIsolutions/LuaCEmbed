@@ -26,3 +26,4 @@
 #define PRIVATE_LUA_CEMBED_ANONYMOUS_FUNC_TABLE_ "private_lua_c_embed_anononymous_func_table_%d_%d"
 #define PRIVATE_LUA_CEMBED_ARGS_ "private_lua_c_embed_args_%d_%d"
 #define  PRIVATE_LUA_CEMBED_MULTIRETURN_ "private_lua_c_embed_multi_return_%d_%d"
+#define PRIVATE_LUA_CEMBED_GENERAL_TEMP "private_lua_c_embed_general_temp_%d"

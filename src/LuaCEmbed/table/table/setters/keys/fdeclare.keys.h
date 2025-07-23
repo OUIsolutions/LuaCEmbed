@@ -22,3 +22,5 @@ void  LuaCEmbedTable_set_bool_prop(LuaCEmbedTable *self, const char *name, bool 
 
 
 void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name, const char *code, ...);
+
+void LuaCEmbedTable_copy_prop_to_global_var(LuaCEmbedTable *self,const char *prop,const char *name);

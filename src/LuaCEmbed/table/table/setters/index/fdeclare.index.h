@@ -16,3 +16,5 @@ void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, lua_Integer index, 
 
 
 void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, lua_Integer index, const char *code, ...);
+
+void LuaCEmbedTable_copy_index_to_global_var(LuaCEmbedTable *self,lua_Integer index, const char *name);

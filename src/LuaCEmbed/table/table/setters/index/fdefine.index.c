@@ -119,3 +119,29 @@ void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, lua_Integer i
     lua_settop(self->main_object->state, 0);
 
 }
+
+void LuaCEmbedTable_copy_index_to_global_var(LuaCEmbedTable *self,lua_Integer index, const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
+ 
+    long formatted_index = index + LUA_CEMBED_INDEX_DIF;
+    long converted_index = privateLuaCEmbedTable_convert_index(self,formatted_index);
+ 
+    lua_getglobal(self->main_object->state,self->global_name);
+    int table_index = lua_gettop(self->main_object->state);
+
+    int total = 1;
+    lua_pushnil(self->main_object->state);
+    while(lua_next(self->main_object->state,table_index)){
+        if(total == converted_index){
+            lua_setglobal(self->main_object->state,name);
+            lua_pop(self->main_object->state,1);
+            PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+            return;
+        }
+
+        lua_pop(self->main_object->state,1);
+        total+=1;
+
+    }
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+}

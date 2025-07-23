@@ -4,43 +4,41 @@
 //silver_chain_scope_end
 
 
-lua_Integer  LuaCEmbedTable_run_prop_function(LuaCEmbedTable *self,const char *prop,LuaCEmbedTable *args_to_call,int total_returns){
+LuaCEmbedTable *  LuaCEmbedTable_run_prop_function(LuaCEmbedTable *self,const char *prop,LuaCEmbedTable *args_to_call,int total_returns){
 
-    /*
+    char *callback_global_name = private_LuaCembed_format(PRIVATE_LUA_CEMBED_GENERAL_TEMP,self->main_object->stack_leve);
+    LuaCEmbedTable_copy_prop_to_global_var(self,prop,callback_global_name);
+    int total_args = private_lua_cEmbed_unpack(args_to_call,callback_global_name);
+    free(callback_global_name);
 
-    int total_args = private_lua_cEmbed_unpack(args_to_call,formatted_arg);
-    if(lua_pcall(self->state,total_args,total_returns,0)){
+    if(lua_pcall(self->main_object->state,total_args,total_returns,0)){
 
-        privateLuaCEmbed_raise_error_not_jumping(self, lua_tostring(self->state,-1));
-        free(formatted_arg);
+        privateLuaCEmbed_raise_error_not_jumping(self->main_object, lua_tostring(self->main_object->state,-1));
 
-        PRIVATE_LUA_CEMBED_CLEAR_STACK
+        PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
         return  NULL;
     }
 
 
     for(int i = 0; i < total_returns; i++){
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->stack_leve,i);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->main_object->stack_leve,i);
         int position = (i +1) * -1;
-        lua_pushvalue(self->state,position);
-        lua_setglobal(self->state,formatted);
+        lua_pushvalue(self->main_object->state,position);
+        lua_setglobal(self->main_object->state,formatted);
         free(formatted);
     }
 
 
 
-    LuaCEmbedTable  *result = LuaCembed_new_anonymous_table(self);
+    LuaCEmbedTable  *result = LuaCembed_new_anonymous_table(self->main_object);
     for(int i = 0; i < total_returns; i++){
-        lua_getglobal(self->state,result->global_name);
-        lua_pushinteger(self->state,i+1);
-        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->stack_leve,i);
-        lua_getglobal(self->state,formatted);
-        lua_settable(self->state,-3);
+        lua_getglobal(self->main_object->state,result->global_name);
+        lua_pushinteger(self->main_object->state,i+1);
+        char *formatted = private_LuaCembed_format(PRIVATE_LUA_CEMBED_MULTIRETURN_,self->main_object->stack_leve,i);
+        lua_getglobal(self->main_object->state,formatted);
+        lua_settable(self->main_object->state,-3);
         free(formatted);
     }
-    free(formatted_arg);
-    PRIVATE_LUA_CEMBED_CLEAR_STACK
-    return result;
-    */
-   return 0;
+    PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
+    return result;    
 }

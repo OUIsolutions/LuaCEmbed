@@ -141,3 +141,11 @@ void  LuaCEmbedTable_set_evaluation_prop(LuaCEmbedTable *self, const char *name,
     lua_settop(self->main_object->state, 0);
 
 }
+
+void LuaCEmbedTable_copy_prop_to_global_var(LuaCEmbedTable *self,const char *prop,const char *name){
+    PRIVATE_LUA_CEMBED_PROTECT_VOID
+    lua_getglobal(self->main_object->state,self->global_name);
+    privateLuaCEmbd_get_field_protected(self->main_object,prop);
+    lua_setglobal(self->main_object->state,name);
+}
+
