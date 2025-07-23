@@ -19,3 +19,5 @@ void  LuaCEmbedTable_append_double(LuaCEmbedTable *self, double  value);
 void  LuaCEmbedTable_append_bool(LuaCEmbedTable *self,  bool value);
 
 void  LuaCEmbedTable_append_global(LuaCEmbedTable *self,  const char *global_name);
+
+void  LuaCEmbedTable_append_arg(LuaCEmbedTable *self, int index);

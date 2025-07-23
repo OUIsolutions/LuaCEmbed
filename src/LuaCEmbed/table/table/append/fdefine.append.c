@@ -102,3 +102,14 @@ void  LuaCEmbedTable_append_global(LuaCEmbedTable *self,  const char *global_nam
     lua_settop(self->main_object->state, 0);
 
 }
+void  LuaCEmbedTable_append_arg(LuaCEmbedTable *self, int index){
+    int  formatted_index = index + LUA_CEMBED_INDEX_DIF;
+
+    if(formatted_index > self->main_object->total_args){
+        return LUA_CEMBED_NIL;
+    }
+
+    char *formated_arg = private_LuaCembed_format(PRIVATE_LUA_CEMBED_ARGS_,self->main_object->stack_leve,formatted_index-1);
+    LuaCEmbedTable_append_global(self,formated_arg);
+    free(formated_arg);
+}
