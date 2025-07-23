@@ -147,7 +147,7 @@ void LuaCEmbedTable_copy_index_to_global_var(LuaCEmbedTable *self,lua_Integer in
 }
 void LuaCEmbedTable_set_table_index_with_table_prop(LuaCEmbedTable *self, lua_Integer self_index, LuaCEmbedTable *table,const char * table_prop ){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
-    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s['%s']",
+    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s['%s'];",
                        self->global_name,
                        self_index,
                        table->global_name,
@@ -157,10 +157,18 @@ void LuaCEmbedTable_set_table_index_with_table_prop(LuaCEmbedTable *self, lua_In
 
 void LuaCEmbedTable_set_table_index_with_table_index(LuaCEmbedTable *self, lua_Integer self_index, LuaCEmbedTable *table,const char * table_index ){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
-    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s[%d]",
+    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s[%d];",
                        self->global_name,
                        self_index,
                        table->global_name,
                        table_index
+    );
+}
+void LuaCEmbedTable_set_table_index_with_global(LuaCEmbedTable *self, lua_Integer self_index, const char *global_name){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s;",
+                       self->global_name,
+                       self_index,
+                       global_name
     );
 }

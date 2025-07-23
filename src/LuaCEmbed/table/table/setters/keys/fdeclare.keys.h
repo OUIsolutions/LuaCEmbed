@@ -28,3 +28,5 @@ void LuaCEmbedTable_copy_prop_to_global_var(LuaCEmbedTable *self,const char *pro
 void LuaCEmbedTable_set_table_prop_with_table_prop(LuaCEmbedTable *self, const char *self_prop, LuaCEmbedTable *table,const char * table_prop );
 
 void LuaCEmbedTable_set_table_prop_with_table_index(LuaCEmbedTable *self, const char *self_prop, LuaCEmbedTable *table,const char * table_index );
+
+void LuaCEmbedTable_set_table_prop_with_global(LuaCEmbedTable *self, const char *self_prop, const char *global_name);

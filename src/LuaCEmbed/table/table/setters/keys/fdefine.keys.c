@@ -150,7 +150,7 @@ void LuaCEmbedTable_copy_prop_to_global_var(LuaCEmbedTable *self,const char *pro
 }
 void LuaCEmbedTable_set_table_prop_with_table_prop(LuaCEmbedTable *self, const char *self_prop, LuaCEmbedTable *table,const char * table_prop ){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
-    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s['%s']",
+    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s['%s'];",
                        self->global_name,
                        self_prop,
                        table->global_name,
@@ -160,10 +160,18 @@ void LuaCEmbedTable_set_table_prop_with_table_prop(LuaCEmbedTable *self, const c
 
 void LuaCEmbedTable_set_table_prop_with_table_index(LuaCEmbedTable *self, const char *self_prop, LuaCEmbedTable *table,const char * table_index ){
     PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
-    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s[%d]",
+    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s[%d];",
                        self->global_name,
                        self_prop,
                        table->global_name,
                        table_index
+    );
+}
+void LuaCEmbedTable_set_table_prop_with_global(LuaCEmbedTable *self, const char *self_prop, const char *global_name){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    LuaCEmbed_evaluate(self->main_object,"%s['%s'] = %s;",
+                       self->global_name,
+                       self_prop,
+                       global_name
     );
 }
