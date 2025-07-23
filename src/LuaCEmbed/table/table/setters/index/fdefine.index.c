@@ -145,3 +145,22 @@ void LuaCEmbedTable_copy_index_to_global_var(LuaCEmbedTable *self,lua_Integer in
     }
     PRIVATE_LUA_CEMBED_TABLE_CLEAR_STACK
 }
+void LuaCEmbedTable_set_table_index_with_table_prop(LuaCEmbedTable *self, lua_Integer self_index, LuaCEmbedTable *table,const char * table_prop ){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s['%s']",
+                       self->global_name,
+                       self_index,
+                       table->global_name,
+                       table_prop
+    );
+}
+
+void LuaCEmbedTable_set_table_index_with_table_index(LuaCEmbedTable *self, lua_Integer self_index, LuaCEmbedTable *table,const char * table_index ){
+    PRIVATE_LUA_CEMBED_TABLE_PROTECT_VOID
+    LuaCEmbed_evaluate(self->main_object,"%s[%d] = %s[%d]",
+                       self->global_name,
+                       self_index,
+                       table->global_name,
+                       table_index
+    );
+}

@@ -18,3 +18,7 @@ void  LuaCEmbedTable_set_bool_by_index(LuaCEmbedTable *self, lua_Integer index, 
 void  LuaCEmbedTable_set_evaluation_by_index(LuaCEmbedTable *self, lua_Integer index, const char *code, ...);
 
 void LuaCEmbedTable_copy_index_to_global_var(LuaCEmbedTable *self,lua_Integer index, const char *name);
+
+void LuaCEmbedTable_set_table_index_with_table_prop(LuaCEmbedTable *self, lua_Integer self_index, LuaCEmbedTable *table,const char * table_prop );
+
+void LuaCEmbedTable_set_table_index_with_table_index(LuaCEmbedTable *self, lua_Integer self_index, LuaCEmbedTable *table,const char * table_index );
