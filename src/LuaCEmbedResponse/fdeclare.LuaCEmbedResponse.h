@@ -37,5 +37,7 @@ void private_LuaCEmbedResponse_free(LuaCEmbedResponse  *self);
 
 LuaCEmbedResponse * LuaCEmbed_send_table(LuaCEmbedTable *table);
 
+LuaCEmbedResponse  * LuaCEmbed_send_table_prop(LuaCEmbedTable *table,const char *prop);
+
 
 LuaCEmbedResponse * LuaCEmbed_send_multi_return(LuaCEmbedTable *table);
