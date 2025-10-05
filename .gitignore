@@ -4,6 +4,7 @@ luaDoTheWorld
 old
 LuaCEmbedOne.c
 .TreinAiCache
+ref
 .vscode
 main.c
 llm_docs
@@ -11,6 +12,7 @@ dependencies
 doTheWorld.h
 teste.png
 release
+.darwincache
 teste.lua
 src/imports/
 side_effect_copy

@@ -1,15 +1,13 @@
-function main()
+function silverchain_generation()
     darwin.silverchain.generate({
         src = "src",
         tags = { "dep_declare", "macros", "types","consts", "fdeclare","globals", "dep_define","fdefine" },
         project_short_cut = "LuaCEmbed",
         implement_main = false
     })
+end
 
-    if darwin.argv.one_of_args_exist("only_silverchain") then
-        return 
-    end 
-
+function amalgamation_build()
     local MAX_CONNTENT = darwin.camalgamator.ONE_MB * 20
     local MAX_RECURSION = 100
 
@@ -68,3 +66,21 @@ function main()
     os.execute("zip -r release/LuaCEmbed.zip dependencies src build")
 
 end
+
+-- Recipe definitions
+darwin.add_recipe({
+    name = "silverchain",
+    description = "Generate silverchain imports",
+    outs = {"src/imports/"},
+    inputs = {"src"},
+    callback = silverchain_generation
+})
+
+darwin.add_recipe({
+    name = "amalgamation",
+    requires = {"silverchain"},
+    description = "Make a single file amalgamation of the project",
+    outs = {"release/LuaCEmbedOne.c", "release/LuaCEmbed.h", "release/LuaCEmbed.c", "release/LuaCEmbed.zip"},
+    inputs = {"src", "dependencies", "LICENSE"},
+    callback = amalgamation_build
+})
