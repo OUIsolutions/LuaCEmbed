@@ -1,0 +1,25 @@
+[{
+		"dest":	"dependencies/UniversalGarbage.c",
+		"file":	"UniversalGarbage.c",
+		"repo":	"OUIsolutions/Universal-Garbage-Colector",
+		"tag":	"3.0.0",
+		"type":	"gitrelease"
+	}, {
+		"dest":	"dependencies/UniversalGarbage.h",
+		"file":	"UniversalGarbage.h",
+		"repo":	"OUIsolutions/Universal-Garbage-Colector",
+		"tag":	"3.0.0",
+		"type":	"gitrelease"
+        	}, {
+		"dest":	"dependencies/lua_single_unity_classic_onelua.c",
+		"file":	"lua_single_unity_classic_onelua.c",
+		"repo":	"OUIsolutions/LuaSingleUnity",
+		"tag":	"5.4.7",
+		"type":	"gitrelease"
+	}, {
+		"dest":	"dependencies/lua_single_unity.h",
+		"file":	"lua_single_unity.h",
+		"repo":	"OUIsolutions/LuaSingleUnity",
+		"tag":	"5.4.7",
+		"type":	"gitrelease"
+	}]
