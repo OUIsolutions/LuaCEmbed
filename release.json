@@ -1,0 +1,11 @@
+{
+   "replacers": {
+       "BIG_VERSION": "0",
+       "SMALL_VERSION": "13",
+       "PATCH_VERSION": "0"
+   },
+   "release": "{BIG_VERSION}.{SMALL_VERSION}.{PATCH_VERSION}",
+   "tag": "{BIG_VERSION}.{SMALL_VERSION}.{PATCH_VERSION}",
+   "description": "new build mode",
+   "assets": ["cachify.lua"]
+}
